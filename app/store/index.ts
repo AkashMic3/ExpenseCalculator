@@ -5,7 +5,8 @@ import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import rootReducers from 'app/store/reducers'; // where reducers is a object of reducers
 import sagas from 'app/store/sagas';
-import { composeWithDevTools } from 'remote-redux-devtools';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
 
 const config = {
   key: 'root',
@@ -29,9 +30,9 @@ const enhancers = [applyMiddleware(...middleware)];
 const persistConfig: any = { enhancers };
 
 // without Devtools 
-const store = createStore(reducers, undefined, compose(...enhancers));
+//const store = createStore(reducers, undefined, compose(...enhancers));
 // with DevTools
-// const store = createStore(reducers, undefined, composeWithDevTools(compose(...enhancers)));
+const store = createStore(reducers, undefined, composeWithDevTools(compose(...enhancers)));
 const persistor = persistStore(store, persistConfig, () => {
   //   console.log('Test', store.getState());
 });
