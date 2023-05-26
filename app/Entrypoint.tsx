@@ -37,7 +37,7 @@ const RootNavigation: React.FC = () => {
 };
 
 const EntryPoint: React.FC = () => {
-  console.log("{entry")
+  console.log('{entry}');
   return (
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
