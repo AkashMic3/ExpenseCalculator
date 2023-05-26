@@ -12,6 +12,7 @@ import ForgotPassword from 'app/screens/ForgotPassword';
 import ThemeController from '../components/ThemeController';
 import { StatusBar } from 'react-native';
 import { ILoginState } from 'app/models/reducers/login';
+import Register from 'app/screens/Register';
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -49,6 +50,15 @@ const AuthNavigator = () => {
           headerRight: () => <ThemeController />,
         }}
       />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{
+          animationTypeForReplace: isLoggedIn ? 'push' : 'pop',
+          headerRight: () => <ThemeController />,
+        }}
+      />
+
       <Stack.Screen
         name="ForgotPassword"
         component={ForgotPassword}
