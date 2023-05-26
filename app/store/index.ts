@@ -7,7 +7,6 @@ import rootReducers from 'app/store/reducers'; // where reducers is a object of 
 import sagas from 'app/store/sagas';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-
 const config = {
   key: 'root',
   storage: AsyncStorage,
@@ -29,10 +28,14 @@ const enhancers = [applyMiddleware(...middleware)];
 // const initialState = {};
 const persistConfig: any = { enhancers };
 
-// without Devtools 
-//const store = createStore(reducers, undefined, compose(...enhancers));
+// without Devtools
+const store = createStore(reducers, undefined, compose(...enhancers));
 // with DevTools
-const store = createStore(reducers, undefined, composeWithDevTools(compose(...enhancers)));
+// const store = createStore(
+//   reducers,
+//   undefined,
+//   composeWithDevTools(compose(...enhancers)),
+// );
 const persistor = persistStore(store, persistConfig, () => {
   //   console.log('Test', store.getState());
 });
