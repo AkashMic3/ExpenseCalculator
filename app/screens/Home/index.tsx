@@ -22,9 +22,7 @@ const Home: React.FC = () => {
         <Button
           icon="logout"
           mode="outlined"
-          onPress={() => {
-            dispatch(HomeActions.FetchEmployees());
-          }}>
+          onPress={onLogout}>
           Logout
         </Button>
       </ScrollView>
