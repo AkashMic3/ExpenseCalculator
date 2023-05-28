@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import { useDispatch } from 'react-redux';
-import * as loginActions from 'app/store/actions/loginActions';
+import * as loginActions from 'app/store/actions/loginRegisterActions';
 import * as HomeActions from 'app/store/actions/homeActions';
 import styles from './styles';
 import { useFocusEffect } from '@react-navigation/native';

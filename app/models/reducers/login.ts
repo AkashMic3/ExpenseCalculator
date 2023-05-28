@@ -1,6 +1,6 @@
 export interface ILoginState {
   isLoggedIn: boolean;
-  id: number;
+  id: any;
   username: string;
   password: string;
 }

@@ -4,11 +4,21 @@
 import * as types from './types';
 import { ILoginResponse } from 'app/models/api/login';
 
-export function requestLogin(username: string, password: string) {
+export function requestLogin(email: string, password: string) {
   console.log('inside actions');
   return {
     type: types.LOGIN_REQUEST,
-    username,
+    email,
+    password,
+  };
+}
+
+export function requestRegsiter(email: string, phone:string, password: string,) {
+  console.log('inside actions register');
+  return {
+    type: types.REGISTER_REQUEST,
+    email,
+    phone,
     password,
   };
 }

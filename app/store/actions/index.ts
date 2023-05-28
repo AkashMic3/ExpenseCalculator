@@ -1,5 +1,5 @@
 // export action creators
-import * as loginActions from './loginActions';
+import * as loginActions from './loginRegisterActions';
 import * as navigationActions from './navigationActions';
 import * as themeActions from './themeActions';
 import * as homeActions from './homeActions';

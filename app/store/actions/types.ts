@@ -13,3 +13,7 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOG_OUT = 'LOG_OUT';
 export const FetchEmployees = 'FETCH_EMPLOYEES';
 export const FetchEmployeesResponse = 'FETCH_EMPLOYEES_RESPONSE';
+
+// regsiter
+export const REGISTER_REQUEST = 'REGISTER_REQUEST';
+

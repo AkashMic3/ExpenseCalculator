@@ -3,19 +3,21 @@ import { View } from 'react-native';
 import { Text, Button, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import * as loginActions from 'app/store/actions/loginActions';
+import * as loginRegisterActions from 'app/store/actions/loginRegisterActions';
 import styles from './styles';
 import { ILoginState } from 'app/models/reducers/login';
 import NavigationService from 'app/navigation/NavigationService';
-// import realm from 'app/config/realm-config';
+import realm from 'app/config/realm-config';
+
+import { Realm} from '@realm/react';
 
 interface IState {
   loginReducer: ILoginState;
 }
 interface Credential {
-  email: any,
-  phone:any
-  password: any
+  email: string,
+  phone:string
+  password: string
 }
 
 const Register: React.FC = () => {
@@ -25,16 +27,27 @@ const Register: React.FC = () => {
   const dispatch = useDispatch();
 
   const onRegister = async()  => {
+    try {
     // let response:any =  await realm.emailPasswordAuth.registerUser({email:userCredential.email, password: userCredential.password})
-    // console.log('register response', response)
+    // .catch(err => console.log(err))
+    
+      
+      // const creds = Realm.Credentials.emailPassword(userCredential.email, userCredential.password);
+      // const newUser = await realm.logIn(creds);
+      // newUser.isLoggedIn
+       dispatch(loginRegisterActions.requestRegsiter(userCredential.email, userCredential.phone, userCredential.password));
+    
+    }catch(err) {
+     console.log(err)
+    }
   }
   const setCredential = (text: String, type: String) => {
     if (type === 'email')
-      setUsercredential({ ...userCredential, email: text })
+      setUsercredential({ ...userCredential, email: text as string })
     else if (type === 'phone') 
-    setUsercredential({ ...userCredential, phone: text })
+    setUsercredential({ ...userCredential, phone: text as string })
     else
-      setUsercredential({ ...userCredential, password: text })
+      setUsercredential({ ...userCredential, password: text as string })
   }
 
 

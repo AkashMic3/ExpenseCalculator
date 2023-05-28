@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Text, Button, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import * as loginActions from 'app/store/actions/loginActions';
+import * as loginActions from 'app/store/actions/loginRegisterActions';
 import styles from './styles';
 import { ILoginState } from 'app/models/reducers/login';
 import NavigationService from 'app/navigation/NavigationService';
@@ -21,10 +21,8 @@ const Login: React.FC = () => {
 
   const id = useSelector((state: IState) => state.loginReducer.id);
   const dispatch = useDispatch();
-
   const onLogin = () => {
-    console.log(usercredential)
-    // dispatch(loginActions.requestLogin('test', '1234'));
+    dispatch(loginActions.requestLogin(usercredential.email as string, usercredential.password as string));
   }
   const setCredential = (text: String, type: String) => {
     if (type === 'email')
@@ -54,7 +52,7 @@ const Login: React.FC = () => {
           mode="text"
           labelStyle={styles.labelStyle}
           onPress={onRegister}>
-         Don't have an account yet? Sign up now 
+          Don't have an account yet? Sign up now
         </Button>
       </View>
     </View>

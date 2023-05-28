@@ -29,13 +29,13 @@ const enhancers = [applyMiddleware(...middleware)];
 const persistConfig: any = { enhancers };
 
 // without Devtools
-const store = createStore(reducers, undefined, compose(...enhancers));
+//const store = createStore(reducers, undefined, compose(...enhancers));
 // with DevTools
-// const store = createStore(
-//   reducers,
-//   undefined,
-//   composeWithDevTools(compose(...enhancers)),
-// );
+const store = createStore(
+  reducers,
+  undefined,
+  composeWithDevTools(compose(...enhancers)),
+);
 const persistor = persistStore(store, persistConfig, () => {
   //   console.log('Test', store.getState());
 });
