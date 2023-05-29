@@ -12,6 +12,7 @@ import { Alert } from 'react-native';
 import * as loginActions from 'app/store/actions/loginRegisterActions';
 import realm from 'app/config/realm-config';
 import { Realm } from '@realm/react';
+import { regsiterUser } from 'app/services/loginRegisterUser';
 
 // Our worker Saga that logins the user
 export function* loginSaga(action: any) {
@@ -31,8 +32,6 @@ export function* loginSaga(action: any) {
     yield put(loginActions.loginFailed());
     yield put(loginActions.disableLoader());
   }
-
-
 }
 
 export function* registerSaga(action: any) {
@@ -40,8 +39,14 @@ export function* registerSaga(action: any) {
   const { email, password, phone } = action;
   try {
     yield call([realm.emailPasswordAuth, realm.emailPasswordAuth.registerUser], { email: email, password: password })
-    const response: any = yield put(loginActions.requestLogin(email, password))
-    console.log("reg", response)
+    const response: any = yield call(regsiterUser, email, phone, 'test')
+    console.log("hwllo",response.data)
+    if (response?.data?.status === 'success')
+      yield put(loginActions.requestLogin(email, password))
+    else {
+      yield put(loginActions.loginFailed());
+      yield put(loginActions.disableLoader());
+    }
   }
   catch (err) {
     yield put(loginActions.loginFailed());
