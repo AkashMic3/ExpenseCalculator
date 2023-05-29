@@ -1,657 +1,85 @@
-import * as React from 'react';
-import { Image, StyleSheet, View, Text } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Color, FontSize, Border, FontFamily } from '../../lib/GlobalStyles';
-
+import * as loginActions from 'app/store/actions/loginRegisterActions';
+import { useDispatch } from 'react-redux';
 const UserProfile = () => {
+  // Sample user data
+  const user = {
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    profileImage:
+      'data:image/png;base64,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',
+  };
+
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    // Implement your logout logic here
+    console.log('User logged out');
+    dispatch(loginActions.logOut());
+  };
+
   return (
-    <View style={styles.userProfile}>
-      <Image
-        style={styles.userProfileChild}
-        resizeMode="cover"
-        source={{
-          uri: 'https://reactnative.dev/img/tiny_logo.png',
-        }}
-      />
-      <View style={styles.leftParent}>
-        <Image
-          style={styles.leftIcon}
-          resizeMode="cover"
-          source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-          }}
-        />
-        <Image
-          style={styles.frameChild}
-          resizeMode="cover"
-          source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-          }}
-        />
-      </View>
-      <View style={[styles.currentPlanParent, styles.currentLayout1]}>
-        <View style={[styles.currentPlan, styles.currentPlanPosition]}>
-          <View style={[styles.currentPlanChild, styles.childPosition]} />
-          <Text
-            style={[styles.paymentMethods, styles.textTypo]}>{`Payment Methods
-`}</Text>
-          <View style={[styles.currentPlanItem, styles.currentLayout]} />
-          <View style={[styles.currentPlanInner, styles.currentLayout]} />
-          <View style={[styles.delete, styles.deleteLayout]}>
-            <LinearGradient
-              style={[styles.deleteChild, styles.deleteLayout]}
-              locations={[0, 1]}
-              colors={['#e3823c', '#e33c3c']}
-              useAngle={true}
-              angle={99.61}
-            />
-            <Text style={styles.delete1}>Delete</Text>
-          </View>
-          <View style={[styles.physicalCashWrapper, styles.wrapperPosition]}>
-            <Text style={styles.physicalCash}>PHYSICAL CASH</Text>
-          </View>
+    <View style={styles.container}>
+      <LinearGradient
+        colors={['#1c92d2', '#f2fcfe']}
+        // start={[0, 0]}
+        // end={[1, 1]}
+        style={styles.background}>
+        <View style={styles.profileContainer}>
           <Image
-            style={styles.vectorIcon}
-            resizeMode="cover"
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
+            source={{ uri: user.profileImage }}
+            style={styles.profileImage}
           />
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </View>
-        <Image
-          style={styles.businessAndFinancebank}
-          resizeMode="cover"
-          source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-          }}
-        />
-        <View style={[styles.bankBalanceWrapper, styles.wrapperPosition]}>
-          <Text style={styles.physicalCash}>BANK BALANCE</Text>
-        </View>
-      </View>
-      <View style={[styles.currentPlanParent, styles.currentLayout1]}>
-        <View style={[styles.currentPlan, styles.currentPlanPosition]}>
-          <View style={[styles.currentPlanChild, styles.childPosition]} />
-          <Text
-            style={[styles.paymentMethods, styles.textTypo]}>{`Payment Methods
-`}</Text>
-          <View style={[styles.currentPlanItem, styles.currentLayout]} />
-          <View style={[styles.currentPlanInner, styles.currentLayout]} />
-          <View style={[styles.delete, styles.deleteLayout]}>
-            <LinearGradient
-              style={[styles.deleteChild, styles.deleteLayout]}
-              locations={[0, 1]}
-              colors={['#e3823c', '#e33c3c']}
-              useAngle={true}
-              angle={99.61}
-            />
-            <Text style={styles.delete1}>Delete</Text>
-          </View>
-          <View style={[styles.physicalCashWrapper, styles.wrapperPosition]}>
-            <Text style={styles.physicalCash}>PHYSICAL CASH</Text>
-          </View>
-          <Image
-            style={styles.vectorIcon}
-            resizeMode="cover"
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-          />
-        </View>
-        <Image
-          style={styles.businessAndFinancebank}
-          resizeMode="cover"
-          source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-          }}
-        />
-        <View style={[styles.bankBalanceWrapper, styles.wrapperPosition]}>
-          <Text style={styles.physicalCash}>BANK BALANCE</Text>
-        </View>
-      </View>
-      <View style={[styles.rectangleParent, styles.groupChildLayout]}>
-        <View style={[styles.groupChild, styles.groupChildLayout]} />
-        <View style={styles.chandramaSahaParent}>
-          <Text style={[styles.chandramaSaha, styles.userProfile1Typo]}>
-            Chandrama Saha
-          </Text>
-          <Text style={[styles.xxxxxXxxxx, styles.xxxxxTypo]}>
-            +91 XXXXX XXXXX
-          </Text>
-          <Text style={[styles.chandramasahaxxxxx, styles.xxxxxTypo]}>
-            chandramasaha@xxxxx
-          </Text>
-        </View>
-        <Image
-          style={styles.groupItem}
-          resizeMode="cover"
-          source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-          }}
-        />
-      </View>
-      <View style={[styles.rectangleParent, styles.groupChildLayout]}>
-        <View style={[styles.groupChild, styles.groupChildLayout]} />
-        <View style={styles.chandramaSahaParent}>
-          <Text style={[styles.chandramaSaha, styles.userProfile1Typo]}>
-            Chandrama Saha
-          </Text>
-          <Text style={[styles.xxxxxXxxxx, styles.xxxxxTypo]}>
-            +91 XXXXX XXXXX
-          </Text>
-          <Text style={[styles.chandramasahaxxxxx, styles.xxxxxTypo]}>
-            chandramasaha@xxxxx
-          </Text>
-        </View>
-        <Image
-          style={styles.groupItem}
-          resizeMode="cover"
-          source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-          }}
-        />
-      </View>
-      <Text style={[styles.userProfile1, styles.userProfile1Typo]}>
-        User Profile
-      </Text>
-      <Image
-        style={[styles.userProfileItem, styles.currentPlanPosition]}
-        resizeMode="cover"
-        source={{
-          uri: 'https://reactnative.dev/img/tiny_logo.png',
-        }}
-      />
-      <View style={[styles.statusBar, styles.iconPosition]}>
-        <Image
-          style={styles.statusbariphone1Icon}
-          resizeMode="cover"
-          source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-          }}
-        />
-        <View style={styles.statusbar}>
-          <Text style={[styles.text, styles.textTypo]}>08:48</Text>
-          <Image
-            style={styles.segnalIcon}
-            resizeMode="cover"
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-          />
-          <Image
-            style={[styles.wifiIcon, styles.batLayout1]}
-            resizeMode="cover"
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-          />
-          <View style={[styles.bat, styles.batLayout1]}>
-            <View style={[styles.batChild, styles.batBorder]} />
-            <View style={styles.batItem} />
-            <View style={[styles.batInner, styles.batLayout]} />
-            <View style={[styles.batChild1, styles.batLayout]} />
-          </View>
-        </View>
-      </View>
-      <Image
-        style={[styles.icon, styles.iconPosition]}
-        resizeMode="cover"
-        source={{
-          uri: 'https://reactnative.dev/img/tiny_logo.png',
-        }}
-      />
-      <View style={[styles.currentPlanContainer, styles.currentLayout1]}>
-        <View style={[styles.currentPlan, styles.currentPlanPosition]}>
-          <View style={[styles.currentPlanChild, styles.childPosition]} />
-          <Text style={[styles.paymentMethods, styles.textTypo]}>Cards</Text>
-          <View style={[styles.currentPlanItem, styles.currentLayout]} />
-          <View style={[styles.currentPlanInner, styles.currentLayout]} />
-          <View style={[styles.delete, styles.deleteLayout]}>
-            <LinearGradient
-              style={[styles.deleteChild, styles.deleteLayout]}
-              locations={[0, 1]}
-              colors={['#e3823c', '#e33c3c']}
-              useAngle={true}
-              angle={99.61}
-            />
-            <Text style={styles.delete1}>Delete</Text>
-          </View>
-          <View style={[styles.physicalCashWrapper, styles.wrapperPosition]}>
-            <Text style={styles.physicalCash}>DEBIT CARD</Text>
-          </View>
-          <Image
-            style={[
-              styles.ecommercecreditCard2Icon,
-              styles.ecommercecreditIconPosition,
-            ]}
-            resizeMode="cover"
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-          />
-        </View>
-        <View style={[styles.currentPlan, styles.currentPlanPosition]}>
-          <View style={[styles.currentPlanChild, styles.childPosition]} />
-          <Text style={[styles.paymentMethods, styles.textTypo]}>Cards</Text>
-          <View style={[styles.currentPlanItem, styles.currentLayout]} />
-          <View style={[styles.currentPlanInner, styles.currentLayout]} />
-          <View style={[styles.delete, styles.deleteLayout]}>
-            <LinearGradient
-              style={[styles.deleteChild, styles.deleteLayout]}
-              locations={[0, 1]}
-              colors={['#e3823c', '#e33c3c']}
-              useAngle={true}
-              angle={99.61}
-            />
-            <Text style={styles.delete1}>Delete</Text>
-          </View>
-          <View style={[styles.physicalCashWrapper, styles.wrapperPosition]}>
-            <Text style={styles.physicalCash}>DEBIT CARD</Text>
-          </View>
-          <Image
-            style={[
-              styles.ecommercecreditCard2Icon,
-              styles.ecommercecreditIconPosition,
-            ]}
-            resizeMode="cover"
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-          />
-        </View>
-        <Image
-          style={[
-            styles.ecommercecreditCardIcon,
-            styles.ecommercecreditIconPosition,
-          ]}
-          resizeMode="cover"
-          source={{
-            uri: 'https://reactnative.dev/img/tiny_logo.png',
-          }}
-        />
-        <View style={[styles.bankBalanceWrapper, styles.wrapperPosition]}>
-          <Text style={styles.physicalCash}>CREDIT CARD</Text>
-        </View>
-      </View>
-      <Image
-        style={[styles.icon, styles.iconPosition]}
-        resizeMode="cover"
-        source={{
-          uri: 'https://reactnative.dev/img/tiny_logo.png',
-        }}
-      />
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Logout</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  currentLayout1: {
-    height: 202,
-    width: 340,
-    position: 'absolute',
+  container: {
+    flex: 1,
   },
-  currentPlanPosition: {
-    left: 0,
-    top: 0,
-  },
-  childPosition: {
-    borderWidth: 1,
-    left: 0,
-    top: 0,
-  },
-  textTypo: {
-    textAlign: 'left',
-    color: Color.white,
-    letterSpacing: 0.2,
-    fontSize: FontSize.size_base,
-    position: 'absolute',
-  },
-  currentLayout: {
-    height: 91,
-    width: 92,
-    backgroundColor: Color.gray_300,
-    top: 62,
-    borderRadius: Border.br_mini,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
-    borderStyle: 'solid',
-    position: 'absolute',
-  },
-  deleteLayout: {
-    height: 44,
-    width: 127,
-    position: 'absolute',
-  },
-  wrapperPosition: {
-    top: 163,
-    flexDirection: 'row',
-    position: 'absolute',
-  },
-  groupChildLayout: {
-    height: 107,
-    width: 340,
-    position: 'absolute',
-  },
-  userProfile1Typo: {
-    letterSpacing: 0.3,
-    color: Color.gray_400,
-    textAlign: 'left',
-    fontWeight: '700',
-    position: 'absolute',
-  },
-  xxxxxTypo: {
-    color: Color.gray_100,
-    letterSpacing: 1.1,
-    fontSize: FontSize.size_3xs,
-    fontFamily: FontFamily.dMSansRegular,
-    textAlign: 'left',
-    left: 0,
-    position: 'absolute',
-  },
-  iconPosition: {
-    width: 390,
-    left: 0,
-    position: 'absolute',
-    overflow: 'hidden',
-  },
-  batLayout1: {
-    height: 11,
-    position: 'absolute',
-  },
-  batBorder: {
-    borderColor: '#fff',
-    borderStyle: 'solid',
-  },
-  batLayout: {
-    width: 1,
-    position: 'absolute',
-  },
-  ecommercecreditIconPosition: {
-    marginTop: -15,
-    left: '50%',
-    top: '50%',
-    position: 'absolute',
-    overflow: 'hidden',
-  },
-  userProfileChild: {
-    top: 271,
-    left: 265,
-    width: 269,
-    height: 469,
-    position: 'absolute',
-  },
-  leftIcon: {
-    width: 8,
-    height: 14,
-  },
-  frameChild: {
-    width: 5,
-    marginLeft: 319,
-    height: 21,
-  },
-  leftParent: {
-    top: 75,
-    left: 30,
+  background: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    position: 'absolute',
   },
-  currentPlanChild: {
-    borderColor: 'rgba(255, 255, 255, 0.5)',
-    borderStyle: 'solid',
-    backgroundColor: Color.gray_200,
-    borderRadius: Border.br_3xs,
-    borderWidth: 1,
-    height: 202,
-    width: 340,
-    position: 'absolute',
+  profileContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
   },
-  paymentMethods: {
-    top: 23,
-    width: 145,
-    height: 25,
-    fontFamily: FontFamily.dMSansBold,
-    fontWeight: '700',
-    color: Color.white,
-    letterSpacing: 0.2,
-    fontSize: FontSize.size_base,
-    left: 25,
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    marginBottom: 10,
   },
-  currentPlanItem: {
-    left: 21,
+  name: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
   },
-  currentPlanInner: {
-    left: 130,
+  email: {
+    fontSize: 18,
+    color: '#fff',
   },
-  deleteChild: {
-    backgroundColor: 'transparent',
-    borderRadius: Border.br_mini,
-    height: 44,
-    width: 127,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
-    borderStyle: 'solid',
-    left: 0,
-    top: 0,
+  logoutButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
   },
-  delete1: {
-    left: 44,
-    fontSize: FontSize.size_smi,
-    width: 40,
-    height: 15,
-    color: Color.gray_400,
-    fontFamily: FontFamily.dMSansRegular,
-    top: 15,
-    textAlign: 'left',
-    letterSpacing: 0.2,
-    position: 'absolute',
-  },
-  delete: {
-    top: 229,
-    left: 103,
-  },
-  physicalCash: {
-    textAlign: 'center',
-    width: 85,
-    fontSize: FontSize.size_3xs,
-    height: 15,
-    color: Color.gray_400,
-    fontFamily: FontFamily.dMSansBold,
-    fontWeight: '700',
-    letterSpacing: 0.2,
-  },
-  physicalCashWrapper: {
-    left: 130,
-  },
-  vectorIcon: {
-    height: '17.82%',
-    width: '12.94%',
-    top: '44.55%',
-    right: '41.76%',
-    bottom: '37.62%',
-    left: '45.29%',
-    maxWidth: '100%',
-    maxHeight: '100%',
-    position: 'absolute',
-    overflow: 'hidden',
-  },
-  currentPlan: {
-    height: 202,
-    width: 340,
-    position: 'absolute',
-    overflow: 'hidden',
-  },
-  businessAndFinancebank: {
-    marginTop: -18,
-    width: 47,
-    height: 49,
-    left: '50%',
-    top: '50%',
-    marginLeft: -126,
-    position: 'absolute',
-    overflow: 'hidden',
-  },
-  bankBalanceWrapper: {
-    left: 25,
-  },
-  currentPlanParent: {
-    top: 277,
-    left: 26,
-  },
-  groupChild: {
-    borderWidth: 1,
-    left: 0,
-    top: 0,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
-    borderStyle: 'solid',
-    backgroundColor: Color.gray_200,
-    borderRadius: Border.br_3xs,
-  },
-  chandramaSaha: {
-    fontSize: FontSize.size_lg,
-    fontFamily: FontFamily.dMSansBold,
-    left: 0,
-    top: 0,
-  },
-  xxxxxXxxxx: {
-    top: 29,
-  },
-  chandramasahaxxxxx: {
-    top: 42,
-  },
-  chandramaSahaParent: {
-    top: 25,
-    left: 28,
-    width: 153,
-    height: 55,
-    position: 'absolute',
-  },
-  groupItem: {
-    left: 249,
-    width: 79,
-    height: 81,
-    top: 15,
-    position: 'absolute',
-  },
-  rectangleParent: {
-    top: 135,
-    left: 24,
-  },
-  userProfile1: {
-    top: 76,
-    left: 128,
-    fontSize: 20,
-    fontFamily: FontFamily.syneBold,
-  },
-  userProfileItem: {
-    width: 419,
-    height: 269,
-    position: 'absolute',
-  },
-  statusbariphone1Icon: {
-    top: -10,
-    left: 18,
-    width: 355,
-    display: 'none',
-    height: 41,
-    position: 'absolute',
-  },
-  text: {
-    fontWeight: '500',
-    fontFamily: FontFamily.dMSansMedium,
-    color: Color.white,
-    letterSpacing: 0.2,
-    fontSize: FontSize.size_base,
-    left: 0,
-    top: 0,
-  },
-  segnalIcon: {
-    left: 275,
-    width: 18,
-    height: 10,
-    top: 4,
-    position: 'absolute',
-  },
-  wifiIcon: {
-    left: 297,
-    width: 16,
-    top: 3,
-    height: 11,
-  },
-  batChild: {
-    width: 21,
-    height: 11,
-    position: 'absolute',
-    borderWidth: 1,
-    left: 0,
-    top: 0,
-  },
-  batItem: {
-    left: 2,
-    width: 12,
-    height: 7,
-    backgroundColor: Color.white,
-    top: 2,
-    position: 'absolute',
-  },
-  batInner: {
-    borderRightWidth: 1,
-    height: 8,
-    top: 2,
-    borderColor: '#fff',
-    borderStyle: 'solid',
-    left: 21,
-  },
-  batChild1: {
-    left: 22,
-    height: 3,
-    backgroundColor: Color.white,
-    top: 4,
-  },
-  bat: {
-    left: 319,
-    width: 23,
-    top: 3,
-    height: 11,
-  },
-  statusbar: {
-    top: 14,
-    width: 342,
-    left: 24,
-    height: 21,
-    position: 'absolute',
-  },
-  statusBar: {
-    top: 10,
-    height: 45,
-  },
-  icon: {
-    top: 724,
-    height: 120,
-  },
-  ecommercecreditCard2Icon: {
-    marginLeft: -18,
-    width: 41,
-    height: 41,
-  },
-  ecommercecreditCardIcon: {
-    width: 42,
-    height: 42,
-    marginLeft: -126,
-    marginTop: -15,
-  },
-  currentPlanContainer: {
-    top: 501,
-    left: 25,
-  },
-  userProfile: {
-    borderRadius: 50,
-    backgroundColor: '#141326',
-    flex: 1,
-    width: '100%',
-    height: 844,
-    overflow: 'hidden',
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1c92d2',
   },
 });
 

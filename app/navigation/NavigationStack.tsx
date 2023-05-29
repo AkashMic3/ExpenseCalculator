@@ -15,6 +15,7 @@ import { ILoginState } from 'app/models/reducers/login';
 import Register from 'app/screens/Register';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UserProfile from 'app/screens/Profile/UserProfile';
+import ExpenseTrackerHome from 'app/screens/Home';
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createBottomTabNavigator();
@@ -77,6 +78,7 @@ const AuthNavigator = () => {
 const LoggedInNavigator = () => (
   <LoggedInStack.Navigator
     screenOptions={({ route }) => ({
+      headerShown: false,
       tabBarIcon: ({ color, size }) => {
         let iconName;
 
@@ -93,7 +95,11 @@ const LoggedInNavigator = () => (
         );
       },
     })}>
-    <Stack.Screen name="Home" component={Home} options={homeOptions} />
+    <Stack.Screen
+      name="Home"
+      component={ExpenseTrackerHome}
+      options={homeOptions}
+    />
     <Stack.Screen name="Profile" component={UserProfile} />
   </LoggedInStack.Navigator>
 );
