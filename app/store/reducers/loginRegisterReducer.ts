@@ -11,7 +11,7 @@ import {
 } from 'app/models/actions/login';
 const initialState: ILoginState = {
   isLoggedIn: false,
-  id: 0,
+  id: '',
   username: '',
   password: '',
 };

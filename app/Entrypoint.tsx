@@ -17,6 +17,7 @@ import {
 import Navigator from 'app/navigation';
 import configureStore from 'app/store';
 import { IThemeState } from 'app/models/reducers/theme';
+import { AppProvider } from '@realm/react';
 
 const { persistor, store } = configureStore();
 
@@ -39,11 +40,13 @@ const RootNavigation: React.FC = () => {
 const EntryPoint: React.FC = () => {
   console.log('{entry}');
   return (
+   
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
         <RootNavigation />
       </PersistGate>
     </Provider>
+   
   );
 };
 
