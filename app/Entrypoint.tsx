@@ -40,13 +40,13 @@ const RootNavigation: React.FC = () => {
 const EntryPoint: React.FC = () => {
   console.log('{entry}');
   return (
-    <AppProvider id={"application-0-ephed"}>
+   
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
         <RootNavigation />
       </PersistGate>
     </Provider>
-    </AppProvider>
+   
   );
 };
 
