@@ -7,9 +7,6 @@ import * as loginRegisterActions from 'app/store/actions/loginRegisterActions';
 import styles from './styles';
 import { ILoginState } from 'app/models/reducers/login';
 import NavigationService from 'app/navigation/NavigationService';
-import realm from 'app/config/realm-config';
-
-import { Realm} from '@realm/react';
 
 interface IState {
   loginReducer: ILoginState;
@@ -26,20 +23,8 @@ const Register: React.FC = () => {
   const id = useSelector((state: IState) => state.loginReducer.id);
   const dispatch = useDispatch();
 
-  const onRegister = async()  => {
-    try {
-    // let response:any =  await realm.emailPasswordAuth.registerUser({email:userCredential.email, password: userCredential.password})
-    // .catch(err => console.log(err))
-    
-      
-      // const creds = Realm.Credentials.emailPassword(userCredential.email, userCredential.password);
-      // const newUser = await realm.logIn(creds);
-      // newUser.isLoggedIn
+  const onRegister = ()  => {
        dispatch(loginRegisterActions.requestRegsiter(userCredential.email, userCredential.phone, userCredential.password));
-    
-    }catch(err) {
-     console.log(err)
-    }
   }
   const setCredential = (text: String, type: String) => {
     if (type === 'email')
