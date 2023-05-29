@@ -12,8 +12,9 @@ import {
 const initialState: ILoginState = {
   isLoggedIn: false,
   id: '',
-  username: '',
-  password: '',
+  email: '',
+  name:''
+ 
 };
 
 export const loginReducer = createReducer(initialState, {
@@ -21,7 +22,7 @@ export const loginReducer = createReducer(initialState, {
     console.log("inside reducer")
     return {
       ...state,
-      username: action.username,
+      email: action.email,
       password: action.password,
     };
   },
@@ -33,6 +34,9 @@ export const loginReducer = createReducer(initialState, {
     return {
       ...state,
       id: action.response.id,
+      email: action.response.email,
+      phone: action.response.phone,
+      name: action.response.name,
       isLoggedIn: true,
     };
   },
