@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import * as loginActions from 'app/store/actions/loginRegisterActions';
 import { ILoginState } from 'app/models/reducers/login';
 import NavigationService from 'app/navigation/NavigationService';
+import SnackbarView from 'app/components/Snackbar';
 
 const Login: React.FC = () => {
   const [usercredential, setUsercredential] = useState({
@@ -71,6 +72,7 @@ const Login: React.FC = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}>
+       
       <View style={styles.backgroundContainer}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -91,7 +93,7 @@ const Login: React.FC = () => {
           <TextInput
             mode="outlined"
             placeholder="Password"
-            keyboardType="visible-password"
+            
             secureTextEntry
             value={usercredential.password}
             onChangeText={password => setCredential(password, 'password')}

@@ -9,3 +9,7 @@ export  function loginUser(username: string, password: string) {
 export  function registerUser(payload:any) {
   return apiClient.post(ApiConfig.BASE_URL + ApiConfig.REGISTER_USER, {...payload});
 }
+
+export function getUserInfo(payload:any) {
+  return apiClient.post(ApiConfig.BASE_URL + ApiConfig.GET_USER_INFO, {...payload});
+}
