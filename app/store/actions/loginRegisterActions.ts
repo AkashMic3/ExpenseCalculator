@@ -13,10 +13,11 @@ export function requestLogin(email: string, password: string) {
   };
 }
 
-export function requestRegsiter(email: string, phone:string, password: string,) {
+export function requestRegsiter({name, email, phone, password}:any) {
   console.log('inside actions register');
   return {
     type: types.REGISTER_REQUEST,
+    name,
     email,
     phone,
     password,

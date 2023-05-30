@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ExpenseTrackerHome = () => {
   const [expenses, setExpenses] = useState([
@@ -28,6 +29,7 @@ const ExpenseTrackerHome = () => {
     <LinearGradient
       colors={['#4c669f', '#3b5998', '#192f6a']}
       style={styles.container}>
+        <SafeAreaView>
       <Text style={styles.title}>Expense Tracker</Text>
       <FlatList
         data={expenses}
@@ -37,6 +39,7 @@ const ExpenseTrackerHome = () => {
       <TouchableOpacity onPress={()=>{NavigationService.navigate('addscreen');}} style={styles.addButton}>
         <Text style={styles.addButtonLabel}>Add Expense</Text>
       </TouchableOpacity>
+      </SafeAreaView>
     </LinearGradient>
   );
 };
