@@ -1,3 +1,4 @@
+import NavigationService from 'app/navigation/NavigationService';
 import React, { useState } from 'react';
 import {
   View,
@@ -33,7 +34,7 @@ const ExpenseTrackerHome = () => {
         renderItem={renderExpenseItem}
         keyExtractor={item => item.id}
       />
-      <TouchableOpacity style={styles.addButton}>
+      <TouchableOpacity onPress={()=>{NavigationService.navigate('addscreen');}} style={styles.addButton}>
         <Text style={styles.addButtonLabel}>Add Expense</Text>
       </TouchableOpacity>
     </LinearGradient>

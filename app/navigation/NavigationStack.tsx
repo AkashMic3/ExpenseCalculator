@@ -16,9 +16,11 @@ import Register from 'app/screens/Register';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UserProfile from 'app/screens/Profile/UserProfile';
 import ExpenseTrackerHome from 'app/screens/Home';
+import AddExpensePage from 'app/screens/AddExpense/AddExpense';
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
 
 const homeOptions = {
   title: 'Home',
@@ -95,11 +97,7 @@ const LoggedInNavigator = () => (
         );
       },
     })}>
-    <Stack.Screen
-      name="Home"
-      component={ExpenseTrackerHome}
-      options={homeOptions}
-    />
+    <Stack.Screen name="Home" component={HomeNav} options={homeOptions} />
     <Stack.Screen name="Profile" component={UserProfile} />
   </LoggedInStack.Navigator>
 );
@@ -138,3 +136,20 @@ const App: React.FC<IProps> = (props: IProps) => {
 };
 
 export default App;
+
+function HomeNav() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="Home"
+        component={ExpenseTrackerHome}
+        options={homeOptions}
+      />
+      <HomeStack.Screen
+        name="addscreen"
+        component={AddExpensePage}
+        options={homeOptions}
+      />
+    </HomeStack.Navigator>
+  );
+}
