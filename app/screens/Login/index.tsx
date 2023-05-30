@@ -80,6 +80,8 @@ const Login: React.FC = () => {
             value={usercredential.email}
             onChangeText={email => setCredential(email, 'email')}
             error={!isEmailValid}
+            outlineColor="blue"
+            activeOutlineColor="#90EE90"
           />
           {!isEmailValid && (
             <Text style={styles.errorText}>Invalid email format</Text>
@@ -94,6 +96,8 @@ const Login: React.FC = () => {
             value={usercredential.password}
             onChangeText={password => setCredential(password, 'password')}
             error={!isPasswordValid}
+            outlineColor="blue"
+            activeOutlineColor="#90EE90"
           />
           {!isPasswordValid && (
             <Text style={styles.errorText}>
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
     width: '90%',
     padding: 20,
     borderRadius: 10,
-   // backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    // backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
   inputContainer: {
     marginBottom: 10,
