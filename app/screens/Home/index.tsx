@@ -18,11 +18,11 @@ const data = [
 ];
 const ExpenseTrackerHome = () => {
   const [expenses, setExpenses] = useState([
-    { id: '1', title: 'Groceries', amount: 50.0 },
-    { id: '2', title: 'Transportation', amount: 20.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
+    { id: '1', title: 'GroupName1', amount: 50.0 },
+    { id: '2', title: 'GroupName1', amount: 20.0 },
+    { id: '3', title: 'GroupName1', amount: 30.0 },
+    { id: '3', title: 'GroupName1', amount: 30.0 },
+    { id: '3', title: 'GroupName1', amount: 30.0 },
     { id: '3', title: 'Eating Out', amount: 30.0 },
     { id: '3', title: 'Eating Out', amount: 30.0 },
     { id: '3', title: 'Eating Out', amount: 30.0 },
@@ -34,7 +34,13 @@ const ExpenseTrackerHome = () => {
     <LinearGradient
       colors={['red', '#3b5998', '#192f6a']}
       style={styles.expenseItem}>
-      <Text style={styles.expenseTitle}>{item.title}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          NavigationService.navigate('SplitExpenseScreen');
+        }}>
+        <Text style={styles.expenseTitle}>{item.title}</Text>
+      </TouchableOpacity>
+
       {/* <Text style={styles.expenseAmount}>${item.amount.toFixed(2)}</Text> */}
     </LinearGradient>
   );
