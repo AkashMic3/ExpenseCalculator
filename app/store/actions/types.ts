@@ -14,6 +14,9 @@ export const LOG_OUT = 'LOG_OUT';
 export const FetchEmployees = 'FETCH_EMPLOYEES';
 export const FetchEmployeesResponse = 'FETCH_EMPLOYEES_RESPONSE';
 
-// regsiter
+// register
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 
+// flash message
+export const FLASH_MESSAGE_SHOW = 'FLASH_MESSAGE_SHOW'
+export const FLASH_MESSAGE_HIDE = 'FLASH_MESSAGE_HIDE'

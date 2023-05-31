@@ -17,6 +17,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UserProfile from 'app/screens/Profile/UserProfile';
 import ExpenseTrackerHome from 'app/screens/Home';
 import AddExpensePage from 'app/screens/AddExpense/AddExpense';
+import CreateGroupScreen from 'app/screens/AddGroup/AddGroup';
+import SplitExpenseScreen from 'app/screens/GroupDetails/GroupDetails';
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createBottomTabNavigator();
@@ -148,6 +150,16 @@ function HomeNav() {
       <HomeStack.Screen
         name="addscreen"
         component={AddExpensePage}
+        options={homeOptions}
+      />
+      <HomeStack.Screen
+        name="CreateGroupScreen"
+        component={CreateGroupScreen}
+        options={homeOptions}
+      />
+      <HomeStack.Screen
+        name="SplitExpenseScreen"
+        component={SplitExpenseScreen}
         options={homeOptions}
       />
     </HomeStack.Navigator>
