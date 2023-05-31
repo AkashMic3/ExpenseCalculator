@@ -54,7 +54,7 @@ const ExpenseTrackerHome = () => {
 
         <TouchableOpacity
           onPress={() => {
-            NavigationService.navigate('addscreen');
+            NavigationService.navigate('CreateGroupScreen');
           }}
           style={styles.addButton}>
           <Text style={styles.addButtonLabel}>Add Group</Text>
