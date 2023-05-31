@@ -15,9 +15,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 16,
+    paddingHorizontal: 20,borderRadius:8,marginVertical:5
   },
   expenseTitle: {
     fontSize: 16,
@@ -34,7 +35,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 16,
+    // marginTop: 16,
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
   },
   addButtonLabel: {
     fontSize: 18,
