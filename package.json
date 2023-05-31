@@ -24,6 +24,7 @@
     "react-native-gesture-handler": "^2.3.0",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-paper": "^4.11.2",
+    "react-native-promise-rejection-utils": "^0.0.1",
     "react-native-reanimated": "^2.4.1",
     "react-native-safe-area-context": "^4.1.2",
     "react-native-screens": "^3.13.1",

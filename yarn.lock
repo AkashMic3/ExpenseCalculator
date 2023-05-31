@@ -7815,6 +7815,11 @@ react-native-paper@^4.11.2:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.3.1"
 
+react-native-promise-rejection-utils@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-promise-rejection-utils/-/react-native-promise-rejection-utils-0.0.1.tgz#29217d5b569cacccc2ca2a8d53806bef6fd4b8b3"
+  integrity sha512-ToQv5u8zzYf+c1TTBD18UwDozSWGkekSPJ44xovsWZMF5I21DzEbO3P9UStjMWiFuI24CZiRbOoZHlvgjMtP+A==
+
 react-native-reanimated@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.4.1.tgz#4e33876fba525ce60ac13ab3c81fc3a9f8b132fe"
