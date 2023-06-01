@@ -5,8 +5,8 @@ import { takeEvery, all } from 'redux-saga/effects';
 import * as types from '../actions/types';
 import {loginSaga, registerSaga} from './loginRegisterSaga';
 import HomeSaga from './HomeSaga';
-import { groupSaga } from './GroupSaga';
-import { fetchGroupSaga } from './groupSaga';
+import { groupSaga, fetchGroupSaga } from './GroupSaga';
+
 
 
 export default function* watch() {
