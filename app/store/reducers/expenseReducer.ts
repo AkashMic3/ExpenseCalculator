@@ -1,11 +1,16 @@
 import createReducer from 'app/lib/createReducer';
 import { IExpense } from 'app/models/reducers/expense';
-import { IGroup } from 'app/models/reducers/group';
 
+import * as types from 'app/store/actions/types';
 const initialState: IExpense = {
     expenses:[]
 };
 
-export const groupReducer = createReducer(initialState, {
- 
+export const expenseReducer = createReducer(initialState, {
+    [types.ADD_EXPENSE](state: IExpense,  action: ILoginResponseState) {
+        
+      },
+      [types.FETCH_EXPENSES](state: IExpense,  action: ILoginResponseState) {
+       
+      }
 });
