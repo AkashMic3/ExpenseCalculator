@@ -25,10 +25,9 @@ export const FetchGroupMembers = 'FETCH_GROUP_MEMBERS';
 
 // expense
 
-export const ADD_EXPENSE = 'ADD_EXPENSE'
-export const FETCH_EXPENSES = 'FETCH_EXPENSES'
-export const FETCH_GROUPS_RESPONSE = 'FETCH_GROUPS_RESPONSE'
-
+export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const FETCH_EXPENSES = 'FETCH_EXPENSES';
+export const FETCH_GROUPS_RESPONSE = 'FETCH_GROUPS_RESPONSE';
 
 // register
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
@@ -37,6 +36,5 @@ export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const FLASH_MESSAGE_SHOW = 'FLASH_MESSAGE_SHOW';
 export const FLASH_MESSAGE_HIDE = 'FLASH_MESSAGE_HIDE';
 
-
-
+export const SET_MEMBERS = 'SET_MEMBERS';
 
