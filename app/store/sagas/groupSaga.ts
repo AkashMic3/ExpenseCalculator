@@ -10,6 +10,7 @@ import { getMembers } from 'app/services/group';
 import { getGroups } from 'app/services/groupService';
 
 export function* groupSaga(action: any): Generator<any, void, unknown> {
+
   yield put(loginActions.enableLoader());
   const { group_Id } = action;
   console.log('griup', group_Id);
@@ -20,19 +21,21 @@ export function* groupSaga(action: any): Generator<any, void, unknown> {
   } catch (err) {
     console.log(err, 'error');
   }
+
+}
+export function* fetchGroupSaga(action: any) {
+    yield put(loginActions.enableLoader());
+    const { user_id } = action;
+    try {
+        const response = yield call(getGroups, user_id)
+        if (response?.data?.status == "success") {
+            yield put(groupActions.onfetchGroupResponse(response?.data?.response));
+        } else {
+            yield put(loginActions.disableLoader());
+            yield put(groupActions.onfetchGroupResponse([]));
+        }
+    } catch (err) {
+        yield put(groupActions.onfetchGroupResponse([]));
+    }
 }
 
-export function* fetchGroupSaga(action: any) {
-  yield put(loginActions.enableLoader());
-  const { user_id } = action;
-  try {
-    const response = yield call(getGroups, user_id);
-    if (response?.data?.status == 'success') {
-      yield put(groupActions.onfetchGroupResponse(response?.data?.response));
-    } else {
-      yield put(loginActions.disableLoader());
-    }
-  } catch (err) {
-    yield put(loginActions.disableLoader());
-  }
-}

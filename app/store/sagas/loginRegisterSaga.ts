@@ -4,7 +4,7 @@
  * un - username
  * pwd - password
  */
-import { call, delay, put, race, spawn, select } from 'redux-saga/effects';
+import { call, delay, put, race, spawn, select, debounce } from 'redux-saga/effects';
 // import { delay } from 'redux-saga';
 
 import { Alert } from 'react-native';
@@ -14,6 +14,7 @@ import realm from 'app/config/realm-config';
 import { Realm } from '@realm/react';
 import { getUserInfo, registerUser } from 'app/services/loginRegisterUser';
 import { showFlashMessage } from '../actions/flashMessageActions';
+import { FETCH_USERS_BY_PARAM } from '../actions/types';
 
 // Our worker Saga that logins the user
 export function* loginSaga(action: any): any {
@@ -95,3 +96,30 @@ export function* registerSaga(action: any) {
     yield put(loginActions.disableLoader());
   }
 }
+
+// /searchUser
+
+export function* searchUsersSaga(action: any) {
+  console.log("Heloooooo")
+  yield delay(500)
+  let i =1;
+  try {
+    yield put(loginActions.enableLoader());
+    const { query } = action;
+    let response = yield call(getUserInfo, { query: query })
+    console.log("responded ",i++ )
+    if (response?.data?.status == "success")
+      yield put(loginActions.onSearchUserResponse(response?.data?.response))
+    else
+      throw new Error("fetch memebers failed")
+  } catch (e) {
+    yield put(loginActions.disableLoader());
+    yield put(loginActions.onSearchUserResponse([]))
+  }
+}
+
+export function* watchSearchUsersRequest() {
+  yield debounce(0, FETCH_USERS_BY_PARAM, searchUsersSaga); // Adjust the debounce delay as per your requirements (e.g., 300ms)
+}
+
+
