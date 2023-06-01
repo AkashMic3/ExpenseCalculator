@@ -20,8 +20,11 @@ export const FETCH_GROUPS = 'FETCH_GROUPS';
 export const FetchGroupMembers = 'FETCH_GROUP_MEMBERS';
 
 // expense
-export const ADD_EXPENSE = 'ADD_EXPENSE';
-export const FETCH_EXPENSES = 'FETCH_EXPENSES';
+
+export const ADD_EXPENSE = 'ADD_EXPENSE'
+export const FETCH_EXPENSES = 'FETCH_EXPENSES'
+export const FETCH_GROUPS_RESPONSE = 'FETCH_GROUPS_RESPONSE'
+
 
 // register
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';

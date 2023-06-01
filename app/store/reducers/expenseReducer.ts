@@ -8,7 +8,7 @@ const initialState: IExpense = {
 
 export const expenseReducer = createReducer(initialState, {
     [types.ADD_EXPENSE](state: IExpense,  action: ILoginResponseState) {
-        
+
       },
       [types.FETCH_EXPENSES](state: IExpense,  action: ILoginResponseState) {
        
