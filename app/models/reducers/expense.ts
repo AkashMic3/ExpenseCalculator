@@ -4,7 +4,6 @@ export interface Member {
     payment_status:boolean
 }
 
-
 export interface Expense {
     _id: string;
     group_id:string;
