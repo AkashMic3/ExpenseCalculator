@@ -23,7 +23,7 @@ const UserSelectionScreen = () => {
   ];
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchGroupMembers('767'));
+    dispatch(fetchGroupMembers('6476d6663cccd26ce40b5311'));
     //
   }, []);
 

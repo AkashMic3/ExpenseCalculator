@@ -24,7 +24,7 @@ export function* groupSaga(action: any): Generator<any, void, unknown> {
   console.log('griup', group_Id);
   try {
     const response = yield call(getMembers, { group_Id });
-    console.log(response, 'success');
+    console.log(response.data, 'success');
   } catch (err) {
     console.log(err, 'error');
   }
