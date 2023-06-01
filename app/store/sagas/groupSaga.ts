@@ -1,18 +1,28 @@
 import { call, delay, put, race, spawn, select } from 'redux-saga/effects';
-// import { delay } from 'redux-saga';
-
 import { Alert } from 'react-native';
-// import loginUser from 'app/services/loginUser';
 import * as loginActions from 'app/store/actions/loginRegisterActions';
 import * as groupActions from 'app/store/actions/groupActions';
 import realm from 'app/config/realm-config';
 import { Realm } from '@realm/react';
 import { getUserInfo, registerUser } from 'app/services/loginRegisterUser';
 import { showFlashMessage } from '../actions/flashMessageActions';
-import { IGroupRequestState } from 'app/models/actions/group';
+import { getMembers } from 'app/services/group';
 import { getGroups } from 'app/services/groupService';
 
 
+
+export function* groupSaga(action: any): Generator<any, void, unknown> {
+  yield put(loginActions.enableLoader());
+  const { group_Id } = action;
+  console.log('griup', group_Id);
+  try {
+    const response = yield call(getMembers, { group_Id });
+    console.log(response, 'success');
+  } catch (err) {
+    console.log(err, 'error');
+  }
+  
+}
 
 export function* fetchGroupSaga(action: any) {
     yield put(loginActions.enableLoader());
