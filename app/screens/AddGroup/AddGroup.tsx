@@ -6,8 +6,13 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import SelectMemberScreen from './SelectMembers/index';
+import SaveGroupScreen from './SaveGroup';
 
 const CreateGroupScreen = () => {
+  const [selectedView, setView] = useState('Add_Member')
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
   const [groupName, setGroupName] = useState('');
   const [memberName, setMemberName] = useState('');
   const [members, setMembers] = useState([]);
@@ -31,47 +36,21 @@ const CreateGroupScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create a Group</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Group Name"
-        value={groupName}
-        onChangeText={setGroupName}
-      />
-
-      <View style={styles.membersContainer}>
-        <TextInput
-          style={styles.memberInput}
-          placeholder="Member Name"
-          value={memberName}
-          onChangeText={setMemberName}
-        />
-        <TouchableOpacity style={styles.addButton} onPress={handleAddMember}>
-          <Text style={styles.addButtonText}>Add</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Text style={styles.membersTitle}>Group Members:</Text>
-      {members.map((member, index) => (
-        <View key={index} style={styles.memberContainer}>
-          <Text style={styles.memberText}>{member}</Text>
-        </View>
-      ))}
-
-      <TouchableOpacity style={styles.button} onPress={handleCreateGroup}>
-        <Text style={styles.buttonText}>Create</Text>
-      </TouchableOpacity>
+      {selectedView == 'Add_Member' ?
+        <SelectMemberScreen setView={setView} selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
+        : <SaveGroupScreen setView={setView} members={selectedUsers} />
+      }
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    paddingHorizontal: 10,
     backgroundColor: '#f1f1f1',
   },
   title: {

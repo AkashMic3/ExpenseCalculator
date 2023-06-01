@@ -13,5 +13,5 @@ export const ActionCreators = Object.assign(
   themeActions,
   homeActions,
   groupActions,
-  expenseActions
+  expenseActions,
 );

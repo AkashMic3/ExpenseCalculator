@@ -1,9 +1,9 @@
 /**
  *  Redux saga class init
  */
-import { takeEvery, all } from 'redux-saga/effects';
+import { takeEvery, all, takeLatest } from 'redux-saga/effects';
 import * as types from '../actions/types';
-import {loginSaga, registerSaga} from './loginRegisterSaga';
+import {loginSaga, registerSaga, searchUsersSaga, watchSearchUsersRequest} from './loginRegisterSaga';
 import HomeSaga from './HomeSaga';
 import { groupSaga, fetchGroupSaga } from './groupSaga';
 
@@ -16,5 +16,6 @@ export default function* watch() {
     takeEvery(types.FetchEmployees, HomeSaga),
     takeEvery(types.FetchGroupMembers, groupSaga),
     takeEvery(types.FETCH_GROUPS, fetchGroupSaga),
+    takeLatest(types.FETCH_USERS_BY_PARAM, searchUsersSaga),
   ]);
 }

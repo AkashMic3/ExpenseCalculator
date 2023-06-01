@@ -14,13 +14,26 @@ export function requestLogin(email: string, password: string) {
 }
 
 export function requestRegsiter({name, email, phone, password}:any) {
-  console.log('inside actions register');
   return {
     type: types.REGISTER_REQUEST,
     name,
     email,
     phone,
     password,
+  };
+}
+
+export function searchUser(query:string) {
+  return {
+    type: types.FETCH_USERS_BY_PARAM,
+    query
+  };
+}
+
+export function onSearchUserResponse(response:any) {
+  return {
+    type: types.FETCH_USERS_BY_PARAM_RESPONSE,
+    response
   };
 }
 
