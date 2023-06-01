@@ -1,48 +1,72 @@
+import NavigationService from 'app/navigation/NavigationService';
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { TextInput } from 'react-native-paper';
 
-const AddExpensePage = ({  }) => {
+const AddExpensePage = () => {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
+  const [error, setError] = useState('');
 
   const handleAddExpense = () => {
-    const newExpense = {
-      id: Math.random().toString(),
+    if (!title.trim()) {
+      setError('Expense title is required');
+      return;
+    }
+
+    if (!amount.trim()) {
+      setError('Expense amount is required');
+      return;
+    }
+
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      setError('Expense amount must be a valid positive number');
+      return;
+    }
+    NavigationService.navigate('UserSelectionScreen', {
+      groupId: '6476d6663cccd26ce40b5311',
       title,
-      amount: parseFloat(amount),
-    };
-  //  onAddExpense(newExpense);
+      amount,
+    });
+    // Perform the necessary logic to add the expense
+    // e.g., call an API, update a state, etc.
+
     setTitle('');
     setAmount('');
+    setError('');
   };
 
   return (
     <LinearGradient
-      colors={['#4c669f', '#3b5998', '#192f6a']}
+      colors={['#FAD961', '#F76B1C']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
       style={styles.container}>
       <Text style={styles.title}>Add Expense</Text>
       <TextInput
         style={styles.input}
         placeholder="Expense Title"
         value={title}
+        mode="outlined"
         onChangeText={setTitle}
+        outlineColor="#FAD961"
+        error={error}
       />
       <TextInput
         style={styles.input}
         placeholder="Expense Amount"
         value={amount}
+        mode="outlined"
         onChangeText={setAmount}
         keyboardType="numeric"
+        outlineColor="#FAD961"
+        error={error}
       />
+      {error ? <Text style={styles.error}>{error}</Text> : null}
       <TouchableOpacity style={styles.addButton} onPress={handleAddExpense}>
-        <Text style={styles.addButtonLabel}>Add Expense</Text>
+        <Text style={styles.addButtonLabel}>Next</Text>
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -62,11 +86,15 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    //  borderColor: 'gray',
+    //  borderWidth: 1,
     marginBottom: 20,
     paddingHorizontal: 10,
     color: '#fff',
+  },
+  error: {
+    color: 'red',
+    marginBottom: 20,
   },
   addButton: {
     backgroundColor: '#fff',

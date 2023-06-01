@@ -1,8 +1,10 @@
+import NavigationService, {
+  navigationRef,
+} from 'app/navigation/NavigationService';
 import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   FlatList,
@@ -21,19 +23,6 @@ const SplitExpenseScreen = () => {
     { id: 2, groupName: 'Group2', isPayed: false, amount: 200 },
   ];
 
-  const handleParticipantSelection = participant => {
-    const updatedSelectedParticipants = [...selectedParticipants];
-    const index = updatedSelectedParticipants.findIndex(
-      p => p.name === participant.name,
-    );
-    if (index !== -1) {
-      updatedSelectedParticipants.splice(index, 1);
-    } else {
-      updatedSelectedParticipants.push(participant);
-    }
-    setSelectedParticipants(updatedSelectedParticipants);
-  };
-
   function ShowExpenses({ item }) {
     return (
       <View style={styles.expenseContainer}>
@@ -45,6 +34,7 @@ const SplitExpenseScreen = () => {
       </View>
     );
   }
+  //6476d6663cccd26ce40b5311
 
   return (
     <LinearGradient
@@ -56,7 +46,11 @@ const SplitExpenseScreen = () => {
         <Text style={styles.title}>Group Expenses</Text>
         <FlatList data={data} renderItem={ShowExpenses} />
 
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity
+          onPress={() => {
+            NavigationService.navigate('addscreen');
+          }}
+          style={styles.addButton}>
           <Text style={styles.addButtonText}>Add Expense</Text>
         </TouchableOpacity>
       </View>
