@@ -6,6 +6,8 @@ import * as types from '../actions/types';
 import {loginSaga, registerSaga} from './loginRegisterSaga';
 import HomeSaga from './HomeSaga';
 import { groupSaga } from './GroupSaga';
+import { fetchGroupSaga } from './groupSaga';
+
 
 export default function* watch() {
   yield all([
@@ -13,5 +15,6 @@ export default function* watch() {
     takeEvery(types.REGISTER_REQUEST, registerSaga),
     takeEvery(types.FetchEmployees, HomeSaga),
     takeEvery(types.FetchGroupMembers, groupSaga),
+    takeEvery(types.FETCH_GROUPS, fetchGroupSaga),
   ]);
 }
