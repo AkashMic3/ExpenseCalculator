@@ -1,9 +1,10 @@
+import { member } from 'app/models/actions/group';
 import { fetchGroupMembers } from 'app/store/actions/groupActions';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-const UserSelectionScreen = () => {
+const UserSelectionScreen = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const handleUserSelection = userId => {
@@ -15,32 +16,40 @@ const UserSelectionScreen = () => {
     }
   };
 
-  const users = [
-    { id: 1, name: 'User 1' },
-    { id: 2, name: 'User 2' },
-    { id: 3, name: 'User 3' },
-    // Add more users as needed
-  ];
+  const users = useSelector(state => state.groupReducer.members) ?? [];
+
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(fetchGroupMembers('767'));
-    //
+    dispatch(fetchGroupMembers('6476d6663cccd26ce40b5311'));
   }, []);
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
+  const handleAddExpense = () => {
+    // Logic for adding expense
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select Users</Text>
-      {users.map(user => (
+      {users.map((user: member) => (
         <TouchableOpacity
-          key={user.id}
+          key={user.user_id}
           style={[
             styles.userItem,
-            selectedUsers.includes(user.id) ? styles.selectedUser : null,
+            selectedUsers.includes(user.user_id) ? styles.selectedUser : null,
           ]}
-          onPress={() => handleUserSelection(user.id)}>
+          onPress={() => handleUserSelection(user.user_id)}>
           <Text style={styles.userName}>{user.name}</Text>
         </TouchableOpacity>
       ))}
+      <View style={styles.buttonContainer}>
+        <Button title="Go Back" onPress={handleGoBack} />
+        <Button title="Add Expense" onPress={handleAddExpense} />
+      </View>
     </View>
   );
 };
@@ -49,11 +58,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#F7F7F7',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: '#333333',
   },
   userItem: {
     flexDirection: 'row',
@@ -63,6 +74,18 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 8,
     backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    overflow: 'hidden',
+    // Gradient background
+    backgroundGradientStart: '#FFA500',
+    backgroundGradientEnd: '#FF7F00',
   },
   selectedUser: {
     backgroundColor: '#4285F4',
@@ -71,6 +94,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000000',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
   },
 });
 

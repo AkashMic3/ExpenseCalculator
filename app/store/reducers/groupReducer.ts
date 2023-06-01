@@ -9,16 +9,22 @@ const initialState: IGroup = {
 
 export const groupReducer = createReducer(initialState, {
   [types.FetchGroupMembers](state: IGroup, action: any) {
-    console.log(action,"ghghg");
     return { ...state, isLoginLoading: true };
   },
-   [types.ADD_GROUP](state: IGroup,  action: IGroup) {
-        return { ...state, isLoginLoading: true };
-      },
-      [types.FETCH_GROUPS_RESPONSE](state: IGroup,  action: IGroupResponseState) {
-        return { 
-             ...state,
-             groups: action.response,
-         };
-      },
+  [types.ADD_GROUP](state: IGroup, action: IGroup) {
+    return { ...state, isLoginLoading: true };
+  },
+  [types.FETCH_GROUPS_RESPONSE](state: IGroup, action: IGroupResponseState) {
+    return {
+      ...state,
+      groups: action.response,
+    };
+  },
+  [types.SET_MEMBERS](state: IGroup, action: any) {
+    console.log(action, 'members');
+    return {
+      ...state,
+      members: action.members,
+    };
+  },
 });
