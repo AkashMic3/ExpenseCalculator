@@ -14,9 +14,20 @@ export const LOG_OUT = 'LOG_OUT';
 export const FetchEmployees = 'FETCH_EMPLOYEES';
 export const FetchEmployeesResponse = 'FETCH_EMPLOYEES_RESPONSE';
 
+// groups 
+export const ADD_GROUP = 'ADD_GROUP'
+export const FETCH_GROUPS = 'FETCH_GROUPS'
+
+// expense
+export const ADD_EXPENSE = 'ADD_EXPENSE'
+export const FETCH_EXPENSES = 'FETCH_EXPENSES'
+
 // register
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 
 // flash message
 export const FLASH_MESSAGE_SHOW = 'FLASH_MESSAGE_SHOW'
 export const FLASH_MESSAGE_HIDE = 'FLASH_MESSAGE_HIDE'
+
+
+

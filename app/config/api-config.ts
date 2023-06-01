@@ -5,6 +5,9 @@ const ApiConfig = {
   REGISTER_USER: 'endpoint/register',
   GET_USER_INFO : 'endpoint/getUserInfo',
   ADD_EXPENSE: 'endpoint/addExpense',
+  ADD_GROUP: 'endpoint/addGroup',
+  GET_GROUPS: 'endpoint/getGroups',
+  GET_EXPENSE: 'endpoint/getExpense',
 };
 
 export default ApiConfig;
