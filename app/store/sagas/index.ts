@@ -5,7 +5,7 @@ import { takeEvery, all } from 'redux-saga/effects';
 import * as types from '../actions/types';
 import {loginSaga, registerSaga} from './loginRegisterSaga';
 import HomeSaga from './HomeSaga';
-import { groupSaga, fetchGroupSaga } from './GroupSaga';
+import { groupSaga, fetchGroupSaga } from './groupSaga';
 
 
 
