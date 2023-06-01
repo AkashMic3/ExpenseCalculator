@@ -5,3 +5,8 @@ export interface ILoginResponse {
   email:string;
   phone:string;
 }
+
+
+export interface LoginState {
+  loginReducer:ILoginResponse
+}

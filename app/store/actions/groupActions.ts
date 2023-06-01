@@ -19,4 +19,12 @@ export function addGroup(group_name: string, members: [any], owner_id:string, cr
       user_id
     };
   }
+
+  export function onfetchGroupResponse(response: any) {
+    console.log("fetch group response:", response)
+    return {
+      type: types.FETCH_GROUPS_RESPONSE,
+      response,
+    };
+  }
   

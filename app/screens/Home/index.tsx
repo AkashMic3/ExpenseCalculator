@@ -1,5 +1,5 @@
 import NavigationService from 'app/navigation/NavigationService';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -12,38 +12,43 @@ import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './styles';
 import { PieChart } from 'react-native-chart-kit';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchGroups } from 'app/store/actions/groupActions';
+import { LoginState } from 'app/models/api/login';
 const data = [
   { name: 'Credit', population: 2800, color: '#F44336' },
   { name: 'Debit', population: 5250, color: '#2196F3' },
 ];
+
+const renderExpenseItem = ({ item }) => (
+  <LinearGradient
+    colors={['red', '#3b5998', '#192f6a']}
+    style={styles.expenseItem}>
+    <TouchableOpacity
+      onPress={() => {
+        NavigationService.navigate('SplitExpenseScreen');
+      }}>
+      <Text style={styles.expenseTitle}>{item?.group_name}</Text>
+    </TouchableOpacity>
+
+    {/* <Text style={styles.expenseAmount}>${item.amount.toFixed(2)}</Text> */}
+  </LinearGradient>
+);
+
+
 const ExpenseTrackerHome = () => {
-  const [expenses, setExpenses] = useState([
-    { id: '1', title: 'GroupName1', amount: 50.0 },
-    { id: '2', title: 'GroupName1', amount: 20.0 },
-    { id: '3', title: 'GroupName1', amount: 30.0 },
-    { id: '3', title: 'GroupName1', amount: 30.0 },
-    { id: '3', title: 'GroupName1', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    // Add more expense items here
-  ]);
+  const dispatch = useDispatch()
+  const userId = useSelector(((state: LoginState) => state.loginReducer.id));
+  const groups = useSelector((state: any) => state.groupReducer.groups)
 
-  const renderExpenseItem = ({ item }) => (
-    <LinearGradient
-      colors={['red', '#3b5998', '#192f6a']}
-      style={styles.expenseItem}>
-      <TouchableOpacity
-        onPress={() => {
-          NavigationService.navigate('SplitExpenseScreen');
-        }}>
-        <Text style={styles.expenseTitle}>{item.title}</Text>
-      </TouchableOpacity>
+  useEffect(() => {
+    fetchUserGroups()
+  }, [dispatch, userId])
 
-      {/* <Text style={styles.expenseAmount}>${item.amount.toFixed(2)}</Text> */}
-    </LinearGradient>
-  );
+  const fetchUserGroups = () => {
+    dispatch(fetchGroups(userId))
+  }
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -52,9 +57,9 @@ const ExpenseTrackerHome = () => {
         style={styles.container}>
         <Text style={styles.title}>Expense Tracker</Text>
         <FlatList
-          data={expenses}
+          data={groups}
           renderItem={renderExpenseItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
           ListFooterComponent={ShowPieChart}
         />
 
