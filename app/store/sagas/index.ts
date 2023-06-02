@@ -3,11 +3,16 @@
  */
 import { takeEvery, all, takeLatest } from 'redux-saga/effects';
 import * as types from '../actions/types';
-import {loginSaga, registerSaga, searchUsersSaga, watchSearchUsersRequest} from './loginRegisterSaga';
+import {
+  loginSaga,
+  registerSaga,
+  searchUsersSaga,
+  watchSearchUsersRequest,
+} from './loginRegisterSaga';
 import HomeSaga from './HomeSaga';
+
 import { groupSaga, fetchGroupSaga, addGroupSaga } from './groupSaga';
-
-
+import { ExpenseSaga } from './ExpenseSaga';
 
 export default function* watch() {
   yield all([
@@ -18,6 +23,6 @@ export default function* watch() {
     takeEvery(types.FETCH_GROUPS, fetchGroupSaga),
     takeLatest(types.ADD_GROUP, addGroupSaga),
     takeLatest(types.FETCH_USERS_BY_PARAM, searchUsersSaga),
-    
+    takeEvery(types.ADD_EXPENSE, ExpenseSaga),
   ]);
 }

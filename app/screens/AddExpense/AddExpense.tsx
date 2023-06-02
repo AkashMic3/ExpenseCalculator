@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native';
 import NavigationService from 'app/navigation/NavigationService';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
@@ -8,7 +9,7 @@ const AddExpensePage = () => {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [error, setError] = useState('');
-
+  const route = useRoute();
   const handleAddExpense = () => {
     if (!title.trim()) {
       setError('Expense title is required');
@@ -25,8 +26,9 @@ const AddExpensePage = () => {
       setError('Expense amount must be a valid positive number');
       return;
     }
+    console.log(route.params);
     NavigationService.navigate('UserSelectionScreen', {
-      groupId: '6476d6663cccd26ce40b5311',
+      groupId: route.params.groupId,
       title,
       amount,
     });

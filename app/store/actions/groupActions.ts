@@ -1,5 +1,6 @@
 import { member } from 'app/models/actions/group';
 import * as types from './types';
+import { Expense } from 'app/models/interfaces';
 
 export function fetchGroupMembers(group_Id: string) {
   return {
@@ -8,17 +9,21 @@ export function fetchGroupMembers(group_Id: string) {
   };
 }
 
-export function addGroup(group_name: string, members: any[], owner_id:string, created_at:any) {
+export function addGroup(
+  group_name: string,
+  members: any[],
+  owner_id: string,
+  created_at: any,
+) {
+  return {
+    type: types.ADD_GROUP,
+    group_name,
+    members,
+    owner_id,
+    created_at,
+  };
+}
 
-    return {
-      type: types.ADD_GROUP,
-      group_name,
-      members,
-      owner_id,
-      created_at
-    };
-  }
-  
 export function fetchGroups(user_id: string) {
   return {
     type: types.FETCH_GROUPS,
@@ -33,7 +38,6 @@ export function onfetchGroupResponse(response: any) {
     response,
   };
 }
-
 
 export function setGroupMembers(members: [member]) {
   console.log(members, 'members');
