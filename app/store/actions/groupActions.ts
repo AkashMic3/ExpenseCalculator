@@ -8,7 +8,8 @@ export function fetchGroupMembers(group_Id: string) {
   };
 }
 
-export function addGroup(group_name: string, members: [any], owner_id:string, created_at:string) {
+export function addGroup(group_name: string, members: any[], owner_id:string, created_at:any) {
+
     return {
       type: types.ADD_GROUP,
       group_name,
@@ -18,8 +19,6 @@ export function addGroup(group_name: string, members: [any], owner_id:string, cr
     };
   }
   
-
-
 export function fetchGroups(user_id: string) {
   return {
     type: types.FETCH_GROUPS,

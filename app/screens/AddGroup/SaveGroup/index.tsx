@@ -1,10 +1,10 @@
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useLayoutEffect } from 'react'
-import { Button, TextInput, Text, Avatar } from 'react-native-paper'
+import { Button, TextInput, Text, Avatar,  } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import { ScrollView } from 'react-native-gesture-handler';
-export default function SaveGroupScreen({ members,setView }) {
+export default function SaveGroupScreen({ members,setView, setGroupName, handleCreateGroup, groupNameError }) {
     const navigation = useNavigation();
 
     useLayoutEffect(() => {
@@ -21,17 +21,19 @@ export default function SaveGroupScreen({ members,setView }) {
             duration={300}
             animation={'slideInRight'} style={styles.container}>
             <TextInput
+                autoFocus
                 style={styles.input}
                 placeholder="Group Name"
+                error={groupNameError}
             // value={groupName}
-            // onChangeText={setGroupName}
+            onChangeText={setGroupName}
             />
-
-            <TouchableOpacity style={styles.button}
-            //  onPress={handleCreateGroup}
+            <Button style={styles.button}
+             onPress={handleCreateGroup}
+           
             >
                 <Text style={styles.buttonText}>Create</Text>
-            </TouchableOpacity>
+            </Button>
 
             <View style={styles.membersContainer}>
                 <Text variant="headlineMedium">{members.length} memebrs</Text>
