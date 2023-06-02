@@ -32,7 +32,7 @@ const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button mode="text" color='#007AFF' onPress={() => setView('Finish')}>
+        <Button mode="text" disabled={!(!!selectedUsers.length)} color='#007AFF' onPress={() => setView('Finish')}>
           Next
         </Button>
       ),
@@ -40,8 +40,6 @@ const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
   })
 
   return (
-  
-
     <Animatable.View
     duration={300}
     animation={'slideInLeft'} style={styles.container}>

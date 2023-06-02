@@ -91,7 +91,6 @@ export function* registerSaga(action: any) {
       yield put(loginActions.disableLoader());
     }
   } catch (err) {
-    console.log('error:', err);
     yield put(loginActions.loginFailed());
     yield put(loginActions.disableLoader());
   }
