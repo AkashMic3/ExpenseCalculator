@@ -39,7 +39,7 @@ const CreateGroupScreen = () => {
 
       {selectedView == 'Add_Member' ?
         <SelectMemberScreen setView={setView} selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
-        : <SaveGroupScreen groupNameError={groupNameError} handleCreateGroup={handleCreateGroup} setGroupName={setGroupName} setView={setView} members={selectedUsers} />
+        : <SaveGroupScreen groupNameError={groupNameError} handleCreateGroup={handleCreateGroup} setGroupName={setGroupName} setView={setView} setMember={setSelectedUsers} members={selectedUsers} />
       }
     </View>
   );

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import styles from './styles';
 import { PieChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,9 +22,11 @@ const data = [
   { name: 'Debit', population: 5250, color: '#2196F3' },
 ];
 
+
 const renderExpenseItem = ({ item }) => {
   return (
     <TouchableOpacity
+
       onPress={() => {
         NavigationService.navigate('SplitExpenseScreen', { id: item._id });
       }}>
@@ -59,8 +61,10 @@ const ExpenseTrackerHome = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
+
+      <View
+        style={styles.container}>
+
         <Text style={styles.title}>Expense Tracker</Text>
         <FlatList
           data={groups}
@@ -76,7 +80,7 @@ const ExpenseTrackerHome = () => {
           <Text style={styles.addButtonLabel}>Add Group</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+
   );
 };
 

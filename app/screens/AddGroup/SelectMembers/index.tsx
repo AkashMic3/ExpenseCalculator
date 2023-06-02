@@ -4,13 +4,13 @@ import { searchUser } from 'app/store/actions/loginRegisterActions';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Button, TextInput } from 'react-native-paper';
+import { Avatar, Button, Card, List, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
-const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
-
+const SelectMemberScreen = ({ selectedUsers, setSelectedUsers, setView }) => {
+  const userId = useSelector((state:any) => state.loginReducer.id)
   const navigation = useNavigation();
-  const handleUserSelection = (user:any) => {
+  const handleUserSelection = (user: any) => {
 
     const isSelected = selectedUsers.find(data => data._id == user._id);
     if (!!isSelected) {
@@ -22,7 +22,8 @@ const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
 
   const [searchQuery, setSearchQuery] = useState('')
 
-  const users = useSelector((state:any)=> state?.searchMembersReducer?.members)
+  const users = useSelector((state: any) => state?.searchMembersReducer?.members)
+  
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(searchUser(searchQuery));
@@ -39,18 +40,17 @@ const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
       ),
       headerLeft: () => (
         <Button mode="text" color='#007AFF' onPress={() => navigation.navigate('Home')}>
-            Back
+          Back
         </Button>
-    ),
+      ),
     });
   })
-
-  const isSelected = (user) =>  selectedUsers.find(sUser => sUser._id == user._id )
-
+  
+  const isSelected = (user) => selectedUsers.find(sUser => sUser._id == user._id)
   return (
     <Animatable.View
-    duration={300}
-    animation={'slideInLeft'} style={styles.container}>
+      duration={300}
+      animation={'slideInLeft'} style={styles.container}>
       <Text style={styles.title}>Add Members</Text>
       <TextInput
         label="Search"
@@ -60,7 +60,8 @@ const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
         onChangeText={setSearchQuery}
       />
       <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 10 }}>
-        {users.map(user => (
+        {users.map(user => ( userId!=user.user_id &&
+          
           <TouchableOpacity
             key={user._id}
             style={[
@@ -68,7 +69,12 @@ const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
               isSelected(user) ? styles.selectedUser : null,
             ]}
             onPress={() => handleUserSelection(user)}>
+            <Avatar.Text size={30} label={user.name.substring(0, 2).toUpperCase()} color='white' />
+            <View>
             <Text style={[styles.userName,{color: isSelected(user)? 'white': 'black'} ]}>{user.name}</Text>
+            <Text style={[styles.userName,{color: isSelected(user)? 'white': 'black', fontSize:9} ]}>{user.phone}</Text>
+            </View>
+      
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -88,6 +94,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   userItem: {
+    
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 12,
@@ -95,14 +102,16 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 8,
     backgroundColor: '#FFFFFF',
+    
   },
   selectedUser: {
     backgroundColor: '#4285F4',
   },
   userName: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: 'bold',
     color: '#000000',
+    paddingLeft:10
   },
 });
 
