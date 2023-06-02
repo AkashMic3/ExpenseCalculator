@@ -14,10 +14,11 @@ export function* ExpenseSaga(action: any): Generator<any, void, unknown> {
 export function* getExpenseListSaga(
   action: any,
 ): Generator<any, void, unknown> {
-  console.log(action, 'action');
+  console.log(action, 'action...............................................');
+  const data = { group_id: action.group_id, userId: action.userId };
   try {
-    const response = yield call(getExpense, { data: action.group_id });
-  
+    const response = yield call(getExpense, { data });
+    console.log(response,"resss")
     yield put(expenseActions.setExpense(response.data.response));
   } catch (err) {
     console.log(err, 'error');

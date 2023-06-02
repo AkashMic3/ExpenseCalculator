@@ -23,7 +23,9 @@ const data = [
 ];
 
 
-const renderExpenseItem = ({ item }) => {
+const renderExpenseItem = ({ item }) =>
+{
+  console.log()
   return (
     <TouchableOpacity
 

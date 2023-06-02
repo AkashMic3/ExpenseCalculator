@@ -71,7 +71,7 @@ const UserSelectionScreen = ({ navigation }) => {
           index: 0,
           routes: [{ name: 'Home' }, { name: 'SplitExpenseScreen' }],
         });
-      }, 3000);
+      }, 2000);
     }
     // Logic for adding expense
   };

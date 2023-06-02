@@ -25,7 +25,7 @@ const SplitExpenseScreen = () => {
     React.useCallback(() => {
       // Run your side effects here
 
-      dispatch(fetchExpense(route?.params?.id));
+      dispatch(fetchExpense(route?.params?.id, userId));
       // Return a cleanup function if needed
       return () => {
         // Cleanup logic here
@@ -65,7 +65,7 @@ const SplitExpenseScreen = () => {
       style={styles.gradientBackground}>
       <View style={styles.container}>
         <Text style={styles.title}>Group Expenses</Text>
-        <FlatList data={expenseData} renderItem={ShowExpenses} />
+        <FlatList data={expenseData} renderItem={ShowExpenses} inverted />
 
         <TouchableOpacity
           onPress={() => {
