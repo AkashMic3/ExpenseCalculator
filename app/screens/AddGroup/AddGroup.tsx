@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
 } from 'react-native';
 import SelectMemberScreen from './SelectMembers/index';
@@ -18,11 +15,8 @@ const CreateGroupScreen = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupName, setGroupName] = useState('');
   const [groupNameError, setGroupNameError] = useState(false);
-  // const [memberName, setMemberName] = useState('');
-  // const [members, setMembers] = useState([]);
 
   const handleCreateGroup = () => {
-    // Implement logic to create the group with members
     if(groupName == '') {
       setGroupNameError(true);
       return
@@ -53,9 +47,7 @@ const CreateGroupScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
+
     paddingHorizontal: 10,
     backgroundColor: '#f1f1f1',
   },

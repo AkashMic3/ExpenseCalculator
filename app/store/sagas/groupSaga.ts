@@ -19,8 +19,10 @@ export function* groupSaga(action: any): Generator<any, void, unknown> {
         const response = yield call(getMembers, { group_Id });
         console.log(response?.data, 'success');
         yield put(groupActions.setGroupMembers(response?.data?.response ?? []));
+        yield put(loginActions.disableLoader());
     } catch (err) {
         console.log(err, 'error');
+        yield put(loginActions.disableLoader());
     }
 
 }
@@ -31,6 +33,7 @@ export function* fetchGroupSaga(action: any) {
         const response = yield call(getGroups, user_id)
         if (response?.data?.status == "success") {
             yield put(groupActions.onfetchGroupResponse(response?.data?.response));
+            yield put(loginActions.disableLoader());
         } else {
             yield put(loginActions.disableLoader());
             yield put(groupActions.onfetchGroupResponse([]));

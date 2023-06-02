@@ -1,21 +1,25 @@
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useLayoutEffect } from 'react'
-import { Button, TextInput, Text, Avatar,  } from 'react-native-paper'
+import { Button, TextInput, Text, Avatar, } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import { ScrollView } from 'react-native-gesture-handler';
-export default function SaveGroupScreen({ members,setView, setGroupName, handleCreateGroup, groupNameError }) {
+import { useSelector } from 'react-redux';
+export default function SaveGroupScreen({ members, setView, setGroupName, handleCreateGroup, groupNameError }) {
     const navigation = useNavigation();
+    const loading = useSelector((state: any) => state.loadingReducer.isLoginLoading)
 
     useLayoutEffect(() => {
-        navigation.setOptions({ headerTitle: "Name Your Group",  headerLeft: () => (
-            <Button mode="text" color='#007AFF' onPress={() => setView('Add_Member')}>
-              Back
-            </Button>
-          ), })
+        navigation.setOptions({
+            headerTitle: "Name Your Group", headerLeft: () => (
+                <Button mode="text" color='#007AFF' onPress={() => setView('Add_Member')}>
+                    Back
+                </Button>
+            ),
+        })
         navigation.setOptions({ headerRight: null })
     })
-    
+
     return (
         <Animatable.View
             duration={300}
@@ -25,33 +29,32 @@ export default function SaveGroupScreen({ members,setView, setGroupName, handleC
                 style={styles.input}
                 placeholder="Group Name"
                 error={groupNameError}
-            // value={groupName}
-            onChangeText={setGroupName}
+                // value={groupName}
+                onChangeText={setGroupName}
             />
             <Button style={styles.button}
-             onPress={handleCreateGroup}
-           
+                onPress={handleCreateGroup}
+                loading={loading}
+                disabled={loading}
             >
                 <Text style={styles.buttonText}>Create</Text>
             </Button>
-
             <View style={styles.membersContainer}>
                 <Text variant="headlineMedium">{members.length} memebrs</Text>
                 <ScrollView
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    horizontal={true}
                 >
-                <View style={{ flexDirection: 'row', flex:1 }}>
-                    {members.map(data => (
-                        <View style={styles.avatharContainer}>
-                            <Avatar.Text size={40} label={data.name.substring(0,2).toUpperCase()} color='white' />
-                            <Text style={{ width: 40, margin:5 }} numberOfLines={1}>{data.name}</Text>
-                        </View>
-                    ))
-                    }
-                </View>
+                    <View style={{ flexDirection: 'row', flex: 1 }}>
+                        {members.map(data => (
+                            <View style={styles.avatharContainer}>
+                                <Avatar.Text size={40} label={data.name.substring(0, 2).toUpperCase()} color='white' />
+                                <Text style={{ width: 40, margin: 5 }} numberOfLines={1}>{data.name}</Text>
+                            </View>
+                        ))
+                        }
+                    </View>
                 </ScrollView>
-
             </View>
 
 
@@ -84,17 +87,17 @@ const styles = StyleSheet.create({
     },
 
     membersContainer: {
-        
+
         padding: 10,
     },
 
     avatharContainer: {
-        flex:1,
-        justifyContent:'center',
+        flex: 1,
+        justifyContent: 'center',
         // alignItems:'center',
         // textAlign:'center',
         marginTop: 10,
-        margin:5
+        margin: 5
     },
 
 
