@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     paddingVertical: 16,
-    paddingHorizontal: 20,borderRadius:8,marginVertical:5
+    // paddingHorizontal: 20,borderRadius:8,marginVertical:5
   },
   expenseTitle: {
     fontSize: 16,
