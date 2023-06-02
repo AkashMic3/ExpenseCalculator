@@ -155,8 +155,10 @@ function HomeNav() {
       />
       <HomeStack.Screen
         name="CreateGroupScreen"
+        
         component={CreateGroupScreen}
-        options={{ headerShown: false }}
+        options={{ title: 'Create a group' }}
+        // options={{ headerShown: false }}
       />
       <HomeStack.Screen
         name="SplitExpenseScreen"

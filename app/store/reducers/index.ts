@@ -8,6 +8,7 @@ import * as HomeReducer from './HomeReducer';
 import * as flashReducer  from './flashMessageReducer';
 import * as groupReducer from './groupReducer';
 import * as expenseReducer from './expenseReducer';
+import * as searchMembersReducer from './searchMemberReducer';
 export default Object.assign(
   loginReducer,
   flashReducer,
@@ -15,5 +16,6 @@ export default Object.assign(
   themeReducer,
   HomeReducer,
   groupReducer,
-  expenseReducer
+  expenseReducer,
+  searchMembersReducer
 );

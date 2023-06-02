@@ -13,6 +13,10 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOG_OUT = 'LOG_OUT';
 export const FetchEmployees = 'FETCH_EMPLOYEES';
 export const FetchEmployeesResponse = 'FETCH_EMPLOYEES_RESPONSE';
+ 
+// GET USERS BY PHONE OR RECENT USER 
+export const FETCH_USERS_BY_PARAM = 'FETCH_USERS_BY_PARAM';
+export const FETCH_USERS_BY_PARAM_RESPONSE = 'FETCH_USERS_BY_PARAM_RESPONSE';
 
 // groups
 export const ADD_GROUP = 'ADD_GROUP';
@@ -31,4 +35,6 @@ export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 // flash message
 export const FLASH_MESSAGE_SHOW = 'FLASH_MESSAGE_SHOW';
 export const FLASH_MESSAGE_HIDE = 'FLASH_MESSAGE_HIDE';
+
 export const SET_MEMBERS = 'SET_MEMBERS';
+
