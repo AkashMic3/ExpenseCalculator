@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './styles';
@@ -15,6 +16,7 @@ import { PieChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGroups } from 'app/store/actions/groupActions';
 import { LoginState } from 'app/models/api/login';
+import { Avatar, Card, IconButton } from 'react-native-paper';
 const data = [
   { name: 'Credit', population: 2800, color: '#F44336' },
   { name: 'Debit', population: 5250, color: '#2196F3' },
@@ -22,16 +24,24 @@ const data = [
 
 const renderExpenseItem = ({ item }) => {
   return (
-    <LinearGradient
-      colors={['red', '#3b5998', '#192f6a']}
-      style={styles.expenseItem}>
-      <TouchableOpacity
-        onPress={() => {
-          NavigationService.navigate('SplitExpenseScreen', { id: item._id });
-        }}>
-        <Text style={styles.expenseTitle}>{item?.group_name}</Text>
-      </TouchableOpacity>
-    </LinearGradient>
+    <TouchableOpacity
+      onPress={() => {
+        NavigationService.navigate('SplitExpenseScreen', { id: item._id });
+      }}>
+      <Card.Title
+        title={item?.group_name}
+        subtitle={
+          item.members.length +
+          ' member' +
+          ' - ' +
+          moment(item?.created_at).format('DD/MM/YYYY')
+        }
+        left={props => <Avatar.Icon {...props} icon="account-group-outline" />}
+        right={props => (
+          <IconButton {...props} icon="dots-vertical" onPress={() => {}} />
+        )}
+      />
+    </TouchableOpacity>
   );
 };
 
@@ -50,9 +60,7 @@ const ExpenseTrackerHome = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <LinearGradient
-        colors={['#4c669f', '#3b5998', '#192f6a']}
-        style={styles.container}>
+      <View style={styles.container}>
         <Text style={styles.title}>Expense Tracker</Text>
         <FlatList
           data={groups}
@@ -60,7 +68,6 @@ const ExpenseTrackerHome = () => {
           keyExtractor={item => item._id}
           ListFooterComponent={ShowPieChart}
         />
-
         <TouchableOpacity
           onPress={() => {
             NavigationService.navigate('CreateGroupScreen');
@@ -68,7 +75,7 @@ const ExpenseTrackerHome = () => {
           style={styles.addButton}>
           <Text style={styles.addButtonLabel}>Add Group</Text>
         </TouchableOpacity>
-      </LinearGradient>
+      </View>
     </SafeAreaView>
   );
 };
@@ -82,7 +89,7 @@ function ShowPieChart() {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <PieChart
+      {/* <PieChart
         data={data}
         width={Dimensions.get('screen').width}
         height={300}
@@ -99,7 +106,7 @@ function ShowPieChart() {
         paddingLeft="45"
         absolute
         hasLegend={true}
-      />
+      /> */}
     </View>
   );
 }

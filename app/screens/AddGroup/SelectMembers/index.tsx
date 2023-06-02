@@ -31,17 +31,23 @@ const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: "Create a Group",
       headerRight: () => (
-        <Button mode="text" color='#007AFF' onPress={() => setView('Finish')}>
+        <Button mode="text" disabled={!(!!selectedUsers.length)} color='#007AFF' onPress={() => setView('Finish')}>
           Next
         </Button>
       ),
+      headerLeft: () => (
+        <Button mode="text" color='#007AFF' onPress={() => navigation.navigate('Home')}>
+            Back
+        </Button>
+    ),
     });
   })
 
-  return (
-  
+  const isSelected = (user) =>  selectedUsers.find(sUser => sUser._id == user._id )
 
+  return (
     <Animatable.View
     duration={300}
     animation={'slideInLeft'} style={styles.container}>
@@ -59,10 +65,10 @@ const SelectMemberScreen = ({selectedUsers, setSelectedUsers, setView}) => {
             key={user._id}
             style={[
               styles.userItem,
-              selectedUsers.find(sUser => sUser._id == user._id ) ? styles.selectedUser : null,
+              isSelected(user) ? styles.selectedUser : null,
             ]}
             onPress={() => handleUserSelection(user)}>
-            <Text style={styles.userName}>{user.name}</Text>
+            <Text style={[styles.userName,{color: isSelected(user)? 'white': 'black'} ]}>{user.name}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>

@@ -73,7 +73,9 @@ export function* registerSaga(action: any) {
         email: email,
         phone: phone,
       }),
+      
     );
+    
     if (response.id != null) {
       const registerResponse = yield call(registerUser, {
         user_id: response.id,
@@ -91,7 +93,6 @@ export function* registerSaga(action: any) {
       yield put(loginActions.disableLoader());
     }
   } catch (err) {
-    console.log('error:', err);
     yield put(loginActions.loginFailed());
     yield put(loginActions.disableLoader());
   }
@@ -107,11 +108,13 @@ export function* searchUsersSaga(action: any) {
     yield put(loginActions.enableLoader());
     const { query } = action;
     let response = yield call(getUserInfo, { query: query })
+   
     console.log("responded ",i++ )
     if (response?.data?.status == "success")
       yield put(loginActions.onSearchUserResponse(response?.data?.response))
-    else
+    else 
       throw new Error("fetch memebers failed")
+      yield put(loginActions.disableLoader());
   } catch (e) {
     yield put(loginActions.disableLoader());
     yield put(loginActions.onSearchUserResponse([]))

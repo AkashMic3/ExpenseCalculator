@@ -11,9 +11,9 @@ export function fetchGroupMembers(group_Id: string) {
 
 export function addGroup(
   group_name: string,
-  members: [any],
+  members: any[],
   owner_id: string,
-  created_at: string,
+  created_at: any,
 ) {
   return {
     type: types.ADD_GROUP,
@@ -46,7 +46,3 @@ export function setGroupMembers(members: [member]) {
     members,
   };
 }
-
-
-
-

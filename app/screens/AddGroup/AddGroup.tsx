@@ -1,45 +1,45 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
 } from 'react-native';
 import SelectMemberScreen from './SelectMembers/index';
 import SaveGroupScreen from './SaveGroup';
+import { useDispatch, useSelector } from 'react-redux';
+import { addGroup } from 'app/store/actions/groupActions';
 
 const CreateGroupScreen = () => {
+  const userId = useSelector((state:any) => state.loginReducer.id)
+  const dispatch = useDispatch()
   const [selectedView, setView] = useState('Add_Member')
   const [selectedUsers, setSelectedUsers] = useState([]);
-
   const [groupName, setGroupName] = useState('');
-  const [memberName, setMemberName] = useState('');
-  const [members, setMembers] = useState([]);
+  const [groupNameError, setGroupNameError] = useState(false);
 
   const handleCreateGroup = () => {
-    // Implement logic to create the group with members
-    console.log('Creating group:', groupName);
-    console.log('Group members:', members);
-    // Reset the input fields and members list
-    setGroupName('');
-    setMemberName('');
-    setMembers([]);
+    if(groupName == '') {
+      setGroupNameError(true);
+      return
+    } else
+    setGroupNameError(false);
+
+    let payload = {
+      group_name:groupName,
+      members: selectedUsers,
+      owner_id: userId,
+      created_at: new Date()
+    }
+    if(groupName!='' && setSelectedUsers.length!=0)
+        dispatch(addGroup(payload.group_name, payload.members,payload.owner_id, payload.created_at))
   };
 
-  const handleAddMember = () => {
-    // Add the member to the members list
-    setMembers([...members, memberName]);
-    // Reset the member name input
-    setMemberName('');
-  };
 
   return (
     <View style={styles.container}>
 
       {selectedView == 'Add_Member' ?
         <SelectMemberScreen setView={setView} selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
-        : <SaveGroupScreen setView={setView} members={selectedUsers} />
+        : <SaveGroupScreen groupNameError={groupNameError} handleCreateGroup={handleCreateGroup} setGroupName={setGroupName} setView={setView} members={selectedUsers} />
       }
     </View>
   );
@@ -47,9 +47,7 @@ const CreateGroupScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
+
     paddingHorizontal: 10,
     backgroundColor: '#f1f1f1',
   },

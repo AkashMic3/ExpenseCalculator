@@ -12,7 +12,6 @@ export function registerUser(payload: any) {
 }
 
 export function getUserInfo(payload: any) {
-  console.log("API CALL >>>.......>>>>>>")
   return apiClient.post(ApiConfig.BASE_URL + ApiConfig.GET_USER_INFO, {
     ...payload,
   });

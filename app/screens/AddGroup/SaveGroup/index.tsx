@@ -4,8 +4,18 @@ import { Button, TextInput, Text, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import { ScrollView } from 'react-native-gesture-handler';
-export default function SaveGroupScreen({ members, setView }) {
+import { useSelector } from 'react-redux';
+export default function SaveGroupScreen({
+  members,
+  setView,
+  setGroupName,
+  handleCreateGroup,
+  groupNameError,
+}) {
   const navigation = useNavigation();
+  const loading = useSelector(
+    (state: any) => state.loadingReducer.isLoginLoading,
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,19 +38,20 @@ export default function SaveGroupScreen({ members, setView }) {
       animation={'slideInRight'}
       style={styles.container}>
       <TextInput
+        autoFocus
         style={styles.input}
         placeholder="Group Name"
+        error={groupNameError}
         // value={groupName}
-        // onChangeText={setGroupName}
+        onChangeText={setGroupName}
       />
-
-      <TouchableOpacity
+      <Button
         style={styles.button}
-        //  onPress={handleCreateGroup}
-      >
+        onPress={handleCreateGroup}
+        loading={loading}
+        disabled={loading}>
         <Text style={styles.buttonText}>Create</Text>
-      </TouchableOpacity>
-
+      </Button>
       <View style={styles.membersContainer}>
         <Text variant="headlineMedium">{members.length} memebrs</Text>
         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
