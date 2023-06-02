@@ -20,35 +20,33 @@ const data = [
   { name: 'Debit', population: 5250, color: '#2196F3' },
 ];
 
-const renderExpenseItem = ({ item }) => (
-  <LinearGradient
-    colors={['red', '#3b5998', '#192f6a']}
-    style={styles.expenseItem}>
-    <TouchableOpacity
-      onPress={() => {
-        NavigationService.navigate('SplitExpenseScreen');
-      }}>
-      <Text style={styles.expenseTitle}>{item?.group_name}</Text>
-    </TouchableOpacity>
-
-    {/* <Text style={styles.expenseAmount}>${item.amount.toFixed(2)}</Text> */}
-  </LinearGradient>
-);
-
+const renderExpenseItem = ({ item }) => {
+  return (
+    <LinearGradient
+      colors={['red', '#3b5998', '#192f6a']}
+      style={styles.expenseItem}>
+      <TouchableOpacity
+        onPress={() => {
+          NavigationService.navigate('SplitExpenseScreen', { id: item._id });
+        }}>
+        <Text style={styles.expenseTitle}>{item?.group_name}</Text>
+      </TouchableOpacity>
+    </LinearGradient>
+  );
+};
 
 const ExpenseTrackerHome = () => {
-  const dispatch = useDispatch()
-  const userId = useSelector(((state: LoginState) => state.loginReducer.id));
-  const groups = useSelector((state: any) => state.groupReducer.groups)
+  const dispatch = useDispatch();
+  const userId = useSelector((state: LoginState) => state.loginReducer.id);
+  const groups = useSelector((state: any) => state.groupReducer.groups);
 
   useEffect(() => {
-    fetchUserGroups()
-  }, [dispatch, userId])
+    fetchUserGroups();
+  }, [dispatch, userId]);
 
   const fetchUserGroups = () => {
-    dispatch(fetchGroups(userId))
-  }
-
+    dispatch(fetchGroups(userId));
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

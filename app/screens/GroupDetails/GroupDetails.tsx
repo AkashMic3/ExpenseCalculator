@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native';
 import NavigationService, {
   navigationRef,
 } from 'app/navigation/NavigationService';
@@ -22,7 +23,7 @@ const SplitExpenseScreen = () => {
     { id: 1, groupName: 'Group1', isPayed: true, amount: 399 },
     { id: 2, groupName: 'Group2', isPayed: false, amount: 200 },
   ];
-
+  const route = useRoute();
   function ShowExpenses({ item }) {
     return (
       <View style={styles.expenseContainer}>
@@ -47,8 +48,12 @@ const SplitExpenseScreen = () => {
         <FlatList data={data} renderItem={ShowExpenses} />
 
         <TouchableOpacity
-          onPress={() => {
-            NavigationService.navigate('addscreen');
+          onPress={() =>
+          {
+            console.log(route?.params, 'route?.params');
+            NavigationService.navigate('addscreen', {
+              groupId: route?.params?.id ?? '',
+            });
           }}
           style={styles.addButton}>
           <Text style={styles.addButtonText}>Add Expense</Text>

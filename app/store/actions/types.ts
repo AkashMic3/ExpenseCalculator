@@ -13,8 +13,8 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOG_OUT = 'LOG_OUT';
 export const FetchEmployees = 'FETCH_EMPLOYEES';
 export const FetchEmployeesResponse = 'FETCH_EMPLOYEES_RESPONSE';
- 
-// GET USERS BY PHONE OR RECENT USER 
+
+// GET USERS BY PHONE OR RECENT USER
 export const FETCH_USERS_BY_PARAM = 'FETCH_USERS_BY_PARAM';
 export const FETCH_USERS_BY_PARAM_RESPONSE = 'FETCH_USERS_BY_PARAM_RESPONSE';
 
@@ -26,6 +26,7 @@ export const FetchGroupMembers = 'FETCH_GROUP_MEMBERS';
 // expense
 
 export const ADD_EXPENSE = 'ADD_EXPENSE';
+export const SET_EXPENSE = 'SET_EXPENSE';
 export const FETCH_EXPENSES = 'FETCH_EXPENSES';
 export const FETCH_GROUPS_RESPONSE = 'FETCH_GROUPS_RESPONSE';
 

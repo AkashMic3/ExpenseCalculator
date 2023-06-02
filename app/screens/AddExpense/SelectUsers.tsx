@@ -1,7 +1,16 @@
+import { useRoute } from '@react-navigation/native';
 import { member } from 'app/models/actions/group';
+import { AddExpenseForGroup } from 'app/store/actions/expenseActions';
 import { fetchGroupMembers } from 'app/store/actions/groupActions';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+  Alert,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 const UserSelectionScreen = ({ navigation }) => {
@@ -16,12 +25,14 @@ const UserSelectionScreen = ({ navigation }) => {
     }
   };
 
+  const route = useRoute();
   const users = useSelector(state => state.groupReducer.members) ?? [];
+  const userId = useSelector(state => state.loginReducer.id) ?? '';
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchGroupMembers('6476d6663cccd26ce40b5311'));
+    dispatch(fetchGroupMembers(route?.params?.groupId ?? ''));
   }, []);
 
   const handleGoBack = () => {
@@ -29,7 +40,53 @@ const UserSelectionScreen = ({ navigation }) => {
   };
 
   const handleAddExpense = () => {
+    if (selectedUsers.length === 0) {
+      // Show an error message or perform any necessary action
+      Alert.alert('Please select at least one user.');
+      return;
+    } else {
+      //call api and go back
+      console.log(route.params);
+      const members = selectedUsers.map(item => {
+        console.log(item, 'item');
+        const user = users.find(ele => ele.user_id === item);
+        console.log(user);
+        return {
+          ...user,
+          payment_status: item === userId ? true : false,
+        };
+      });
+      dispatch(
+        AddExpenseForGroup({
+          group_id: route?.params?.groupId,
+          expense_name: route?.params?.title,
+          members: members,
+          owner_id: userId,
+          amount: route?.params?.amount,
+          created_at: new Date().toISOString(),
+        }),
+      );
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Home' }, { name: 'SplitExpenseScreen' }],
+        });
+      }, 3000);
+    }
     // Logic for adding expense
+  };
+  const handleSelectAll = () => {
+    // Check if all users are already selected
+    const allUserIds = users.map(user => user.user_id);
+    const allSelected = allUserIds.every(id => selectedUsers.includes(id));
+
+    if (allSelected) {
+      // Unselect all users
+      setSelectedUsers([]);
+    } else {
+      // Select all users
+      setSelectedUsers(allUserIds);
+    }
   };
 
   return (
@@ -47,6 +104,7 @@ const UserSelectionScreen = ({ navigation }) => {
         </TouchableOpacity>
       ))}
       <View style={styles.buttonContainer}>
+        <Button title="Select All" onPress={handleSelectAll} />
         <Button title="Go Back" onPress={handleGoBack} />
         <Button title="Add Expense" onPress={handleAddExpense} />
       </View>
