@@ -1,13 +1,21 @@
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo } from 'react'
 import { Button, TextInput, Text, Avatar, } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
-export default function SaveGroupScreen({ members, setView, setGroupName, handleCreateGroup, groupNameError }) {
+export default function SaveGroupScreen({ members,setMember, setView, setGroupName, handleCreateGroup, groupNameError }) {
     const navigation = useNavigation();
     const loading = useSelector((state: any) => state.loadingReducer.isLoginLoading)
+    const user = useSelector((state:any) => state.loginReducer)
+
+    useEffect(()=> {
+        let letUser = members.find(data => data.user_id == user.id)
+        if(!letUser?.name) {
+            setMember([{email:user.email, name:user.name, phone:user.phone, user_id:user.id}, ...members])
+        }
+    },[])
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -49,15 +57,13 @@ export default function SaveGroupScreen({ members, setView, setGroupName, handle
                         {members.map(data => (
                             <View style={styles.avatharContainer}>
                                 <Avatar.Text size={40} label={data.name.substring(0, 2).toUpperCase()} color='white' />
-                                <Text style={{ width: 40, margin: 5 }} numberOfLines={1}>{data.name}</Text>
+                                <Text style={{ width: 40, margin: 5 }} numberOfLines={1}>{data.user_id == user.id ? 'You': data.name}</Text>
                             </View>
                         ))
                         }
                     </View>
                 </ScrollView>
             </View>
-
-
         </Animatable.View>
     )
 }
