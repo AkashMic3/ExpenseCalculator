@@ -7,3 +7,9 @@ export async function AddExpense(payload: any) {
     ...payload.data,
   });
 }
+export async function getExpense(payload: any) {
+  console.log('payload', payload);
+  return await apiClient.post(ApiConfig.BASE_URL + ApiConfig.GET_EXPENSE, {
+    ...payload,
+  });
+}

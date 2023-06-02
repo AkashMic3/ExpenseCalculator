@@ -8,9 +8,15 @@ export function AddExpenseForGroup(requestData: Expense) {
   };
 }
 
-export function fetchGroups(group_id: string) {
+export function fetchExpense(group_id: string) {
   return {
     type: types.FETCH_EXPENSES,
     group_id,
+  };
+}
+export function setExpense(data: [Expense]) {
+  return {
+    type: types.SET_EXPENSE,
+    data,
   };
 }

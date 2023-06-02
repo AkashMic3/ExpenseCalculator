@@ -12,7 +12,7 @@ import {
 import HomeSaga from './HomeSaga';
 
 import { groupSaga, fetchGroupSaga, addGroupSaga } from './groupSaga';
-import { ExpenseSaga } from './ExpenseSaga';
+import { ExpenseSaga, getExpenseListSaga } from './ExpenseSaga';
 
 export default function* watch() {
   yield all([
@@ -24,5 +24,6 @@ export default function* watch() {
     takeLatest(types.ADD_GROUP, addGroupSaga),
     takeLatest(types.FETCH_USERS_BY_PARAM, searchUsersSaga),
     takeEvery(types.ADD_EXPENSE, ExpenseSaga),
+    takeEvery(types.FETCH_EXPENSES, getExpenseListSaga),
   ]);
 }
