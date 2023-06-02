@@ -22,39 +22,49 @@ const data = [
   { name: 'Debit', population: 5250, color: '#2196F3' },
 ];
 
-const renderExpenseItem = ({ item }) => (
-  <TouchableOpacity
+
+const renderExpenseItem = ({ item }) => {
+  return (
+    <TouchableOpacity
+
       onPress={() => {
-        NavigationService.navigate('SplitExpenseScreen');
+        NavigationService.navigate('SplitExpenseScreen', { id: item._id });
       }}>
-  <Card.Title
-    title={item?.group_name}
-    subtitle={  item.members.length + " member"  + " - " + moment(item?.created_at).format('DD/MM/YYYY') }
-    left={(props) => <Avatar.Icon {...props} icon="account-group-outline" />}
-    right={(props) => <IconButton {...props} icon="dots-vertical" onPress={() => {}} />}
-  />
-  </TouchableOpacity>
-
-);
-
+      <Card.Title
+        title={item?.group_name}
+        subtitle={
+          item.members.length +
+          ' member' +
+          ' - ' +
+          moment(item?.created_at).format('DD/MM/YYYY')
+        }
+        left={props => <Avatar.Icon {...props} icon="account-group-outline" />}
+        right={props => (
+          <IconButton {...props} icon="dots-vertical" onPress={() => {}} />
+        )}
+      />
+    </TouchableOpacity>
+  );
+};
 
 const ExpenseTrackerHome = () => {
-  const dispatch = useDispatch()
-  const userId = useSelector(((state: LoginState) => state.loginReducer.id));
-  const groups = useSelector((state: any) => state.groupReducer.groups)
+  const dispatch = useDispatch();
+  const userId = useSelector((state: LoginState) => state.loginReducer.id);
+  const groups = useSelector((state: any) => state.groupReducer.groups);
 
   useEffect(() => {
-    fetchUserGroups()
-  }, [dispatch, userId])
+    fetchUserGroups();
+  }, [dispatch, userId]);
 
   const fetchUserGroups = () => {
-    dispatch(fetchGroups(userId))
-  }
-
+    dispatch(fetchGroups(userId));
+  };
 
   return (
+
       <View
         style={styles.container}>
+
         <Text style={styles.title}>Expense Tracker</Text>
         <FlatList
           data={groups}

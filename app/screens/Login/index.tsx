@@ -27,7 +27,7 @@ const Login: React.FC = () => {
 
     setIsEmailValid(emailValid);
     setIsPasswordValid(passwordValid);
-
+    console.log('login');
     if (emailValid && passwordValid) {
       dispatch(
         loginActions.requestLogin(
@@ -72,7 +72,6 @@ const Login: React.FC = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}>
-       
       <View style={styles.backgroundContainer}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -93,7 +92,6 @@ const Login: React.FC = () => {
           <TextInput
             mode="outlined"
             placeholder="Password"
-            
             secureTextEntry
             value={usercredential.password}
             onChangeText={password => setCredential(password, 'password')}

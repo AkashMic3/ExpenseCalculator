@@ -1,10 +1,13 @@
+
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useEffect, useLayoutEffect, useMemo } from 'react'
 import { Button, TextInput, Text, Avatar, } from 'react-native-paper'
+
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+
 export default function SaveGroupScreen({ members,setMember, setView, setGroupName, handleCreateGroup, groupNameError }) {
     const navigation = useNavigation();
     const loading = useSelector((state: any) => state.loadingReducer.isLoginLoading)
@@ -17,16 +20,22 @@ export default function SaveGroupScreen({ members,setMember, setView, setGroupNa
         }
     },[])
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerTitle: "Name Your Group", headerLeft: () => (
-                <Button mode="text" color='#007AFF' onPress={() => setView('Add_Member')}>
-                    Back
-                </Button>
-            ),
-        })
-        navigation.setOptions({ headerRight: null })
-    })
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Name Your Group',
+      headerLeft: () => (
+        <Button
+          mode="text"
+          color="#007AFF"
+          onPress={() => setView('Add_Member')}>
+          Back
+        </Button>
+      ),
+    });
+    navigation.setOptions({ headerRight: null });
+  });
+
 
     return (
         <Animatable.View
@@ -66,63 +75,60 @@ export default function SaveGroupScreen({ members,setMember, setView, setGroupNa
             </View>
         </Animatable.View>
     )
+
 }
 
-
 const styles = StyleSheet.create({
-    container: {
-        paddingTop: 10,
-        backgroundColor: '#f1f1f1',
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#333333',
-    },
-    input: {
-        width: '100%',
-        height: 40,
-        borderWidth: 1,
-        borderColor: '#cccccc',
-        borderRadius: 4,
-        paddingHorizontal: 10,
-        marginBottom: 20,
-        backgroundColor: '#ffffff',
-        color: '#333333',
-    },
+  container: {
+    paddingTop: 10,
+    backgroundColor: '#f1f1f1',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#333333',
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 4,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    backgroundColor: '#ffffff',
+    color: '#333333',
+  },
 
-    membersContainer: {
+  membersContainer: {
+    padding: 10,
+  },
 
-        padding: 10,
-    },
+  avatharContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    // alignItems:'center',
+    // textAlign:'center',
+    marginTop: 10,
+    margin: 5,
+  },
 
-    avatharContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        // alignItems:'center',
-        // textAlign:'center',
-        marginTop: 10,
-        margin: 5
-    },
-
-
-
-    memberText: {
-        fontSize: 16,
-        color: '#333333',
-    },
-    button: {
-        width: '100%',
-        height: 40,
-        backgroundColor: '#2196F3',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 4,
-    },
-    buttonText: {
-        fontSize: 16,
-        color: '#ffffff',
-        fontWeight: 'bold',
-    },
+  memberText: {
+    fontSize: 16,
+    color: '#333333',
+  },
+  button: {
+    width: '100%',
+    height: 40,
+    backgroundColor: '#2196F3',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: '#ffffff',
+    fontWeight: 'bold',
+  },
 });
