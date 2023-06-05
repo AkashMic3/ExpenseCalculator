@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
@@ -14,40 +15,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import styles from './styles';
 import { PieChart } from 'react-native-chart-kit';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGroups } from 'app/store/actions/groupActions';
+import { deleteGroup, fetchGroups } from 'app/store/actions/groupActions';
 import { LoginState } from 'app/models/api/login';
 import { Avatar, Card, IconButton } from 'react-native-paper';
-const data = [
-  { name: 'Credit', population: 2800, color: '#F44336' },
-  { name: 'Debit', population: 5250, color: '#2196F3' },
-];
 
-
-const renderExpenseItem = ({ item }) =>
-{
-  console.log()
-  return (
-    <TouchableOpacity
-
-      onPress={() => {
-        NavigationService.navigate('SplitExpenseScreen', { id: item._id });
-      }}>
-      <Card.Title
-        title={item?.group_name}
-        subtitle={
-          item.members.length +
-          ' member' +
-          ' - ' +
-          moment(item?.created_at).format('DD/MM/YYYY')
-        }
-        left={props => <Avatar.Icon {...props} icon="account-group-outline" />}
-        right={props => (
-          <IconButton {...props} icon="dots-vertical" onPress={() => {}} />
-        )}
-      />
-    </TouchableOpacity>
-  );
-};
 
 const ExpenseTrackerHome = () => {
   const dispatch = useDispatch();
@@ -62,11 +33,52 @@ const ExpenseTrackerHome = () => {
     dispatch(fetchGroups(userId));
   };
 
+
+  const deleteConfirmation = (group_id:string) => {
+    Alert.alert(
+        'Message',
+        'Are you sure?',
+        [
+            { text: 'NO', onPress: () => null, style: 'cancel' },
+            { text: 'YES', onPress: () => dispatch(deleteGroup(group_id, userId)) },
+        ]
+    );
+}
+
+
+
+  const renderExpenseItem = ({ item }) =>
+  {
+  
+    return (
+      <TouchableOpacity
+  
+        onPress={() => {
+          NavigationService.navigate('SplitExpenseScreen', { id: item._id });
+        }}>
+        <Card.Title
+          title={item?.group_name}
+          subtitle={
+            item.members.length +
+            ' member' +
+            ' - ' +
+            moment(item?.created_at).format('DD/MM/YYYY')
+          }
+          left={props => <Avatar.Icon {...props} icon="account-group-outline"  />}
+          right={props => (
+            <IconButton {...props} icon="delete" onPress={()=> deleteConfirmation(item._id)} />
+          )}
+        />
+      </TouchableOpacity>
+    );
+  };
+  
+
+
   return (
 
       <View
         style={styles.container}>
-
         <Text style={styles.title}>Expense Tracker</Text>
         <FlatList
           data={groups}

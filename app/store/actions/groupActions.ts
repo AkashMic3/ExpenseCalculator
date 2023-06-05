@@ -24,6 +24,19 @@ export function addGroup(
   };
 }
 
+export function deleteGroup(
+  group_id: string,
+  user_id:string
+) {
+  console.log("delete group")
+  return {
+    type: types.DELETE_GROUP,
+    group_id,
+    user_id
+  };
+}
+
+
 export function fetchGroups(user_id: string) {
   return {
     type: types.FETCH_GROUPS,

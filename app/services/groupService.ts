@@ -9,3 +9,7 @@ export function getGroups(user_id:string) {
   export function addGroup(payload:any) {
     return apiClient.post(ApiConfig.BASE_URL + ApiConfig.ADD_GROUP, {...payload});
   }
+
+  export function deleteGroup(payload:any) {
+    return apiClient.post(ApiConfig.BASE_URL + ApiConfig.DELELTE_GROUP, {...payload});
+  }

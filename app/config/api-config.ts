@@ -7,6 +7,7 @@ const ApiConfig = {
   GET_USER_INFO: 'endpoint/getUserInfo',
   ADD_EXPENSE: 'endpoint/addExpense',
   ADD_GROUP: 'endpoint/addGroup',
+  DELELTE_GROUP: 'endpoint/deleteGroup',
   GET_GROUPS: 'endpoint/getGroups',
   GET_EXPENSE: 'endpoint/getExpense',
   GET_GROUP_MEMBERS: 'endpoint/fetchMembers',
