@@ -20,6 +20,7 @@ import AddExpensePage from 'app/screens/AddExpense/AddExpense';
 import CreateGroupScreen from 'app/screens/AddGroup/AddGroup';
 import SplitExpenseScreen from 'app/screens/GroupDetails/GroupDetails';
 import UserSelectionScreen from 'app/screens/AddExpense/SelectUsers';
+import ExpenseDetails from 'app/screens/GroupDetails/ExpenseDetails';
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const LoggedInStack = createBottomTabNavigator();
@@ -160,6 +161,11 @@ function HomeNav() {
         name="SplitExpenseScreen"
         component={SplitExpenseScreen}
         options={{ headerShown: false }}
+      />
+       <HomeStack.Screen
+        name="ViewExpenseDetails"
+        component={ExpenseDetails}
+        // options={{ headerShown: false }}
       />
       <HomeStack.Screen
         name="UserSelectionScreen"

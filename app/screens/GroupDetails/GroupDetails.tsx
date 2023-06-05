@@ -12,14 +12,17 @@ import {
   FlatList,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { Button, ProgressBar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import styles from './styles';
+import moment from 'moment';
+import ExpenseLoader from 'app/components/ExpenseLoader';
+import { floor } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SplitExpenseScreen = () => {
-  const [expenseName, setExpenseName] = useState('');
-  const [amount, setAmount] = useState('');
-  const [participants, setParticipants] = useState([]);
-  const [selectedParticipants, setSelectedParticipants] = useState([]);
-  const [memberName, setMemberName] = useState('');
+  const loading = useSelector((state: any) => state.loadingReducer.isLoginLoading)
   const dispatch = useDispatch();
   useFocusEffect(
     React.useCallback(() => {
@@ -35,27 +38,41 @@ const SplitExpenseScreen = () => {
   const userId = useSelector((state: any) => state.loginReducer.id);
   const expenseData =
     useSelector(state => state?.expenseReducer?.ExpenseList) ?? [];
-  console.log(expenseData, 'expenseData');
-  const data = [
-    { id: 1, groupName: 'Group1', isPayed: true, amount: 399 },
-    { id: 2, groupName: 'Group2', isPayed: false, amount: 200 },
-  ];
+
   const route = useRoute();
   function ShowExpenses({ item }) {
     console.log(item, 'statsus');
     const status = item.members.filter(item => item.user_id === userId)[0];
     console.log(status, 'status', status?.payment_status);
+    const nonPaidCount = item?.members?.filter(e => e.payment_status == false)?.length
+
     return (
-      <View style={styles.expenseContainer}>
-        <Text style={styles.groupName}>{item.expense_name}</Text>
-        <Text style={styles.amount}>{item.amount}</Text>
-        <Text style={styles.paymentStatus}>
-          {status?.payment_status ? 'Paid' : 'Unpaid'}
-        </Text>
-      </View>
+      <TouchableOpacity 
+      activeOpacity={0.9}
+      onPress={() => {
+      
+        NavigationService.navigate('ViewExpenseDetails', {
+          groupDetails: item,
+        });
+      }}
+      >
+        <View style={styles.expenseContainer}>
+          <Text style={styles.groupName}>{item.expense_name}</Text>
+          <Text style={styles.amount}>₹{item.amount}</Text>
+          <View style={styles.progressContainer}>
+            <View style={{ flex: 1 }}>
+              <ProgressBar progress={(item.members.length - nonPaidCount) / item.members.length} color={"#007AFF"} />
+            </View>
+            <Text style={styles.paymentleftStatus}>₹ {Math.round(((item.amount / item.members.length) * (nonPaidCount)) * 100) / 100} left</Text>
+          </View>
+          <Text style={styles.paymentStatus}>
+            <MaterialCommunityIcons name='clock-outline' />
+            {item.members && ` ${item.members.length - nonPaidCount } of ${item.members.length} paid`} • {moment(item?.created_at).format('MMM D')}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   }
-  //6476d6663cccd26ce40b5311
 
   return (
     <LinearGradient
@@ -63,10 +80,11 @@ const SplitExpenseScreen = () => {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.gradientBackground}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Group Expenses</Text>
-        <FlatList data={expenseData} renderItem={ShowExpenses} inverted />
-
+        {loading ? <ExpenseLoader /> :
+          <FlatList data={expenseData} showsVerticalScrollIndicator={false} renderItem={ShowExpenses} inverted />
+        }
         <TouchableOpacity
           onPress={() => {
             console.log(route?.params, 'route?.params');
@@ -77,61 +95,9 @@ const SplitExpenseScreen = () => {
           style={styles.addButton}>
           <Text style={styles.addButtonText}>Add Expense</Text>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  gradientBackground: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 40,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginBottom: 20,
-  },
-  expenseContainer: {
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    borderRadius: 8,
-    padding: 16,
-    backgroundColor: '#f9f9f9',
-  },
-  groupName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333333',
-    marginBottom: 8,
-  },
-  amount: {
-    fontSize: 16,
-    color: '#333333',
-    marginBottom: 4,
-  },
-  paymentStatus: {
-    fontSize: 16,
-    color: '#666666',
-  },
-  addButton: {
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    paddingVertical: 12,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  addButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#F76B1C',
-  },
-});
 
 export default SplitExpenseScreen;

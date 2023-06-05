@@ -18,9 +18,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteGroup, fetchGroups } from 'app/store/actions/groupActions';
 import { LoginState } from 'app/models/api/login';
 import { Avatar, Card, IconButton } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 
+const ExpenseTrackerHome = (props) => {
+  const { colors } = useTheme();
 
-const ExpenseTrackerHome = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state: LoginState) => state.loginReducer.id);
   const groups = useSelector((state: any) => state.groupReducer.groups);
@@ -45,14 +47,10 @@ const ExpenseTrackerHome = () => {
     );
 }
 
-
-
   const renderExpenseItem = ({ item }) =>
   {
-  
     return (
       <TouchableOpacity
-  
         onPress={() => {
           NavigationService.navigate('SplitExpenseScreen', { id: item._id });
         }}>
@@ -66,20 +64,18 @@ const ExpenseTrackerHome = () => {
           }
           left={props => <Avatar.Icon {...props} icon="account-group-outline"  />}
           right={props => (
-            <IconButton {...props} icon="delete" onPress={()=> deleteConfirmation(item._id)} />
+            <IconButton {...props} icon="delete" size={20} onPress={()=> deleteConfirmation(item._id)} />
           )}
         />
       </TouchableOpacity>
     );
   };
-  
-
 
   return (
 
       <View
         style={styles.container}>
-        <Text style={styles.title}>Expense Tracker</Text>
+        <Text style={[styles.title, {color:colors.text}]}>Expense Tracker</Text>
         <FlatList
           data={groups}
           renderItem={renderExpenseItem}
