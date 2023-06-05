@@ -69,7 +69,7 @@ const UserSelectionScreen = ({ navigation }) => {
       setTimeout(() => {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Home' }, { name: 'SplitExpenseScreen' }],
+          routes: [{ name: 'Home' }, { name: 'SplitExpenseScreen', params: { id: route?.params?.groupId }} ],
         });
       }, 2000);
     }

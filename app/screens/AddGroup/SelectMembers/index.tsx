@@ -61,7 +61,6 @@ const SelectMemberScreen = ({ selectedUsers, setSelectedUsers, setView }) => {
       />
       <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 10 }}>
         {users.map(user => ( userId!=user.user_id &&
-          
           <TouchableOpacity
             key={user._id}
             style={[
