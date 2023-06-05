@@ -11,7 +11,7 @@ import {
 } from './loginRegisterSaga';
 import HomeSaga from './HomeSaga';
 
-import { groupSaga, fetchGroupSaga, addGroupSaga } from './groupSaga';
+import { groupSaga, fetchGroupSaga, addGroupSaga, deleteGroupSaga } from './groupSaga';
 import { ExpenseSaga, getExpenseListSaga } from './ExpenseSaga';
 
 export default function* watch() {
@@ -25,5 +25,6 @@ export default function* watch() {
     takeLatest(types.FETCH_USERS_BY_PARAM, searchUsersSaga),
     takeEvery(types.ADD_EXPENSE, ExpenseSaga),
     takeEvery(types.FETCH_EXPENSES, getExpenseListSaga),
+    takeLatest(types.DELETE_GROUP, deleteGroupSaga)
   ]);
 }

@@ -22,6 +22,7 @@ export const FETCH_USERS_BY_PARAM_RESPONSE = 'FETCH_USERS_BY_PARAM_RESPONSE';
 export const ADD_GROUP = 'ADD_GROUP';
 export const FETCH_GROUPS = 'FETCH_GROUPS';
 export const FetchGroupMembers = 'FETCH_GROUP_MEMBERS';
+export const DELETE_GROUP = 'DELETE_GROUP';
 
 // expense
 

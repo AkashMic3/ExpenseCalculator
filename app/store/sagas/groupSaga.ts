@@ -8,7 +8,7 @@ import { Realm } from '@realm/react';
 import { getUserInfo, registerUser } from 'app/services/loginRegisterUser';
 import { showFlashMessage } from '../actions/flashMessageActions';
 import { getMembers } from 'app/services/group';
-import { addGroup, getGroups } from 'app/services/groupService';
+import { addGroup, deleteGroup, getGroups } from 'app/services/groupService';
 
 export function* groupSaga(action: any): Generator<any, void, unknown> {
 
@@ -62,4 +62,24 @@ export function* addGroupSaga(action: any) {
         yield put(loginActions.disableLoader());
     }
 }
+
+export function* deleteGroupSaga(action: any) {
+    yield put(loginActions.enableLoader());
+    const {  group_id, user_id } = action;
+    try {
+        const response = yield call(deleteGroup, { group_id })
+        if (response?.data?.status == "success") {
+            yield put(showFlashMessage('Group removed'));
+            yield put(loginActions.disableLoader());
+            yield put(groupActions.fetchGroups(user_id));
+
+        } else {
+            yield put(loginActions.disableLoader());
+         
+        }
+    } catch (err) {
+        yield put(loginActions.disableLoader());
+    }
+}
+
 
