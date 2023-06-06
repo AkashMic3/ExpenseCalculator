@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Text, TextInput, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,6 +8,9 @@ import * as loginActions from 'app/store/actions/loginRegisterActions';
 import { ILoginState } from 'app/models/reducers/login';
 import NavigationService from 'app/navigation/NavigationService';
 import SnackbarView from 'app/components/Snackbar';
+import images from 'app/config/images';
+import metrics from 'app/config/metrics';
+
 
 const Login: React.FC = () => {
   const { colors } = useTheme();
@@ -68,77 +71,84 @@ const Login: React.FC = () => {
   };
 
   return (
-    <View
-   
-    
-      style={styles.container}>
-      <View style={styles.backgroundContainer}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            mode="outlined"
-            placeholder="Email"
-            keyboardType="email-address"
-            value={usercredential.email}
-            onChangeText={email => setCredential(email, 'email')}
-            error={!isEmailValid}
-          
-            activeOutlineColor="#90EE90"
-          />
-          {!isEmailValid && (
-            <Text style={styles.errorText}>Invalid email format</Text>
-          )}
+    <>
+      <View>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Image resizeMode='contain' source={images.icons.logo} style={styles.logoContainer} />
         </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            mode="outlined"
-            placeholder="Password"
-            secureTextEntry
-            value={usercredential.password}
-            onChangeText={password => setCredential(password, 'password')}
-            error={!isPasswordValid}
-           
-            activeOutlineColor="#90EE90"
-          />
-          {!isPasswordValid && (
-            <Text style={styles.errorText}>
-              Password must be at least 8 characters long
-            </Text>
-          )}
-        </View>
-        <TouchableOpacity
-          style={
-            
-            [
-            styles.loginButton,
-            
-            (!isEmailValid || !isPasswordValid) && styles.disabledButton,
-            {backgroundColor:colors.primary}
-          ]}
-          onPress={onLogin}
-          disabled={!isEmailValid || !isPasswordValid}>
-          <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.forgotButton} onPress={onForgot}>
-          <Text style={styles.forgotButtonText}>Forgot Password</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.signupButton} onPress={onRegister}>
-          <Text style={styles.signupButtonText}>
-            Don't have an account yet?
-            <Text style={{ color: colors.placeholder, fontWeight: 'bold' }}>
-              {' '}
-              Sign up now
-            </Text>
-          </Text>
-        </TouchableOpacity>
       </View>
-    </View>
+      <View
+
+        style={styles.container}>
+        <View style={styles.backgroundContainer}>
+
+          <View style={styles.inputContainer}>
+            <TextInput
+              
+              mode="outlined"
+              placeholder="Email"
+              keyboardType="email-address"
+              value={usercredential.email}
+              onChangeText={email => setCredential(email, 'email')}
+              error={!isEmailValid}
+              activeOutlineColor="#90EE90"
+            />
+            {!isEmailValid && (
+              <Text style={styles.errorText}>Invalid email format</Text>
+            )}
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              mode="outlined"
+              placeholder="Password"
+              secureTextEntry
+              value={usercredential.password}
+              onChangeText={password => setCredential(password, 'password')}
+              error={!isPasswordValid}
+
+              activeOutlineColor="#90EE90"
+            />
+            {!isPasswordValid && (
+              <Text style={styles.errorText}>
+                Password must be at least 8 characters long
+              </Text>
+            )}
+          </View>
+          <TouchableOpacity
+            style={
+
+              [
+                styles.loginButton,
+
+                (!isEmailValid || !isPasswordValid) && styles.disabledButton,
+                { backgroundColor: colors.primary }
+              ]}
+            onPress={onLogin}
+            disabled={!isEmailValid || !isPasswordValid}>
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.forgotButton} onPress={onForgot}>
+            <Text style={styles.forgotButtonText}>Forgot Password</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.signupButton} onPress={onRegister}>
+            <Text style={styles.signupButtonText}>
+              Don't have an account yet?
+              <Text style={{ color: colors.placeholder, fontWeight: 'bold' }}>
+                {' '}
+                Sign up now
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
   },
   backgroundContainer: {
@@ -176,17 +186,23 @@ const styles = StyleSheet.create({
   },
   forgotButtonText: {
 
- 
+
   },
   signupButton: {
     alignItems: 'center',
     marginTop: 10,
   },
   signupButtonText: {
- 
+
     fontSize: 14,
-   
+
   },
+  logoContainer: {
+
+    width: metrics.screenWidth / 7,
+    height: metrics.screenHeight * .12,
+
+  }
 });
 
 export default Login;
