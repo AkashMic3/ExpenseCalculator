@@ -12,6 +12,7 @@ const ApiConfig = {
   GET_EXPENSE: 'endpoint/getExpense',
   UPDATE_EXPENSE_STATUS: 'endpoint/updatePaymentStatus',
   GET_GROUP_MEMBERS: 'endpoint/fetchMembers',
+  Delete_Expense: 'endpoint/deleteExpense',
 };
 
 export default ApiConfig;

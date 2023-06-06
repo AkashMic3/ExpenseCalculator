@@ -20,7 +20,7 @@ import { LoginState } from 'app/models/api/login';
 import { Avatar, Card, IconButton } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const ExpenseTrackerHome = (props) => {
+const ExpenseTrackerHome = props => {
   const { colors } = useTheme();
 
   const dispatch = useDispatch();
@@ -35,20 +35,14 @@ const ExpenseTrackerHome = (props) => {
     dispatch(fetchGroups(userId));
   };
 
+  const deleteConfirmation = (group_id: string) => {
+    Alert.alert('Message', 'Are you sure?', [
+      { text: 'NO', onPress: () => null, style: 'cancel' },
+      { text: 'YES', onPress: () => dispatch(deleteGroup(group_id, userId)) },
+    ]);
+  };
 
-  const deleteConfirmation = (group_id:string) => {
-    Alert.alert(
-        'Message',
-        'Are you sure?',
-        [
-            { text: 'NO', onPress: () => null, style: 'cancel' },
-            { text: 'YES', onPress: () => dispatch(deleteGroup(group_id, userId)) },
-        ]
-    );
-}
-
-  const renderExpenseItem = ({ item }) =>
-  {
+  const renderExpenseItem = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => {
@@ -62,9 +56,21 @@ const ExpenseTrackerHome = (props) => {
             ' - ' +
             moment(item?.created_at).format('DD/MM/YYYY')
           }
-          left={props => <Avatar.Icon {...props} icon="account-group-outline" color='white' />}
+          left={props => (
+            <Avatar.Icon
+              {...props}
+              icon="account-group-outline"
+              color="white"
+            />
+          )}
           right={props => (
-            <IconButton {...props} icon="delete" size={20} onPress={()=> deleteConfirmation(item._id)} color={colors.disabled} />
+            <IconButton
+              {...props}
+              icon="delete"
+              size={20}
+              onPress={() => deleteConfirmation(item._id)}
+              color={colors.disabled}
+            />
           )}
         />
       </TouchableOpacity>
@@ -72,34 +78,36 @@ const ExpenseTrackerHome = (props) => {
   };
 
   return (
-
-      <View
-        style={styles.container}>
-        <Text style={[styles.title, {color:colors.text}]}>Expense Tracker</Text>
-        <FlatList
-          contentContainerStyle={[{flexGrow:1 }, !!groups.length == 0 && {justifyContent:'center' } ]}
-          data={groups}
-          renderItem={renderExpenseItem}
-          keyExtractor={item => item._id}
-          ListEmptyComponent={
-            <View style={styles.groupEmptyContainer}>
-              <Text style={[styles.groupEmptyText, {color:colors.text}]}>No groups available ? </Text>
-              <Text style={{color:colors.text}}>create a new one</Text>
-            </View>
-          }
-        />
-        <TouchableOpacity
-          onPress={() => {
-            NavigationService.navigate('CreateGroupScreen');
-          }}
-          style={styles.addButton}>
-             <MaterialCommunityIcons name='plus' size={25} color={'white'}   />
-        </TouchableOpacity>
-      </View>
-
+    <View style={styles.container}>
+      <Text style={[styles.title, { color: colors.text }]}>
+        Expense Tracker
+      </Text>
+      <FlatList
+        contentContainerStyle={[
+          { flexGrow: 1 },
+          !!groups.length == 0 && { justifyContent: 'center' },
+        ]}
+        data={groups}
+        renderItem={renderExpenseItem}
+        keyExtractor={item => item._id}
+        ListEmptyComponent={
+          <View style={styles.groupEmptyContainer}>
+            <Text style={[styles.groupEmptyText, { color: colors.text }]}>
+              No groups available ?{' '}
+            </Text>
+            <Text style={{ color: colors.text }}>create a new one</Text>
+          </View>
+        }
+      />
+      <TouchableOpacity
+        onPress={() => {
+          NavigationService.navigate('CreateGroupScreen');
+        }}
+        style={styles.addButton}>
+        <MaterialCommunityIcons name="plus" size={25} color={'white'} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
 export default ExpenseTrackerHome;
-
-

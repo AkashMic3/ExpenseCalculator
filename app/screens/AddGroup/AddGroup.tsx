@@ -1,53 +1,65 @@
 import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import SelectMemberScreen from './SelectMembers/index';
 import SaveGroupScreen from './SaveGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addGroup } from 'app/store/actions/groupActions';
 
 const CreateGroupScreen = () => {
-  const userId = useSelector((state:any) => state.loginReducer.id)
-  const dispatch = useDispatch()
-  const [selectedView, setView] = useState('Add_Member')
+  const userId = useSelector((state: any) => state.loginReducer.id);
+  const dispatch = useDispatch();
+  const [selectedView, setView] = useState('Add_Member');
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupName, setGroupName] = useState('');
   const [groupNameError, setGroupNameError] = useState(false);
 
   const handleCreateGroup = () => {
-    if(groupName == '') {
+    if (groupName == '') {
       setGroupNameError(true);
-      return
-    } else
-    setGroupNameError(false);
+      return;
+    } else setGroupNameError(false);
 
     let payload = {
-      group_name:groupName,
+      group_name: groupName,
       members: selectedUsers,
       owner_id: userId,
-      created_at: new Date()
-    }
-    if(groupName!='' && setSelectedUsers.length!=0)
-        dispatch(addGroup(payload.group_name, payload.members,payload.owner_id, payload.created_at))
+      created_at: new Date(),
+    };
+    if (groupName != '' && setSelectedUsers.length != 0)
+      dispatch(
+        addGroup(
+          payload.group_name,
+          payload.members,
+          payload.owner_id,
+          payload.created_at,
+        ),
+      );
   };
-
 
   return (
     <View style={styles.container}>
-
-      {selectedView == 'Add_Member' ?
-        <SelectMemberScreen setView={setView} selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
-        : <SaveGroupScreen groupNameError={groupNameError} handleCreateGroup={handleCreateGroup} setGroupName={setGroupName} setView={setView} setMember={setSelectedUsers} members={selectedUsers} />
-      }
+      {selectedView == 'Add_Member' ? (
+        <SelectMemberScreen
+          setView={setView}
+          selectedUsers={selectedUsers}
+          setSelectedUsers={setSelectedUsers}
+        />
+      ) : (
+        <SaveGroupScreen
+          groupNameError={groupNameError}
+          handleCreateGroup={handleCreateGroup}
+          setGroupName={setGroupName}
+          setView={setView}
+          setMember={setSelectedUsers}
+          members={selectedUsers}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-
     paddingHorizontal: 10,
     backgroundColor: '#f1f1f1',
   },

@@ -47,6 +47,7 @@ const UserSelectionScreen = ({ navigation }) => {
     } else {
       //call api and go back
       console.log(route.params);
+
       const members = selectedUsers.map(item => {
         console.log(item, 'item');
         const user = users.find(ele => ele.user_id === item);
@@ -55,6 +56,10 @@ const UserSelectionScreen = ({ navigation }) => {
           ...user,
           payment_status: item === userId ? true : false,
         };
+      });
+      members.push({
+        ...users.find(ele => ele.user_id === userId),
+        payment_status: true,
       });
       dispatch(
         AddExpenseForGroup({
@@ -69,7 +74,13 @@ const UserSelectionScreen = ({ navigation }) => {
       setTimeout(() => {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Home' }, { name: 'SplitExpenseScreen', params: { id: route?.params?.groupId }} ],
+          routes: [
+            { name: 'Home' },
+            {
+              name: 'SplitExpenseScreen',
+              params: { id: route?.params?.groupId },
+            },
+          ],
         });
       }, 2000);
     }
@@ -77,7 +88,11 @@ const UserSelectionScreen = ({ navigation }) => {
   };
   const handleSelectAll = () => {
     // Check if all users are already selected
-    const allUserIds = users.map(user => user.user_id);
+    const allUserIds = users.map(user => {
+      if (user.user_id !== userId) {
+        return user.user_id;
+      }
+    });
     const allSelected = allUserIds.every(id => selectedUsers.includes(id));
 
     if (allSelected) {
@@ -92,17 +107,24 @@ const UserSelectionScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select Users</Text>
-      {users.map((user: member) => (
-        <TouchableOpacity
-          key={user.user_id}
-          style={[
-            styles.userItem,
-            selectedUsers.includes(user.user_id) ? styles.selectedUser : null,
-          ]}
-          onPress={() => handleUserSelection(user.user_id)}>
-          <Text style={styles.userName}>{user.name}</Text>
-        </TouchableOpacity>
-      ))}
+      {users.map((user: member) => {
+        console.log(user, 'user');
+        return (
+          user.user_id !== userId && (
+            <TouchableOpacity
+              key={user.user_id}
+              style={[
+                styles.userItem,
+                selectedUsers.includes(user.user_id)
+                  ? styles.selectedUser
+                  : null,
+              ]}
+              onPress={() => handleUserSelection(user.user_id)}>
+              <Text style={styles.userName}>{user.name}</Text>
+            </TouchableOpacity>
+          )
+        );
+      })}
       <View style={styles.buttonContainer}>
         <Button title="Select All" onPress={handleSelectAll} />
         <Button title="Go Back" onPress={handleGoBack} />

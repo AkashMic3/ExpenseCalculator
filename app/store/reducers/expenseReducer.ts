@@ -17,4 +17,8 @@ export const expenseReducer = createReducer(initialState, {
     console.log(action, 'action');
     return { ...state, ExpenseList: action.data };
   },
+  [types.DELETE_EXPENSE](state: IExpense, action: any) {
+    console.log(action, 'action');
+    return { ...state };
+  },
 });

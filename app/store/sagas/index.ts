@@ -12,7 +12,7 @@ import {
 import HomeSaga from './HomeSaga';
 
 import { groupSaga, fetchGroupSaga, addGroupSaga, deleteGroupSaga } from './groupSaga';
-import { ExpenseSaga, getExpenseListSaga, updateExpensePaymentStatusSaga } from './ExpenseSaga';
+import { DeleteExpenseSaga, ExpenseSaga, getExpenseListSaga, updateExpensePaymentStatusSaga } from './ExpenseSaga';
 
 export default function* watch() {
   yield all([
@@ -27,5 +27,6 @@ export default function* watch() {
     takeEvery(types.FETCH_EXPENSES, getExpenseListSaga),
     takeLatest(types.DELETE_GROUP, deleteGroupSaga),
     takeLatest(types.UPDATE_EXPENSE_STATUS, updateExpensePaymentStatusSaga),
+    takeLatest(types.DELETE_EXPENSE, DeleteExpenseSaga),
   ]);
 }

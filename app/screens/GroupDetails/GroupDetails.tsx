@@ -2,7 +2,10 @@ import { useFocusEffect, useRoute } from '@react-navigation/native';
 import NavigationService, {
   navigationRef,
 } from 'app/navigation/NavigationService';
-import { fetchExpense } from 'app/store/actions/expenseActions';
+import {
+  deleteExpensess,
+  fetchExpense,
+} from 'app/store/actions/expenseActions';
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -10,9 +13,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Button, ProgressBar } from 'react-native-paper';
+import { Button, IconButton, ProgressBar, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
@@ -22,7 +26,9 @@ import { floor } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SplitExpenseScreen = () => {
-  const loading = useSelector((state: any) => state.loadingReducer.isLoginLoading)
+  const loading = useSelector(
+    (state: any) => state.loadingReducer.isLoginLoading,
+  );
   const dispatch = useDispatch();
   useFocusEffect(
     React.useCallback(() => {
@@ -38,36 +44,77 @@ const SplitExpenseScreen = () => {
   const userId = useSelector((state: any) => state.loginReducer.id);
   const expenseData =
     useSelector(state => state?.expenseReducer?.ExpenseList) ?? [];
+  const { colors } = useTheme();
 
   const route = useRoute();
   function ShowExpenses({ item }) {
-    console.log(item, 'statsus');
     const status = item.members.filter(item => item.user_id === userId)[0];
-    console.log(status, 'status', status?.payment_status);
-    const nonPaidCount = item?.members?.filter(e => e.payment_status == false)?.length
+    console.log(status, 'status3333', item);
+    const nonPaidCount = item?.members?.filter(
+      e => e.payment_status == false,
+    )?.length;
+    function deleteExpense(item) {
+      console.log(item, 'item');
+      Alert.alert('Message', `Are you sure to delete ${item.expense_name} ?`, [
+        { text: 'NO', onPress: () => null, style: 'cancel' },
+        {
+          text: 'YES',
+          onPress: () => {
+            dispatch(deleteExpensess(item?._id));
+            dispatch(fetchExpense(route?.params?.id, userId));
+          },
+        },
+      ]);
+    }
 
     return (
-      <TouchableOpacity 
-      activeOpacity={0.9}
-      onPress={() => {
-      
-        NavigationService.navigate('ViewExpenseDetails', {
-          groupDetails: item,
-        });
-      }}
-      >
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => {
+          NavigationService.navigate('ViewExpenseDetails', {
+            groupDetails: item,
+          });
+        }}>
         <View style={styles.expenseContainer}>
-          <Text style={styles.groupName}>{item.expense_name}</Text>
+          <View style={styles.nameWrapper}>
+            <Text style={styles.groupName}>{item.expense_name}</Text>
+            {item?.owner_id === userId && (
+              <IconButton
+                icon="delete"
+                size={40}
+                onPress={() => {
+                  deleteExpense(item);
+                }}
+                color={colors.disabled}
+              />
+            )}
+          </View>
+
           <Text style={styles.amount}>₹{item.amount}</Text>
           <View style={styles.progressContainer}>
             <View style={{ flex: 1 }}>
-              <ProgressBar progress={(item.members.length - nonPaidCount) / item.members.length} color={"#007AFF"} />
+              <ProgressBar
+                progress={
+                  (item.members.length - nonPaidCount) / item.members.length
+                }
+                color={'#007AFF'}
+              />
             </View>
-            <Text style={styles.paymentleftStatus}>₹ {Math.round(((item.amount / item.members.length) * (nonPaidCount)) * 100) / 100} left</Text>
+            <Text style={styles.paymentleftStatus}>
+              ₹{' '}
+              {Math.round(
+                (item.amount / item.members.length) * nonPaidCount * 100,
+              ) / 100}{' '}
+              left
+            </Text>
           </View>
           <Text style={styles.paymentStatus}>
-            <MaterialCommunityIcons name='clock-outline' />
-            {item.members && ` ${item.members.length - nonPaidCount } of ${item.members.length} paid`} • {moment(item?.created_at).format('MMM D')}
+            <MaterialCommunityIcons name="clock-outline" />
+            {item.members &&
+              ` ${item.members.length - nonPaidCount} of ${
+                item.members.length
+              } paid`}{' '}
+            • {moment(item?.created_at).format('MMM D')}
           </Text>
         </View>
       </TouchableOpacity>
@@ -82,9 +129,16 @@ const SplitExpenseScreen = () => {
       style={styles.gradientBackground}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Group Expenses</Text>
-        {loading ? <ExpenseLoader /> :
-          <FlatList data={expenseData} showsVerticalScrollIndicator={false} renderItem={ShowExpenses} inverted />
-        }
+        {loading ? (
+          <ExpenseLoader />
+        ) : (
+          <FlatList
+            data={expenseData}
+            showsVerticalScrollIndicator={false}
+            renderItem={ShowExpenses}
+            inverted
+          />
+        )}
         <TouchableOpacity
           onPress={() => {
             console.log(route?.params, 'route?.params');

@@ -22,14 +22,25 @@ export function setExpense(data: [Expense]) {
   };
 }
 
-
-export function updateExpenseStatus(expense_id: string, user_id: string, payment_status:boolean, owner_id:string, group_id:string) {
+export function updateExpenseStatus(
+  expense_id: string,
+  user_id: string,
+  payment_status: boolean,
+  owner_id: string,
+  group_id: string,
+) {
   return {
     type: types.UPDATE_EXPENSE_STATUS,
     expense_id: expense_id,
-    user_id : user_id,
+    user_id: user_id,
     payment_status: payment_status,
     owner_id: owner_id,
-    group_id:group_id
+    group_id: group_id,
+  };
+}
+export function deleteExpensess(id: string) {
+  return {
+    type: types.DELETE_EXPENSE,
+    id,
   };
 }

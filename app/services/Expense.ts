@@ -16,9 +16,17 @@ export async function getExpense(payload: any) {
 }
 
 export async function updateExpenseStatus(payload: any) {
-
-  return await apiClient.post(ApiConfig.BASE_URL + ApiConfig.UPDATE_EXPENSE_STATUS, {
-    ...payload.data,
-  });
+  return await apiClient.post(
+    ApiConfig.BASE_URL + ApiConfig.UPDATE_EXPENSE_STATUS,
+    {
+      ...payload.data,
+    },
+  );
 }
 
+export async function deleteExpense(payload) {
+  console.log('......................', payload);
+  return await apiClient.post(ApiConfig.BASE_URL + ApiConfig.Delete_Expense, {
+    id: payload.action.id,
+  });
+}
