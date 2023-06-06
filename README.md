@@ -30,13 +30,13 @@ To run the Expense Manager app locally, follow these steps:
 1. Clone the repository:
 
 ```
-git clone https://github.com/your-username/expense-manager.git
+git clone [https://github.com/your-username/expense-manager.git](https://github.com/AkashMic3/ExpenseCalculator.git
 ```
 
 2. Install the dependencies:
 
 ```
-cd expense-manager
+cd /folder
 npm install
 ```
 
@@ -57,10 +57,3 @@ npm start
 
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, please open an issue on the GitHub repository. If you'd like to contribute code, please fork the repository, create a new branch, and submit a pull request.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-Feel free to customize the README further to include any additional information or sections relevant to your app.
