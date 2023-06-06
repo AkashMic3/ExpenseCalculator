@@ -7,12 +7,17 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import moment from 'moment';
 import metrics from 'app/config/metrics';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateExpenseStatus } from 'app/store/actions/expenseActions';
+
 export default function ExpenseDetails() {
     const { colors } = useTheme();
+    const dispatch = useDispatch()
     const route = useRoute();
     const navigation = useNavigation();
-    const { owner_id, members, amount, expense_name, group_id, created_at } = route.params?.groupDetails
+
+    // route.params?.groupDetails
+    const { _id, owner_id, members, amount, expense_name, group_id, created_at } = useSelector(state => state.expenseReducer.ExpenseList)?.find(e => e._id == route.params?.groupDetails._id)
     const userId = useSelector((state: any) => state.loginReducer.id)
     const nonPaidCount = members?.filter(e => e.payment_status == false)?.length
     const paidAmount = (Math.round((amount / members.length) * (members.length - nonPaidCount) * 100)) / 100;
@@ -40,18 +45,16 @@ const setMarkAsPaid = (user:any) => {
         `Do you want to make as ${user.payment_status == true ? 'unpaid' : 'paid'}?`,
         [
             { text: 'NO', onPress: () => null, style: 'cancel' },
-            { text: 'YES', onPress: () => {} },
+            { text: 'YES', onPress: () =>  dispatch(updateExpenseStatus(_id, user.user_id, !user.payment_status, owner_id, group_id ))},
         ]
     );
-
 }
-
 
     const _renderUsers = ({ item }) => {
         return (
             <TouchableOpacity
             activeOpacity={0.8}
-            onPress={()=> setMarkAsPaid(item)} >
+            onPress={()=> owner_id == userId ? setMarkAsPaid(item) : {}} >
             <View style={styles.membersItemContainer}>
                 <View
                     style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
@@ -82,7 +85,15 @@ const setMarkAsPaid = (user:any) => {
         <View style={styles.container}>
             <View style={styles.detailsViewAvathar}>
                 <Avatar.Text size={50} label={expense_name.substring(0, 2).toUpperCase()} color='white' />
-                <Text style={{ padding: 17, fontSize:20, color:colors.text }}>Total: ₹{amount} </Text>
+                <View style={{ padding: 17, alignItems:'center'}}>
+                <Text style={{  fontSize:20, color:colors.text }}>Total: ₹{amount} </Text>
+                {nonPaidCount  == 0 &&  (
+                <View style={{flexDirection:'row', alignItems:'center', padding:5}}>
+                    <Text style={{fontSize:14, color:colors.text}}>Completed </Text>
+                    <MaterialCommunityIcons name='check-circle' size={15} color={colors.green}   />
+                </View>
+                )}
+                </View>
 
                 <View style={{ flex: 0, paddingBottom: 5 }}>
                     <ProgressBar progress={(members.length - nonPaidCount) / members.length} color={"#007AFF"} style={{ height: 10, width: metrics.screenWidth / 1.5, }} />

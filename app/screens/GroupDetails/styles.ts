@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     membersContainer: {
         paddingVertical:10,
      
+     
     },
     membersItemContainer:{
         padding:5,

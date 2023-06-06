@@ -19,7 +19,7 @@ import { deleteGroup, fetchGroups } from 'app/store/actions/groupActions';
 import { LoginState } from 'app/models/api/login';
 import { Avatar, Card, IconButton } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const ExpenseTrackerHome = (props) => {
   const { colors } = useTheme();
 
@@ -62,9 +62,9 @@ const ExpenseTrackerHome = (props) => {
             ' - ' +
             moment(item?.created_at).format('DD/MM/YYYY')
           }
-          left={props => <Avatar.Icon {...props} icon="account-group-outline"  />}
+          left={props => <Avatar.Icon {...props} icon="account-group-outline" color='white' />}
           right={props => (
-            <IconButton {...props} icon="delete" size={20} onPress={()=> deleteConfirmation(item._id)} />
+            <IconButton {...props} icon="delete" size={20} onPress={()=> deleteConfirmation(item._id)} color={colors.disabled} />
           )}
         />
       </TouchableOpacity>
@@ -77,17 +77,23 @@ const ExpenseTrackerHome = (props) => {
         style={styles.container}>
         <Text style={[styles.title, {color:colors.text}]}>Expense Tracker</Text>
         <FlatList
+          contentContainerStyle={[{flexGrow:1 }, !!groups.length == 0 && {justifyContent:'center' } ]}
           data={groups}
           renderItem={renderExpenseItem}
           keyExtractor={item => item._id}
-          ListFooterComponent={ShowPieChart}
+          ListEmptyComponent={
+            <View style={styles.groupEmptyContainer}>
+              <Text style={[styles.groupEmptyText, {color:colors.text}]}>No groups available ? </Text>
+              <Text style={{color:colors.text}}>create a new one</Text>
+            </View>
+          }
         />
         <TouchableOpacity
           onPress={() => {
             NavigationService.navigate('CreateGroupScreen');
           }}
           style={styles.addButton}>
-          <Text style={styles.addButtonLabel}>Add Group</Text>
+             <MaterialCommunityIcons name='plus' size={25} color={'white'}   />
         </TouchableOpacity>
       </View>
 
@@ -96,31 +102,4 @@ const ExpenseTrackerHome = (props) => {
 
 export default ExpenseTrackerHome;
 
-function ShowPieChart() {
-  return (
-    <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      {/* <PieChart
-        data={data}
-        width={Dimensions.get('screen').width}
-        height={300}
-        chartConfig={{
-          backgroundColor: '#ffffff',
-          decimalPlaces: 0,
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          propsForLabels: {
-            fill: '#fff', // Set the legend text color to black
-          },
-        }}
-        accessor="population"
-        backgroundColor="transparent"
-        paddingLeft="45"
-        absolute
-        hasLegend={true}
-      /> */}
-    </View>
-  );
-}
+
