@@ -94,7 +94,7 @@ const SplitExpenseScreen = () => {
             {item?.owner_id === userId && (
               <IconButton
                 icon="delete"
-                size={40}
+                size={20}
                 onPress={() => {
                   deleteExpense(item);
                 }}
