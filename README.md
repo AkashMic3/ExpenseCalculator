@@ -8,6 +8,8 @@ Here are a few screenshots of the Expense Manager app:
 
 <div>
 <img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/1.png" width="30%" height="30%" >
+  <img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/4.png" width="30%" height="30%" >
+    <img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/6.png" width="30%" height="30%" >
 <img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/2.png" width="30%" height="30%" >
   <img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/3.png" width="30%" height="30%" >
     <img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/5.png" width="30%" height="30%" >
