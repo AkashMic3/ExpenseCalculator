@@ -42,7 +42,7 @@ const AddExpensePage = () => {
 
   return (
     <LinearGradient
-      colors={['#FAD961', '#F76B1C']}
+      colors={['#Ffff', '#Fff']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}>
@@ -53,7 +53,7 @@ const AddExpensePage = () => {
         value={title}
         mode="outlined"
         onChangeText={setTitle}
-        outlineColor="#FAD961"
+        outlineColor="#2196F3"
         error={error}
       />
       <TextInput
@@ -63,7 +63,7 @@ const AddExpensePage = () => {
         mode="outlined"
         onChangeText={setAmount}
         keyboardType="numeric"
-        outlineColor="#FAD961"
+        outlineColor="#2196F3"
         error={error}
       />
       {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: '#fff',
+    color: '#2196F3',
     marginBottom: 20,
   },
   input: {
@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   addButton: {
-    backgroundColor: '#fff',
+    backgroundColor: '#2196F3',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
   },
   addButtonLabel: {
-    color: '#3b5998',
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },

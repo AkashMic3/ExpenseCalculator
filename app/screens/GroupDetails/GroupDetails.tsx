@@ -1,4 +1,8 @@
-import { useFocusEffect, useRoute } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import NavigationService, {
   navigationRef,
 } from 'app/navigation/NavigationService';
@@ -6,7 +10,7 @@ import {
   deleteExpensess,
   fetchExpense,
 } from 'app/store/actions/expenseActions';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -45,7 +49,17 @@ const SplitExpenseScreen = () => {
   const expenseData =
     useSelector(state => state?.expenseReducer?.ExpenseList) ?? [];
   const { colors } = useTheme();
-
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Expenses',
+      headerLeft: () => (
+        <Button mode="text" color="#007AFF" onPress={() => navigation.goBack()}>
+          Back
+        </Button>
+      ),
+    });
+  }, [navigation]);
   const route = useRoute();
   function ShowExpenses({ item }) {
     const status = item.members.filter(item => item.user_id === userId)[0];
@@ -122,7 +136,7 @@ const SplitExpenseScreen = () => {
 
   return (
     <LinearGradient
-      colors={['#FAD961', '#F76B1C']}
+      colors={['#1c92d2', '#f2fcfe']}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.gradientBackground}>
