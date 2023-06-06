@@ -88,10 +88,8 @@ const LoggedInNavigator = () => (
       tabBarIcon: ({ color, size }) => {
         let iconName;
 
-        if (route.name === 'Home') 
-          iconName = "home"
-        else if (route.name === 'Profile')
-          iconName = "account"
+        if (route.name === 'Home') iconName = 'home';
+        else if (route.name === 'Profile') iconName = 'account';
         return (
           <MaterialCommunityIcons name={iconName} color={color} size={size} />
         );
@@ -152,7 +150,6 @@ function HomeNav() {
       />
       <HomeStack.Screen
         name="CreateGroupScreen"
-        
         component={CreateGroupScreen}
         options={{ title: 'Create a group' }}
         // options={{ headerShown: false }}
@@ -160,9 +157,9 @@ function HomeNav() {
       <HomeStack.Screen
         name="SplitExpenseScreen"
         component={SplitExpenseScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTitleAlign: 'center' }}
       />
-       <HomeStack.Screen
+      <HomeStack.Screen
         name="ViewExpenseDetails"
         component={ExpenseDetails}
         // options={{ headerShown: false }}

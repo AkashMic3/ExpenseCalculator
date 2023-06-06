@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333333',
-  //  marginBottom: 8,
+    //  marginBottom: 8,
   },
   amount: {
     paddingVertical: 5,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   addButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#F76B1C',
+    color: '#007AFF',
   },
   progressContainer: {
     alignItems: 'center',
