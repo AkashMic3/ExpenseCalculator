@@ -6,14 +6,12 @@ Expense Manager is a mobile application built using React Native that helps user
 
 Here are a few screenshots of the Expense Manager app:
 
-![Screenshot 1](screenshots/screenshot1.png)
-_Example description of the first screenshot._
-
-![Screenshot 2](screenshots/screenshot2.png)
-_Example description of the second screenshot._
-
-![Screenshot 3](screenshots/screenshot3.png)
-_Example description of the third screenshot._
+<div>
+<img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/1.png" width="30%" height="30%" >
+<img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/2.png" width="30%" height="30%" >
+  <img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/3.png" width="30%" height="30%" >
+    <img src="https://github.com/AkashMic3/ExpenseCalculator/blob/master/screenshots/5.png" width="30%" height="30%" >
+</div>
 
 ## Installation
 
