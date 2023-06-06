@@ -29,7 +29,7 @@ git clone https://github.com/AkashMic3/ExpenseCalculator.git
 
 ```
 cd ExpenseCalculator
-npm install
+npx react-mative run-ios/android
 ```
 
 3. Start the development server:
