@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Text, Button, TextInput } from 'react-native-paper';
+import { Text, Button, TextInput, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -10,6 +10,7 @@ import NavigationService from 'app/navigation/NavigationService';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const Register: React.FC = () => {
+  const { colors,dark } = useTheme();
   const [userCredential, setUserCredential] = useState({
     email: '',
     password: '',
@@ -66,10 +67,8 @@ const Register: React.FC = () => {
   const onLogin = () => NavigationService.navigate('Login');
 
   return (
-    <LinearGradient
-      colors={['#fbc2eb', '#a6c1ee']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+    <View
+    
       style={styles.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -79,7 +78,7 @@ const Register: React.FC = () => {
           alignItems: 'center',
         }}
         style={{ flex: 1 }}>
-        <View style={styles.backgroundContainer}>
+        <View style={[styles.backgroundContainer, dark  && {backgroundColor: colors.backdrop} ]}>
           <TextInput
             style={[styles.inputContainer, !isEmailValid && styles.errorInput]}
             mode="outlined"
@@ -129,6 +128,9 @@ const Register: React.FC = () => {
             labelStyle={styles.registerButtonText}>
             Register
           </Button>
+
+
+          
           <Button
             mode="text"
             onPress={onLogin}
@@ -137,15 +139,14 @@ const Register: React.FC = () => {
           </Button>
         </View>
       </ScrollView>
-    </LinearGradient>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //justifyContent: 'center',
-    // alignItems: 'center',
+  
   },
   backgroundContainer: {
     width: '90%',
@@ -166,15 +167,15 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     marginVertical: 10,
-    backgroundColor: '#f4511e',
+
   },
   registerButtonText: {
     color: 'white',
     fontWeight: 'bold',
   },
   loginButtonText: {
-    color: '#f4511e',
-    textDecorationLine: 'underline',
+
+ 
     fontSize: 10,
   },
 });
