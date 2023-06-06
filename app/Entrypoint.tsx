@@ -39,7 +39,7 @@ const RootNavigation: React.FC = () => {
   const combinedTheme = isDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
   setUnhandledPromiseRejectionTracker((id, error) => {
-  
+
     dispatch(showFlashMessage('Error!, Please verify your details'));
     // Alert.alert('Error Invalid details')
     if (prevTracker !== undefined) {
@@ -57,15 +57,15 @@ const RootNavigation: React.FC = () => {
 };
 
 const EntryPoint: React.FC = () => {
-  console.log('{entry}');
+
   return (
-   
+
     <Provider store={store}>
       <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
         <RootNavigation />
       </PersistGate>
     </Provider>
-   
+
   );
 };
 

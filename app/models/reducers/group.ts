@@ -7,7 +7,7 @@ export interface Member {
 export interface Group {
     _id: string;
     group_name:string;
-    members:Member,
+    members:Member[],
     owner_id:string,
     created_at:string
   }

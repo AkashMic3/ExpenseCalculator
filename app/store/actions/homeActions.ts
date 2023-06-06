@@ -11,3 +11,4 @@ export function Fetchres(data) {
     data,
   };
 }
+

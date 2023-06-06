@@ -1,77 +1,54 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import SelectMemberScreen from './SelectMembers/index';
+import SaveGroupScreen from './SaveGroup';
+import { useDispatch, useSelector } from 'react-redux';
+import { addGroup } from 'app/store/actions/groupActions';
 
 const CreateGroupScreen = () => {
+  const userId = useSelector((state:any) => state.loginReducer.id)
+  const dispatch = useDispatch()
+  const [selectedView, setView] = useState('Add_Member')
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupName, setGroupName] = useState('');
-  const [memberName, setMemberName] = useState('');
-  const [members, setMembers] = useState([]);
+  const [groupNameError, setGroupNameError] = useState(false);
 
   const handleCreateGroup = () => {
-    // Implement logic to create the group with members
-    console.log('Creating group:', groupName);
-    console.log('Group members:', members);
-    // Reset the input fields and members list
-    setGroupName('');
-    setMemberName('');
-    setMembers([]);
+    if(groupName == '') {
+      setGroupNameError(true);
+      return
+    } else
+    setGroupNameError(false);
+
+    let payload = {
+      group_name:groupName,
+      members: selectedUsers,
+      owner_id: userId,
+      created_at: new Date()
+    }
+    if(groupName!='' && setSelectedUsers.length!=0)
+        dispatch(addGroup(payload.group_name, payload.members,payload.owner_id, payload.created_at))
   };
 
-  const handleAddMember = () => {
-    // Add the member to the members list
-    setMembers([...members, memberName]);
-    // Reset the member name input
-    setMemberName('');
-  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create a Group</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Group Name"
-        value={groupName}
-        onChangeText={setGroupName}
-      />
-
-      <View style={styles.membersContainer}>
-        <TextInput
-          style={styles.memberInput}
-          placeholder="Member Name"
-          value={memberName}
-          onChangeText={setMemberName}
-        />
-        <TouchableOpacity style={styles.addButton} onPress={handleAddMember}>
-          <Text style={styles.addButtonText}>Add</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Text style={styles.membersTitle}>Group Members:</Text>
-      {members.map((member, index) => (
-        <View key={index} style={styles.memberContainer}>
-          <Text style={styles.memberText}>{member}</Text>
-        </View>
-      ))}
-
-      <TouchableOpacity style={styles.button} onPress={handleCreateGroup}>
-        <Text style={styles.buttonText}>Create</Text>
-      </TouchableOpacity>
+      {selectedView == 'Add_Member' ?
+        <SelectMemberScreen setView={setView} selectedUsers={selectedUsers} setSelectedUsers={setSelectedUsers} />
+        : <SaveGroupScreen groupNameError={groupNameError} handleCreateGroup={handleCreateGroup} setGroupName={setGroupName} setView={setView} setMember={setSelectedUsers} members={selectedUsers} />
+      }
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
+
+    paddingHorizontal: 10,
     backgroundColor: '#f1f1f1',
   },
   title: {

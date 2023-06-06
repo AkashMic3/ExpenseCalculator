@@ -12,6 +12,7 @@ export const PaperThemeDefault = {
   colors: {
     ...PaperDefaultTheme.colors,
     primary: '#3498db',
+    green:'#00a35c'
   },
 };
 
@@ -20,12 +21,18 @@ export const PaperThemeDark = {
   colors: {
     ...PaperDarkTheme.colors,
     primary: '#3498db',
+    green:'#00a35c'
   },
 };
 
 export const CombinedDefaultTheme = {
   ...PaperDefaultTheme,
   ...NavigationDefaultTheme,
+  colors: {
+    ...PaperDefaultTheme.colors,
+    ...NavigationDefaultTheme.colors,
+    green:'#00a35c'
+  }
 };
 
 export const CombinedDarkTheme = {
@@ -36,5 +43,7 @@ export const CombinedDarkTheme = {
     background: '#303030',
     card: '#222222',
     text: '#ffffff',
+    green:'#00a35c'
+    
   },
 };

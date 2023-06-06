@@ -1,5 +1,5 @@
 import NavigationService from 'app/navigation/NavigationService';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,96 +7,99 @@ import {
   FlatList,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
+import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 import styles from './styles';
 import { PieChart } from 'react-native-chart-kit';
-const data = [
-  { name: 'Credit', population: 2800, color: '#F44336' },
-  { name: 'Debit', population: 5250, color: '#2196F3' },
-];
-const ExpenseTrackerHome = () => {
-  const [expenses, setExpenses] = useState([
-    { id: '1', title: 'GroupName1', amount: 50.0 },
-    { id: '2', title: 'GroupName1', amount: 20.0 },
-    { id: '3', title: 'GroupName1', amount: 30.0 },
-    { id: '3', title: 'GroupName1', amount: 30.0 },
-    { id: '3', title: 'GroupName1', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    { id: '3', title: 'Eating Out', amount: 30.0 },
-    // Add more expense items here
-  ]);
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteGroup, fetchGroups } from 'app/store/actions/groupActions';
+import { LoginState } from 'app/models/api/login';
+import { Avatar, Card, IconButton } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+const ExpenseTrackerHome = (props) => {
+  const { colors } = useTheme();
 
-  const renderExpenseItem = ({ item }) => (
-    <LinearGradient
-      colors={['red', '#3b5998', '#192f6a']}
-      style={styles.expenseItem}>
+  const dispatch = useDispatch();
+  const userId = useSelector((state: LoginState) => state.loginReducer.id);
+  const groups = useSelector((state: any) => state.groupReducer.groups);
+
+  useEffect(() => {
+    fetchUserGroups();
+  }, [dispatch, userId]);
+
+  const fetchUserGroups = () => {
+    dispatch(fetchGroups(userId));
+  };
+
+
+  const deleteConfirmation = (group_id:string) => {
+    Alert.alert(
+        'Message',
+        'Are you sure?',
+        [
+            { text: 'NO', onPress: () => null, style: 'cancel' },
+            { text: 'YES', onPress: () => dispatch(deleteGroup(group_id, userId)) },
+        ]
+    );
+}
+
+  const renderExpenseItem = ({ item }) =>
+  {
+    return (
       <TouchableOpacity
         onPress={() => {
-          NavigationService.navigate('SplitExpenseScreen');
+          NavigationService.navigate('SplitExpenseScreen', { id: item._id });
         }}>
-        <Text style={styles.expenseTitle}>{item.title}</Text>
+        <Card.Title
+          title={item?.group_name}
+          subtitle={
+            item.members.length +
+            ' member' +
+            ' - ' +
+            moment(item?.created_at).format('DD/MM/YYYY')
+          }
+          left={props => <Avatar.Icon {...props} icon="account-group-outline" color='white' />}
+          right={props => (
+            <IconButton {...props} icon="delete" size={20} onPress={()=> deleteConfirmation(item._id)} color={colors.disabled} />
+          )}
+        />
       </TouchableOpacity>
-
-      {/* <Text style={styles.expenseAmount}>${item.amount.toFixed(2)}</Text> */}
-    </LinearGradient>
-  );
+    );
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <LinearGradient
-        colors={['#4c669f', '#3b5998', '#192f6a']}
-        style={styles.container}>
-        <Text style={styles.title}>Expense Tracker</Text>
-        <FlatList
-          data={expenses}
-          renderItem={renderExpenseItem}
-          keyExtractor={item => item.id}
-          ListFooterComponent={ShowPieChart}
-        />
 
+      <View
+        style={styles.container}>
+        <Text style={[styles.title, {color:colors.text}]}>Expense Tracker</Text>
+        <FlatList
+          contentContainerStyle={[{flexGrow:1 }, !!groups.length == 0 && {justifyContent:'center' } ]}
+          data={groups}
+          renderItem={renderExpenseItem}
+          keyExtractor={item => item._id}
+          ListEmptyComponent={
+            <View style={styles.groupEmptyContainer}>
+              <Text style={[styles.groupEmptyText, {color:colors.text}]}>No groups available ? </Text>
+              <Text style={{color:colors.text}}>create a new one</Text>
+            </View>
+          }
+        />
         <TouchableOpacity
           onPress={() => {
             NavigationService.navigate('CreateGroupScreen');
           }}
           style={styles.addButton}>
-          <Text style={styles.addButtonLabel}>Add Group</Text>
+             <MaterialCommunityIcons name='plus' size={25} color={'white'}   />
         </TouchableOpacity>
-      </LinearGradient>
-    </SafeAreaView>
+      </View>
+
   );
 };
 
 export default ExpenseTrackerHome;
 
-function ShowPieChart() {
-  return (
-    <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <PieChart
-        data={data}
-        width={Dimensions.get('screen').width}
-        height={300}
-        chartConfig={{
-          backgroundColor: '#ffffff',
-          decimalPlaces: 0,
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          propsForLabels: {
-            fill: '#fff', // Set the legend text color to black
-          },
-        }}
-        accessor="population"
-        backgroundColor="transparent"
-        paddingLeft="45"
-        absolute
-        hasLegend={true}
-      />
-    </View>
-  );
-}
+

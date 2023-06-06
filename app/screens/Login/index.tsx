@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { Text, TextInput, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -10,6 +10,7 @@ import NavigationService from 'app/navigation/NavigationService';
 import SnackbarView from 'app/components/Snackbar';
 
 const Login: React.FC = () => {
+  const { colors } = useTheme();
   const [usercredential, setUsercredential] = useState({
     email: '',
     password: '',
@@ -27,7 +28,7 @@ const Login: React.FC = () => {
 
     setIsEmailValid(emailValid);
     setIsPasswordValid(passwordValid);
-
+    console.log('login');
     if (emailValid && passwordValid) {
       dispatch(
         loginActions.requestLogin(
@@ -67,12 +68,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <LinearGradient
-      colors={['#fbc2eb', '#a6c1ee']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+    <View
+   
+    
       style={styles.container}>
-       
       <View style={styles.backgroundContainer}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -82,7 +81,7 @@ const Login: React.FC = () => {
             value={usercredential.email}
             onChangeText={email => setCredential(email, 'email')}
             error={!isEmailValid}
-            outlineColor="blue"
+          
             activeOutlineColor="#90EE90"
           />
           {!isEmailValid && (
@@ -93,12 +92,11 @@ const Login: React.FC = () => {
           <TextInput
             mode="outlined"
             placeholder="Password"
-            
             secureTextEntry
             value={usercredential.password}
             onChangeText={password => setCredential(password, 'password')}
             error={!isPasswordValid}
-            outlineColor="blue"
+           
             activeOutlineColor="#90EE90"
           />
           {!isPasswordValid && (
@@ -108,9 +106,13 @@ const Login: React.FC = () => {
           )}
         </View>
         <TouchableOpacity
-          style={[
+          style={
+            
+            [
             styles.loginButton,
+            
             (!isEmailValid || !isPasswordValid) && styles.disabledButton,
+            {backgroundColor:colors.primary}
           ]}
           onPress={onLogin}
           disabled={!isEmailValid || !isPasswordValid}>
@@ -122,14 +124,14 @@ const Login: React.FC = () => {
         <TouchableOpacity style={styles.signupButton} onPress={onRegister}>
           <Text style={styles.signupButtonText}>
             Don't have an account yet?
-            <Text style={{ color: 'blue', fontWeight: 'bold' }}>
+            <Text style={{ color: colors.placeholder, fontWeight: 'bold' }}>
               {' '}
               Sign up now
             </Text>
           </Text>
         </TouchableOpacity>
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginVertical: 10,
-    backgroundColor: '#f4511e',
+    // backgroundColor: ,
     padding: 10,
     alignItems: 'center',
     borderRadius: 5,
@@ -173,17 +175,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   forgotButtonText: {
-    color: '#f4511e',
-    textDecorationLine: 'underline',
+
+ 
   },
   signupButton: {
     alignItems: 'center',
     marginTop: 10,
   },
   signupButtonText: {
-    color: '#000',
+ 
     fontSize: 14,
-    textDecorationLine: 'underline',
+   
   },
 });
 
