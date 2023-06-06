@@ -54,7 +54,6 @@ const SplitExpenseScreen = () => {
       e => e.payment_status == false,
     )?.length;
     function deleteExpense(item) {
-      console.log(item, 'item');
       Alert.alert('Message', `Are you sure to delete ${item.expense_name} ?`, [
         { text: 'NO', onPress: () => null, style: 'cancel' },
         {
