@@ -30,21 +30,35 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   addButton: {
+    justifyContent:'center',
     backgroundColor: '#1c92d2',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+    // paddingVertical: 12,
+    // paddingHorizontal: 16,
+    width:55,
+    height:55,
+    borderRadius: 27,
     alignItems: 'center',
     // marginTop: 16,
     position: 'absolute',
-    bottom: 10,
-    right: 10,
+    bottom: 20,
+    right: 20,
   },
   addButtonLabel: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
   },
+  groupEmptyContainer:{
+
+    justifyContent:'center',
+    alignItems:'center'
+  },
+
+  groupEmptyText: {
+    fontSize:18,
+    fontWeight:'bold'
+    
+  }
 });
 
 export default styles;

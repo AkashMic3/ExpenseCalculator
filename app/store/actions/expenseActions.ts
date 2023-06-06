@@ -21,3 +21,15 @@ export function setExpense(data: [Expense]) {
     data,
   };
 }
+
+
+export function updateExpenseStatus(expense_id: string, user_id: string, payment_status:boolean, owner_id:string, group_id:string) {
+  return {
+    type: types.UPDATE_EXPENSE_STATUS,
+    expense_id: expense_id,
+    user_id : user_id,
+    payment_status: payment_status,
+    owner_id: owner_id,
+    group_id:group_id
+  };
+}

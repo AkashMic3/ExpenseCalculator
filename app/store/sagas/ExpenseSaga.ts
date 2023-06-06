@@ -1,4 +1,4 @@
-import { AddExpense, getExpense } from 'app/services/Expense';
+import { AddExpense, getExpense, updateExpenseStatus } from 'app/services/Expense';
 import { call, put } from 'redux-saga/effects';
 import * as expenseActions from '../actions/expenseActions';
 import * as loginActions from 'app/store/actions/loginRegisterActions';
@@ -28,3 +28,20 @@ export function* getExpenseListSaga(
   }
   yield put(loginActions.disableLoader());
 }
+
+export function* updateExpensePaymentStatusSaga(
+  action: any,
+): any{
+  yield put(loginActions.enableLoader());
+  const data = { expense_id: action.expense_id, user_id: action.user_id, payment_status: action.payment_status,  };
+  console.log("update_Status_action", action)
+  try { 
+    const response = yield call(updateExpenseStatus, { data });
+    console.log(response,"payment_status_saga")
+    yield put(expenseActions.fetchExpense(action.group_id,  action.owner_id));
+  } catch (err) {
+    console.log(err, 'error');
+  }
+  yield put(loginActions.disableLoader());
+}
+

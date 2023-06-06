@@ -72,7 +72,6 @@ export function* deleteGroupSaga(action: any) {
             yield put(showFlashMessage('Group removed'));
             yield put(loginActions.disableLoader());
             yield put(groupActions.fetchGroups(user_id));
-
         } else {
             yield put(loginActions.disableLoader());
          

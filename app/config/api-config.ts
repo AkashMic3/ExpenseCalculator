@@ -10,6 +10,7 @@ const ApiConfig = {
   DELELTE_GROUP: 'endpoint/deleteGroup',
   GET_GROUPS: 'endpoint/getGroups',
   GET_EXPENSE: 'endpoint/getExpense',
+  UPDATE_EXPENSE_STATUS: 'endpoint/updatePaymentStatus',
   GET_GROUP_MEMBERS: 'endpoint/fetchMembers',
 };
 
