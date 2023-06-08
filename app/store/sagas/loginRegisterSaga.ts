@@ -15,7 +15,7 @@ import { Realm } from '@realm/react';
 import { getUserInfo, registerUser } from 'app/services/loginRegisterUser';
 import { showFlashMessage } from '../actions/flashMessageActions';
 import { FETCH_USERS_BY_PARAM } from '../actions/types';
-
+import * as navigationActions from 'app/store/actions/navigationActions';
 // Our worker Saga that logins the user
 export function* loginSaga(action: any): any {
   yield put(loginActions.enableLoader());
@@ -49,7 +49,7 @@ export function* loginSaga(action: any): any {
       yield put(loginActions.disableLoader());
     }
   } catch (err) {
-    console.log(err);
+    yield put(showFlashMessage('Invalid Email/Password!'));
     yield put(loginActions.loginFailed());
     yield put(loginActions.disableLoader());
   }
@@ -59,22 +59,22 @@ export function* registerSaga(action: any) {
   yield put(loginActions.enableLoader());
   const { email, password, phone, name } = action;
   try {
-    yield call(
+   const registerResponse =  yield call(
       [realm.emailPasswordAuth, realm.emailPasswordAuth.registerUser],
       { email: email, password: password },
     );
     const credentials = Realm.Credentials.emailPassword(email, password);
     const response: any = yield realm.logIn(credentials);
-    yield put(
-      loginActions.onLoginResponse({
-        isLoggedIn: response.isLoggedIn,
-        id: response.id,
-        name: name,
-        email: email,
-        phone: phone,
-      }),
+    // yield put(
+    //   loginActions.onLoginResponse({
+    //     isLoggedIn: response.isLoggedIn,
+    //     id: response.id,
+    //     name: name,
+    //     email: email,
+    //     phone: phone,
+    //   }),
       
-    );
+    // );
     
     if (response.id != null) {
       const registerResponse = yield call(registerUser, {
@@ -83,16 +83,19 @@ export function* registerSaga(action: any) {
         phone: phone,
         name: name,
       });
-      console.log('DEBUG:', registerResponse);
+    
+    console.log("register:", registerResponse)
       if (registerResponse.data.status == 'success') {
         yield put(loginActions.disableLoader());
         yield put(showFlashMessage('User Registration completed :)'));
+            navigationActions.navigateToLogin({});
       }
     } else {
       yield put(loginActions.loginFailed());
       yield put(loginActions.disableLoader());
     }
   } catch (err) {
+    yield put(showFlashMessage('Error '+ err.message));
     yield put(loginActions.loginFailed());
     yield put(loginActions.disableLoader());
   }
