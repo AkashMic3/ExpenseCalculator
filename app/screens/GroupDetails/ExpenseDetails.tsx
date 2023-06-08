@@ -91,16 +91,16 @@ export default function ExpenseDetails() {
                 )}
                 <Avatar.Text
                   size={40}
-                  label={item.name.substring(0, 2).toUpperCase()}
+                  label={item?.name?.substring(0, 2).toUpperCase()}
                   color="white"
                 />
               </View>
               <View style={{ justifyContent: 'center' }}>
                 <Text style={[styles.membersName, { color: colors.text }]}>
-                  {userId == item.user_id ? 'You' : item.name}
+                  {userId == item?.user_id ? 'You' : item.name}
                 </Text>
                 <Text style={styles.membersStatus}>
-                  {item.payment_status == true ? 'paid' : 'unpaid'}
+                  {item?.payment_status == true ? 'paid' : 'unpaid'}
                 </Text>
               </View>
             </View>

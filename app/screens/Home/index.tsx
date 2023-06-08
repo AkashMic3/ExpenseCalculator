@@ -64,6 +64,7 @@ const ExpenseTrackerHome = props => {
             />
           )}
           right={props => (
+            item.owner_id == userId &&
             <IconButton
               {...props}
               icon="delete"

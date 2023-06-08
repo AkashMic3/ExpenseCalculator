@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Image } from 'react-native';
 import { Text, Button, TextInput, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,6 +8,8 @@ import * as loginRegisterActions from 'app/store/actions/loginRegisterActions';
 import { ILoginState } from 'app/models/reducers/login';
 import NavigationService from 'app/navigation/NavigationService';
 import { ScrollView } from 'react-native-gesture-handler';
+import images from 'app/config/images';
+import metrics from 'app/config/metrics';
 
 const Register: React.FC = () => {
   const { colors,dark } = useTheme();
@@ -67,6 +69,14 @@ const Register: React.FC = () => {
   const onLogin = () => NavigationService.navigate('Login');
 
   return (
+    <>
+     <View>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Image resizeMode='contain' source={images.icons.logo} style={styles.logoContainer} />
+        </View>
+      </View>
+  
+
     <View
     
       style={styles.container}>
@@ -140,6 +150,7 @@ const Register: React.FC = () => {
         </View>
       </ScrollView>
     </View>
+    </>
   );
 };
 
@@ -167,6 +178,10 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     marginVertical: 10,
+    // backgroundColor: ,
+    padding: 4,
+    alignItems: 'center',
+    borderRadius: 5,
 
   },
   registerButtonText: {
@@ -178,6 +193,10 @@ const styles = StyleSheet.create({
  
     fontSize: 10,
   },
+  logoContainer:{
+    width: metrics.screenWidth / 7,
+    height: metrics.screenHeight * .12,
+  }
 });
 
 export default Register;
