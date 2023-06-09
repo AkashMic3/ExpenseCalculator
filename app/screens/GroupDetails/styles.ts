@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
   groupName: {
+    justifyContent:'center',
+    alignItems:'center',
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333333',
