@@ -117,7 +117,7 @@ export default function ExpenseDetails() {
   const _renderListFooter = () => {
     return (
     <View style={{justifyContent:'center', alignItems:'center',marginBottom:metrics.screenHeight /3 }}>
-      <Text style={[styles.paymentStatus]}>Group Created by {userId == owner_id ? 'You' : owner?.name}</Text>
+      <Text style={[styles.paymentStatus]}>Expense Created by {userId == owner_id ? 'You' : owner?.name}</Text>
     </View>
     )
   }
