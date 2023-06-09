@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Text, TextInput, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Text, TextInput, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -13,6 +13,9 @@ import metrics from 'app/config/metrics';
 
 
 const Login: React.FC = () => {
+  const loading = useSelector(
+    (state: any) => state.loadingReducer.isLoginLoading,
+  );
   const { colors } = useTheme();
   const [usercredential, setUsercredential] = useState({
     email: '',
@@ -125,7 +128,8 @@ const Login: React.FC = () => {
               ]}
             onPress={onLogin}
             disabled={!isEmailValid || !isPasswordValid}>
-            <Text style={styles.loginButtonText}>Login</Text>
+              { loading ? <ActivityIndicator color={colors.background} /> :
+            <Text style={styles.loginButtonText}>Login</Text> }
           </TouchableOpacity>
           <TouchableOpacity style={styles.forgotButton} onPress={onForgot}>
             <Text style={styles.forgotButtonText}>Forgot Password</Text>
