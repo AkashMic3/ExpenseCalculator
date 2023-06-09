@@ -20,7 +20,7 @@ import {
   Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Button, IconButton, ProgressBar, useTheme } from 'react-native-paper';
+import { Button, IconButton, ProgressBar, useTheme, Tooltip } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
@@ -90,7 +90,10 @@ const SplitExpenseScreen = () => {
         }}>
         <View style={styles.expenseContainer}>
           <View style={styles.nameWrapper}>
-            <Text style={styles.groupName}>{item.expense_name}</Text>
+            <Text style={styles.groupName}>{item.expense_name} 
+           
+            
+            </Text>
             {item?.owner_id === userId && (
               <IconButton
                 icon="delete"

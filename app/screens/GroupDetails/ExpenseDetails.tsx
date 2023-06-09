@@ -15,13 +15,14 @@ export default function ExpenseDetails() {
   const dispatch = useDispatch();
   const route = useRoute();
   const navigation = useNavigation();
+  const userId = useSelector((state: any) => state.loginReducer.id);
 
   // route.params?.groupDetails
-  const { _id, owner_id, members, amount, expense_name, group_id, created_at } =
+  const { _id, owner_id, members, amount, expense_name, group_id, created_at, owner } =
     useSelector(state => state.expenseReducer.ExpenseList)?.find(
       e => e._id == route.params?.groupDetails._id,
     );
-  const userId = useSelector((state: any) => state.loginReducer.id);
+
   const nonPaidCount = members?.filter(e => e.payment_status == false)?.length;
   const paidAmount =
     Math.round(
@@ -113,6 +114,14 @@ export default function ExpenseDetails() {
     );
   };
 
+  const _renderListFooter = () => {
+    return (
+    <View style={{justifyContent:'center', alignItems:'center',marginBottom:metrics.screenHeight /3 }}>
+      <Text style={[styles.paymentStatus]}>Group Created by {userId == owner_id ? 'You' : owner?.name}</Text>
+    </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.detailsViewAvathar}>
@@ -165,13 +174,12 @@ export default function ExpenseDetails() {
             ` ${members.length - nonPaidCount} of ${members.length} paid`}{' '}
         </Text>
         <FlatList
+
           showsVerticalScrollIndicator={false}
           data={members}
           renderItem={_renderUsers}
           keyExtractor={user => user.user_id}
-          ListFooterComponent={
-            <View style={{ height: 0, marginBottom: 190 }}></View>
-          }
+          ListFooterComponent={_renderListFooter}
         />
       </View>
     </View>
