@@ -23,6 +23,8 @@ import { useTheme } from 'react-native-paper';
 const UserSelectionScreen = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [prices, setPrices] = useState({});
+  const [edited, setEdited] = useState([]);
+  const [Average, setAverageAmount] = useState(0);
 
   const handleUserSelection = userId => {
     const isSelected = selectedUsers.includes(userId);
@@ -36,7 +38,10 @@ const UserSelectionScreen = ({ navigation }) => {
   const handlePriceChange = (userId, price) => {
     console.log(price, 'price', route?.params?.amount);
     if (Number(price) <= Number(route?.params?.amount)) {
-      setPrices({ ...prices, [userId]: price });
+      if (Number(price) !== Number(prices[userId])) {
+        setPrices({ ...prices, [userId]: price });
+        //  setEdited([...edited,{id:}])
+      }
     }
     if (Number(price) === 0) {
       setPrices({ ...prices, [userId]: String(Number(price)) });
@@ -52,6 +57,17 @@ const UserSelectionScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(fetchGroupMembers(route?.params?.groupId ?? ''));
   }, []);
+
+  useEffect(() => {
+    if (selectedUsers.length > 0) {
+      setPrices(
+        selectedUsers.reduce((result, item) => {
+          result[item] = (route?.params?.amount / selectedUsers.length);
+          return result;
+        }, {}),
+      );
+    }
+  }, [selectedUsers]);
 
   useEffect(() => {
     console.log(users, 'users');
