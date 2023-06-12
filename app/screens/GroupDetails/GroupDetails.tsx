@@ -29,6 +29,7 @@ import ExpenseLoader from 'app/components/ExpenseLoader';
 import { floor } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Popable } from 'react-native-popable';
+import { toFixedDecimal } from 'app/utils/numberUtils';
 
 const SplitExpenseScreen = () => {
   const loading = useSelector(
@@ -112,7 +113,7 @@ const SplitExpenseScreen = () => {
             )}
           </View>
 
-          <Text style={styles.amount}>₹{item.amount}</Text>
+          <Text style={styles.amount}>₹{toFixedDecimal(item.amount)}</Text>
           <View style={styles.progressContainer}>
             <View style={{ flex: 1 }}>
               <ProgressBar

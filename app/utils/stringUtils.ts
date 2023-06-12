@@ -6,3 +6,5 @@ export const getInitials = (name: string) => {
     .join('');
   return initials.substring(0, 2);
 };
+
+

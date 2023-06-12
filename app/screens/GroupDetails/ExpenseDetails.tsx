@@ -9,6 +9,7 @@ import metrics from 'app/config/metrics';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { updateExpenseStatus } from 'app/store/actions/expenseActions';
+import { toFixedDecimal } from 'app/utils/numberUtils';
 
 export default function ExpenseDetails() {
   const { colors } = useTheme();
@@ -24,12 +25,13 @@ export default function ExpenseDetails() {
     );
 
   const nonPaidCount = members?.filter(e => e.payment_status == false)?.length;
-  const paidAmount =
-    Math.round(
-      (amount / members.length) * (members.length - nonPaidCount) * 100,
-    ) / 100;
+  const paidAmount = members.reduce((sum, member) => { 
+      if(member.payment_status == true)
+        sum = Number(sum) + Number(member.amount)
+        return sum
+  }, 0)
   const leftAmount = Math.round((amount - paidAmount) * 100) / 100;
-  const amountPerHead = Math.round((amount / members.length) * 100) / 100;
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -106,7 +108,7 @@ export default function ExpenseDetails() {
               </View>
             </View>
             <View>
-              <Text style={styles.paymentleftStatus}>₹ {amountPerHead} </Text>
+              <Text style={styles.paymentleftStatus}>₹ { toFixedDecimal(item.amount)} </Text>
             </View>
           </View>
         </View>
@@ -132,7 +134,7 @@ export default function ExpenseDetails() {
         />
         <View style={{ padding: 17, alignItems: 'center' }}>
           <Text style={{ fontSize: 20, color: colors.text }}>
-            Total: ₹{amount}{' '}
+            Total: ₹{toFixedDecimal(amount)}{' '}
           </Text>
           {nonPaidCount == 0 && (
             <View
@@ -155,13 +157,13 @@ export default function ExpenseDetails() {
 
         <View style={{ flex: 0, paddingBottom: 5 }}>
           <ProgressBar
-            progress={(members.length - nonPaidCount) / members.length}
+            progress={(paidAmount/(paidAmount + leftAmount))}
             color={'#007AFF'}
             style={{ height: 10, width: metrics.screenWidth / 1.5 }}
           />
           <View style={[styles.expenseViewDetails, {}]}>
             <Text style={[styles.paymentStatus]}>
-              {members && `₹ ${paidAmount} paid`}
+              {members && `₹ ${toFixedDecimal(paidAmount)} paid`}
             </Text>
             <Text style={styles.paymentleftStatus}>₹ {leftAmount} left</Text>
           </View>
