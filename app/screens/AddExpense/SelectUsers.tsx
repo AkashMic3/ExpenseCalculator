@@ -19,6 +19,7 @@ import { fetchGroupMembers } from 'app/store/actions/groupActions';
 import { AddExpenseForGroup } from 'app/store/actions/expenseActions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from 'react-native-paper';
+import { toFixedDecimal } from 'app/utils/numberUtils';
 
 const UserSelectionScreen = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -26,13 +27,15 @@ const UserSelectionScreen = ({ navigation }) => {
   const [edited, setEdited] = useState([]);
   const [Average, setAverageAmount] = useState(0);
 
-  const handleUserSelection = userId => {
-    const isSelected = selectedUsers.includes(userId);
+  const handleUserSelection = user => {
+    const isSelected = selectedUsers.find(e => e.user_id == user.user_id);
     if (isSelected) {
-      setSelectedUsers(selectedUsers.filter(id => id !== userId));
+      setSelectedUsers(selectedUsers.filter(e => e.user_id !== user.user_id));
     } else {
-      setSelectedUsers([...selectedUsers, userId]);
+      setSelectedUsers([...selectedUsers, user]);
     }
+
+    console.log('handleUserSelection:', isSelected, selectedUsers);
   };
 
   const handlePriceChange = (userId, price) => {
@@ -59,42 +62,24 @@ const UserSelectionScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedUsers.length > 0) {
-      setPrices(
-        selectedUsers.reduce((result, item) => {
-          result[item] = (route?.params?.amount / selectedUsers.length);
-          return result;
-        }, {}),
-      );
-    }
-  }, [selectedUsers]);
-
-  useEffect(() => {
-    console.log(users, 'users');
-    setSelectedUsers(users.map(item => item.user_id));
     const totalAmount = route?.params?.amount || 0;
-    const averageAmount = totalAmount / users.length;
-    setPrices(
-      users.reduce((result, item) => {
-        result[item.user_id] = averageAmount;
-        return result;
-      }, {}),
-    );
-  }, [users]);
+    const averageAmount = totalAmount / selectedUsers.length;
+
+    const avgNew = selectedUsers.reduce((result, item) => {
+      result[item.user_id] = averageAmount;
+      return result;
+    }, {});
+    setPrices(avgNew);
+    console.log('average amount:', avgNew);
+  }, [users, selectedUsers]);
+
   useEffect(() => {
     console.log(prices, 'pricess');
     if (prices) {
       const totalAmount = route?.params?.amount || 0;
       const averageAmount = totalAmount / users.length;
       console.log(prices, 'pricess');
-      // const convertedData =remainingcost prices.map(obj => {
-      //   // const key = Object.keys(obj)[0];
-      //   // const value = Object.values(obj)[0].toString();
-      //   // const result = {};
-      //   // result[key] = value;
-      //   console.log(obj)
-      //   return obj;
-      // });
+
       let remainingcost = route?.params?.amount;
       let i = 0;
       for (const ele in prices) {
@@ -109,15 +94,7 @@ const UserSelectionScreen = ({ navigation }) => {
       }
       console.log(remainingcost, 'cvvv', i);
       const newPrice = prices;
-      // for (const ele in newPrice) {
-      //   console.log(ele, 'elekkkk', Number(newPrice[ele]));
-      //   if (
-      //     Number(newPrice[ele]) === Number(averageAmount) ||
-      //     Number(newPrice[ele]) === 0
-      //   ) {
-      //     newPrice[ele] = remainingcost / i;
-      //   }
-      // }
+
       console.log(newPrice, 'newPrice');
       // setPrices(newPrice);
     }
@@ -134,11 +111,11 @@ const UserSelectionScreen = ({ navigation }) => {
     }
 
     const members = selectedUsers.map(item => {
-      const user = users.find(ele => ele.user_id === item);
+      const user = users.find(ele => ele.user_id === item.user_id);
       return {
         ...user,
-        payment_status: item === userId,
-        price: parseFloat(prices[item]) || 0,
+        payment_status: item.user_id === userId,
+        amount: prices[item.user_id] || 0,
       };
     });
 
@@ -148,7 +125,10 @@ const UserSelectionScreen = ({ navigation }) => {
         expense_name: route?.params?.title,
         members: members,
         owner_id: userId,
-        amount: route?.params?.amount,
+        amount: members.reduce(
+          (acc, member) => Number(acc) + Number(member.amount),
+          0,
+        ),
         created_at: new Date().toISOString(),
       }),
     );
@@ -165,6 +145,17 @@ const UserSelectionScreen = ({ navigation }) => {
         ],
       });
     }, 1000);
+
+    console.log('pricess:', prices);
+
+    // console.log("Payload:", {
+    //   group_id: route?.params?.groupId,
+    //   expense_name: route?.params?.title,
+    //   members: members,
+    //   owner_id: userId,
+    //   amount: members.reduce((acc, member) => Number(acc) + Number(member.amount), 0),
+    //   created_at: new Date().toISOString(),
+    // })
   };
 
   const handleSelectAll = () => {
@@ -186,15 +177,15 @@ const UserSelectionScreen = ({ navigation }) => {
         keyExtractor={user => user.user_id}
         renderItem={({ item: user }) => (
           <TouchableOpacity
-            onPress={() => handleUserSelection(user.user_id)}
+            onPress={() => handleUserSelection(user)}
             style={[
               styles.userItem,
               // selectedUsers.includes(user.user_id) ? styles.selectedUser : null,
             ]}>
             <TouchableOpacity
               style={styles.userItemContent}
-              onPress={() => handleUserSelection(user.user_id)}>
-              {selectedUsers.includes(user.user_id) && (
+              onPress={() => handleUserSelection(user)}>
+              {selectedUsers.find(e => e.user_id == user.user_id) && (
                 <MaterialCommunityIcons
                   name="check-circle"
                   size={20}
@@ -204,12 +195,12 @@ const UserSelectionScreen = ({ navigation }) => {
               )}
               <Text style={styles.userName}>{user.name}</Text>
             </TouchableOpacity>
-            {selectedUsers.includes(user.user_id) && (
+            {selectedUsers.find(e => e.user_id == user.user_id) && (
               <TextInput
                 style={styles.priceInput}
                 placeholder="Price"
                 keyboardType="numeric"
-                value={String(prices[user.user_id])}
+                value={String(toFixedDecimal(prices[user.user_id]))}
                 onChangeText={price => handlePriceChange(user.user_id, price)}
               />
             )}

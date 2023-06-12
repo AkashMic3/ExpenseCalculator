@@ -20,7 +20,7 @@ import {
   Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Button, IconButton, ProgressBar, useTheme } from 'react-native-paper';
+import { Button, IconButton, ProgressBar, useTheme, Tooltip } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
@@ -28,6 +28,9 @@ import moment from 'moment';
 import ExpenseLoader from 'app/components/ExpenseLoader';
 import { floor } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Popable } from 'react-native-popable';
+import { toFixedDecimal } from 'app/utils/numberUtils';
+
 
 const SplitExpenseScreen = () => {
   const loading = useSelector(
@@ -63,10 +66,10 @@ const SplitExpenseScreen = () => {
   const route = useRoute();
   function ShowExpenses({ item }) {
     const status = item.members.filter(item => item.user_id === userId)[0];
-    console.log(status, 'status3333', item);
     const nonPaidCount = item?.members?.filter(
       e => e.payment_status == false,
     )?.length;
+
     function deleteExpense(item) {
       Alert.alert('Message', `Are you sure to delete ${item.expense_name} ?`, [
         { text: 'NO', onPress: () => null, style: 'cancel' },
@@ -90,7 +93,15 @@ const SplitExpenseScreen = () => {
         }}>
         <View style={styles.expenseContainer}>
           <View style={styles.nameWrapper}>
-            <Text style={styles.groupName}>{item.expense_name}</Text>
+            <Text style={styles.groupName}>{item.expense_name}
+            {status && 
+              <Popable content={status.payment_status == true ? "You're paid": "You're not paid"} >
+                <MaterialCommunityIcons name="information-outline" style={{ marginHorizontal: 4 }} size={17} color={status.payment_status == true ? colors.accent:colors.error} />
+              </Popable>
+
+            }
+
+            </Text>
             {item?.owner_id === userId && (
               <IconButton
                 icon="delete"
@@ -103,7 +114,7 @@ const SplitExpenseScreen = () => {
             )}
           </View>
 
-          <Text style={styles.amount}>₹{item.amount}</Text>
+          <Text style={styles.amount}>₹{toFixedDecimal(item.amount)}</Text>
           <View style={styles.progressContainer}>
             <View style={{ flex: 1 }}>
               <ProgressBar
@@ -124,8 +135,7 @@ const SplitExpenseScreen = () => {
           <Text style={styles.paymentStatus}>
             <MaterialCommunityIcons name="clock-outline" />
             {item.members &&
-              ` ${item.members.length - nonPaidCount} of ${
-                item.members.length
+              ` ${item.members.length - nonPaidCount} of ${item.members.length
               } paid`}{' '}
             • {moment(item?.created_at).format('MMM D')}
           </Text>
