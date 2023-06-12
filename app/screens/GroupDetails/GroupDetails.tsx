@@ -31,6 +31,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Popable } from 'react-native-popable';
 import { toFixedDecimal } from 'app/utils/numberUtils';
 
+
 const SplitExpenseScreen = () => {
   const loading = useSelector(
     (state: any) => state.loadingReducer.isLoginLoading,
