@@ -124,7 +124,7 @@ export default function ExpenseDetails() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.detailsViewAvathar}>
+      <View style={[styles.detailsViewAvathar, { paddingTop: 40,}]}>
         <Avatar.Text
           size={50}
           label={expense_name.substring(0, 2).toUpperCase()}
