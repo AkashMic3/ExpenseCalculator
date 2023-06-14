@@ -20,6 +20,7 @@ import { AddExpenseForGroup } from 'app/store/actions/expenseActions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from 'react-native-paper';
 import { toFixedDecimal } from 'app/utils/numberUtils';
+import { showFlashMessage } from 'app/store/actions/flashMessageActions';
 
 const UserSelectionScreen = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -45,6 +46,8 @@ const UserSelectionScreen = ({ navigation }) => {
         setPrices({ ...prices, [userId]: price });
         //  setEdited([...edited,{id:}])
       }
+    } else {
+      dispatch(showFlashMessage('Amount cannot be greater than total amount'));
     }
     if (Number(price) === 0) {
       setPrices({ ...prices, [userId]: String(Number(price)) });
@@ -72,33 +75,6 @@ const UserSelectionScreen = ({ navigation }) => {
     setPrices(avgNew);
     console.log('average amount:', avgNew);
   }, [users, selectedUsers]);
-
-  useEffect(() => {
-    console.log(prices, 'pricess');
-    if (prices) {
-      const totalAmount = route?.params?.amount || 0;
-      const averageAmount = totalAmount / users.length;
-      console.log(prices, 'pricess');
-
-      let remainingcost = route?.params?.amount;
-      let i = 0;
-      for (const ele in prices) {
-        console.log(ele, 'ele', Number(prices[ele]));
-        if (
-          Number(prices[ele]) < Number(averageAmount) ||
-          Number(prices[ele]) > Number(averageAmount)
-        ) {
-          remainingcost -= Number(prices[ele]);
-          i += 1;
-        }
-      }
-      console.log(remainingcost, 'cvvv', i);
-      const newPrice = prices;
-
-      console.log(newPrice, 'newPrice');
-      // setPrices(newPrice);
-    }
-  }, [prices]);
 
   const handleGoBack = () => {
     navigation.goBack();
