@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 40,
+    // paddingTop: 40,
   },
   title: {
     fontSize: 24,
@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
   groupName: {
+    justifyContent:'center',
+    alignItems:'center',
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333333',

@@ -9,26 +9,29 @@ import metrics from 'app/config/metrics';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { updateExpenseStatus } from 'app/store/actions/expenseActions';
+import { toFixedDecimal } from 'app/utils/numberUtils';
 
 export default function ExpenseDetails() {
   const { colors } = useTheme();
   const dispatch = useDispatch();
   const route = useRoute();
   const navigation = useNavigation();
+  const userId = useSelector((state: any) => state.loginReducer.id);
 
   // route.params?.groupDetails
-  const { _id, owner_id, members, amount, expense_name, group_id, created_at } =
+  const { _id, owner_id, members, amount, expense_name, group_id, created_at, owner } =
     useSelector(state => state.expenseReducer.ExpenseList)?.find(
       e => e._id == route.params?.groupDetails._id,
     );
-  const userId = useSelector((state: any) => state.loginReducer.id);
+
   const nonPaidCount = members?.filter(e => e.payment_status == false)?.length;
-  const paidAmount =
-    Math.round(
-      (amount / members.length) * (members.length - nonPaidCount) * 100,
-    ) / 100;
+  const paidAmount = members.reduce((sum, member) => { 
+      if(member.payment_status == true)
+        sum = Number(sum) + Number(member.amount)
+        return sum
+  }, 0)
   const leftAmount = Math.round((amount - paidAmount) * 100) / 100;
-  const amountPerHead = Math.round((amount / members.length) * 100) / 100;
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -105,7 +108,7 @@ export default function ExpenseDetails() {
               </View>
             </View>
             <View>
-              <Text style={styles.paymentleftStatus}>₹ {amountPerHead} </Text>
+              <Text style={styles.paymentleftStatus}>₹ { toFixedDecimal(item.amount)} </Text>
             </View>
           </View>
         </View>
@@ -113,9 +116,17 @@ export default function ExpenseDetails() {
     );
   };
 
+  const _renderListFooter = () => {
+    return (
+    <View style={{justifyContent:'center', alignItems:'center',marginBottom:metrics.screenHeight /3 }}>
+      <Text style={[styles.paymentStatus]}>Expense Created by {userId == owner_id ? 'You' : owner?.name}</Text>
+    </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.detailsViewAvathar}>
+      <View style={[styles.detailsViewAvathar, { paddingTop: 40,}]}>
         <Avatar.Text
           size={50}
           label={expense_name.substring(0, 2).toUpperCase()}
@@ -123,7 +134,7 @@ export default function ExpenseDetails() {
         />
         <View style={{ padding: 17, alignItems: 'center' }}>
           <Text style={{ fontSize: 20, color: colors.text }}>
-            Total: ₹{amount}{' '}
+            Total: ₹{toFixedDecimal(amount)}{' '}
           </Text>
           {nonPaidCount == 0 && (
             <View
@@ -146,13 +157,13 @@ export default function ExpenseDetails() {
 
         <View style={{ flex: 0, paddingBottom: 5 }}>
           <ProgressBar
-            progress={(members.length - nonPaidCount) / members.length}
+            progress={(paidAmount/(paidAmount + leftAmount))}
             color={'#007AFF'}
             style={{ height: 10, width: metrics.screenWidth / 1.5 }}
           />
           <View style={[styles.expenseViewDetails, {}]}>
             <Text style={[styles.paymentStatus]}>
-              {members && `₹ ${paidAmount} paid`}
+              {members && `₹ ${toFixedDecimal(paidAmount)} paid`}
             </Text>
             <Text style={styles.paymentleftStatus}>₹ {leftAmount} left</Text>
           </View>
@@ -165,13 +176,12 @@ export default function ExpenseDetails() {
             ` ${members.length - nonPaidCount} of ${members.length} paid`}{' '}
         </Text>
         <FlatList
+
           showsVerticalScrollIndicator={false}
           data={members}
           renderItem={_renderUsers}
           keyExtractor={user => user.user_id}
-          ListFooterComponent={
-            <View style={{ height: 0, marginBottom: 190 }}></View>
-          }
+          ListFooterComponent={_renderListFooter}
         />
       </View>
     </View>

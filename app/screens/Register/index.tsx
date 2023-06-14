@@ -12,6 +12,9 @@ import images from 'app/config/images';
 import metrics from 'app/config/metrics';
 
 const Register: React.FC = () => {
+  const loading = useSelector(
+    (state: any) => state.loadingReducer.isLoginLoading,
+  );
   const { colors,dark } = useTheme();
   const [userCredential, setUserCredential] = useState({
     email: '',
@@ -135,7 +138,9 @@ const Register: React.FC = () => {
             mode="contained"
             onPress={onRegister}
             style={styles.registerButton}
-            labelStyle={styles.registerButtonText}>
+            labelStyle={styles.registerButtonText}
+            loading={loading}
+            >
             Register
           </Button>
 
