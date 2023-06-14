@@ -49,7 +49,7 @@ const AddExpensePage = () => {
   const colors = useTheme();
   return (
     <LinearGradient
-      colors={['#000', '#fff']}
+      colors={['#2196F3',"#ffffff"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.container}>
