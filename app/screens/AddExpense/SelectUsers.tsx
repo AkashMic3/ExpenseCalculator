@@ -185,7 +185,7 @@ const UserSelectionScreen = ({ navigation }) => {
       />
 
       <View style={styles.buttonContainer}>
-        <Button title="Select All" onPress={handleSelectAll} />
+        {/* <Button title="Select All" onPress={handleSelectAll} /> */}
         <Button title="Go Back" onPress={handleGoBack} />
         <Button title="Add Expense" onPress={handleAddExpense} />
       </View>
