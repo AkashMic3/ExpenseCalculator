@@ -20,13 +20,10 @@ import { AddExpenseForGroup } from 'app/store/actions/expenseActions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTheme } from 'react-native-paper';
 import { toFixedDecimal } from 'app/utils/numberUtils';
-import { showFlashMessage } from 'app/store/actions/flashMessageActions';
 
 const UserSelectionScreen = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [prices, setPrices] = useState({});
-  const [edited, setEdited] = useState([]);
-  const [Average, setAverageAmount] = useState(0);
 
   const handleUserSelection = user => {
     const isSelected = selectedUsers.find(e => e.user_id == user.user_id);
@@ -35,19 +32,15 @@ const UserSelectionScreen = ({ navigation }) => {
     } else {
       setSelectedUsers([...selectedUsers, user]);
     }
+   
+console.log("handleUserSelection:", isSelected, selectedUsers)
 
-    console.log('handleUserSelection:', isSelected, selectedUsers);
   };
 
   const handlePriceChange = (userId, price) => {
     console.log(price, 'price', route?.params?.amount);
     if (Number(price) <= Number(route?.params?.amount)) {
-      if (Number(price) !== Number(prices[userId])) {
-        setPrices({ ...prices, [userId]: price });
-        //  setEdited([...edited,{id:}])
-      }
-    } else {
-      dispatch(showFlashMessage('Amount cannot be greater than total amount'));
+      setPrices({ ...prices, [userId]: price });
     }
     if (Number(price) === 0) {
       setPrices({ ...prices, [userId]: String(Number(price)) });
@@ -65,16 +58,45 @@ const UserSelectionScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    console.log(users, 'users1111111');
+    // setSelectedUsers(users.map(item => item.user_id));
     const totalAmount = route?.params?.amount || 0;
     const averageAmount = totalAmount / selectedUsers.length;
 
-    const avgNew = selectedUsers.reduce((result, item) => {
-      result[item.user_id] = averageAmount;
-      return result;
-    }, {});
-    setPrices(avgNew);
-    console.log('average amount:', avgNew);
+    const avgNew =    selectedUsers.reduce((result, item) => {
+        result[item.user_id] = averageAmount;
+        return result;
+      }, {});
+      setPrices(avgNew)
+    console.log("average amount:", avgNew)
   }, [users, selectedUsers]);
+  
+  useEffect(() => {
+    console.log(prices, 'pricess');
+    if (prices) {
+      const totalAmount = route?.params?.amount || 0;
+      const averageAmount = totalAmount / users.length;
+      console.log(prices, 'pricess');
+
+      let remainingcost = route?.params?.amount;
+      let i = 0;
+      for (const ele in prices) {
+        console.log(ele, 'ele', Number(prices[ele]));
+        if (
+          Number(prices[ele]) < Number(averageAmount) ||
+          Number(prices[ele]) > Number(averageAmount)
+        ) {
+          remainingcost -= Number(prices[ele]);
+          i += 1;
+        }
+      }
+      console.log(remainingcost, 'cvvv', i);
+      const newPrice = prices;
+   
+      console.log(newPrice, 'newPrice');
+      // setPrices(newPrice);
+    }
+  }, [prices]);
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -91,7 +113,7 @@ const UserSelectionScreen = ({ navigation }) => {
       return {
         ...user,
         payment_status: item.user_id === userId,
-        amount: prices[item.user_id] || 0,
+        amount: (prices[item.user_id]) || 0,
       };
     });
 
@@ -101,10 +123,7 @@ const UserSelectionScreen = ({ navigation }) => {
         expense_name: route?.params?.title,
         members: members,
         owner_id: userId,
-        amount: members.reduce(
-          (acc, member) => Number(acc) + Number(member.amount),
-          0,
-        ),
+        amount: members.reduce((acc, member) => Number(acc) + Number(member.amount), 0),
         created_at: new Date().toISOString(),
       }),
     );
@@ -122,7 +141,7 @@ const UserSelectionScreen = ({ navigation }) => {
       });
     }, 1000);
 
-    console.log('pricess:', prices);
+      console.log("pricess:", prices)
 
     // console.log("Payload:", {
     //   group_id: route?.params?.groupId,
@@ -176,7 +195,7 @@ const UserSelectionScreen = ({ navigation }) => {
                 style={styles.priceInput}
                 placeholder="Price"
                 keyboardType="numeric"
-                value={String(toFixedDecimal(prices[user.user_id]))}
+                value={String( toFixedDecimal(prices[user.user_id]))}
                 onChangeText={price => handlePriceChange(user.user_id, price)}
               />
             )}
